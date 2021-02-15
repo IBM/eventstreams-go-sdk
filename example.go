@@ -1,6 +1,6 @@
 // Golang Template
 
-// 
+//
 
 package main
 
@@ -261,81 +261,81 @@ func updateDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 	return nil
 }
 
-func replaceMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
-	// Construct an instance of the ReplaceMirroringTopicSelectionOptions model
-	replaceMirroringTopicSelectionOptionsModel := new(adminrestv1.ReplaceMirroringTopicSelectionOptions)
-	replaceMirroringTopicSelectionOptionsModel.Includes = []string{"test-topic"}
-	replaceMirroringTopicSelectionOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+//func replaceMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
+// 	// Construct an instance of the ReplaceMirroringTopicSelectionOptions model
+// 	replaceMirroringTopicSelectionOptionsModel := new(adminrestv1.ReplaceMirroringTopicSelectionOptions)
+// 	replaceMirroringTopicSelectionOptionsModel.Includes = []string{"test-topic"}
+// 	replaceMirroringTopicSelectionOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
-	// Enable retries.
-	serviceAPI.EnableRetries(0, 0)
+// 	// Enable retries.
+// 	serviceAPI.EnableRetries(0, 0)
 
-	// Invoke operation with valid options model (positive test)
-	result, response, operationErr := serviceAPI.ReplaceMirroringTopicSelection(replaceMirroringTopicSelectionOptionsModel)
-	if operationErr != nil {
-		return fmt.Errorf("Error Replacing Mirroring Topics: %s\n", operationErr.Error())
-	}
+// 	// Invoke operation with valid options model (positive test)
+// 	result, response, operationErr := serviceAPI.ReplaceMirroringTopicSelection(replaceMirroringTopicSelectionOptionsModel)
+// 	if operationErr != nil {
+// 		return fmt.Errorf("Error Replacing Mirroring Topics: %s\n", operationErr.Error())
+// 	}
 
-	// Check the result.
-	if response.StatusCode != http.StatusAccepted {
-		return fmt.Errorf("Error Replacing Mirroring Topics: status %d\n", response.StatusCode)
-	}
+// 	// Check the result.
+// 	if response.StatusCode != http.StatusAccepted {
+// 		return fmt.Errorf("Error Replacing Mirroring Topics: status %d\n", response.StatusCode)
+// 	}
 
-	// Loop and print mirroring topics.
-	for _, topicName := range result.Includes {
-		fmt.Printf("\ttopic added: %s\n", topicName)
-	}
+// 	// Loop and print mirroring topics.
+// 	for _, topicName := range result.Includes {
+// 		fmt.Printf("\ttopic added: %s\n", topicName)
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
-func ListMirroringTopics(serviceAPI *adminrestv1.AdminrestV1) error {
-	// Construct an instance of the GetMirroringTopicSelectionOptions model
-	getMirroringTopicSelectionOptionsModel := new(adminrestv1.GetMirroringTopicSelectionOptions)
-	getMirroringTopicSelectionOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+// func ListMirroringTopics(serviceAPI *adminrestv1.AdminrestV1) error {
+// 	// Construct an instance of the GetMirroringTopicSelectionOptions model
+// 	getMirroringTopicSelectionOptionsModel := new(adminrestv1.GetMirroringTopicSelectionOptions)
+// 	getMirroringTopicSelectionOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
-	// Enable retries.
-	serviceAPI.EnableRetries(0, 0)
+// 	// Enable retries.
+// 	serviceAPI.EnableRetries(0, 0)
 
-	// Call GetMirroringTopicSelection.
-	result, response, operationErr := serviceAPI.GetMirroringTopicSelection(getMirroringTopicSelectionOptionsModel)
-	if operationErr != nil {
-		return fmt.Errorf("Error Listing Mirroring Topics: %s\n", operationErr.Error())
-	}
+// 	// Call GetMirroringTopicSelection.
+// 	result, response, operationErr := serviceAPI.GetMirroringTopicSelection(getMirroringTopicSelectionOptionsModel)
+// 	if operationErr != nil {
+// 		return fmt.Errorf("Error Listing Mirroring Topics: %s\n", operationErr.Error())
+// 	}
 
-	// Check the result.
-	if response.StatusCode != http.StatusAccepted {
-		return fmt.Errorf("Error Listing Mirroring Topics: status %d\n", response.StatusCode)
-	}
+// 	// Check the result.
+// 	if response.StatusCode != http.StatusAccepted {
+// 		return fmt.Errorf("Error Listing Mirroring Topics: status %d\n", response.StatusCode)
+// 	}
 
-	// Loop and print mirroring topics.
-	for _, topicName := range result.Includes {
-		fmt.Printf("\tname: %s\n", topicName)
-	}
+// 	// Loop and print mirroring topics.
+// 	for _, topicName := range result.Includes {
+// 		fmt.Printf("\tname: %s\n", topicName)
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
-func getMirroringActiveTopics(serviceAPI *adminrestv1.AdminrestV1) error {
-	// Construct an instance of the GetMirroringActiveTopicsOptions model
-	getMirroringActiveTopicsOptionsModel := new(adminrestv1.GetMirroringActiveTopicsOptions)
-	getMirroringActiveTopicsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+// func getMirroringActiveTopics(serviceAPI *adminrestv1.AdminrestV1) error {
+// 	// Construct an instance of the GetMirroringActiveTopicsOptions model
+// 	getMirroringActiveTopicsOptionsModel := new(adminrestv1.GetMirroringActiveTopicsOptions)
+// 	getMirroringActiveTopicsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
-	// Call GetMirroringActiveTopics.
-	result, response, operationErr := serviceAPI.GetMirroringActiveTopics(getMirroringActiveTopicsOptionsModel)
-	if operationErr != nil {
-		return fmt.Errorf("Error Listing Active Mirroring Topics: %s\n", operationErr.Error())
-	}
+// 	// Call GetMirroringActiveTopics.
+// 	result, response, operationErr := serviceAPI.GetMirroringActiveTopics(getMirroringActiveTopicsOptionsModel)
+// 	if operationErr != nil {
+// 		return fmt.Errorf("Error Listing Active Mirroring Topics: %s\n", operationErr.Error())
+// 	}
 
-	// Check the result.
-	if response.StatusCode != http.StatusAccepted {
-		return fmt.Errorf("Error Listing Active Mirroring Topics: status %d\n", response.StatusCode)
-	}
+// 	// Check the result.
+// 	if response.StatusCode != http.StatusAccepted {
+// 		return fmt.Errorf("Error Listing Active Mirroring Topics: status %d\n", response.StatusCode)
+// 	}
 
-	// Loop and print mirroring topics.
-	for _, topicName := range result.ActiveTopics {
-		fmt.Printf("\tname: %s\n", topicName)
-	}
+// 	// Loop and print mirroring topics.
+// 	for _, topicName := range result.ActiveTopics {
+// 		fmt.Printf("\tname: %s\n", topicName)
+// 	}
 
-	return nil
-}
+// 	return nil
+// }

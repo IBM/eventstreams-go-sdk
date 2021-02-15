@@ -2,7 +2,9 @@
 
 COVERAGE = -coverprofile=coverage.txt -covermode=atomic
 
-all: test lint tidy
+
+all: test lint tidy build
+
 travis-ci: test-cov lint tidy
 
 test:
@@ -22,3 +24,9 @@ lint:
 
 tidy:
 	go mod tidy
+
+clean:
+	rm -f example
+
+build:
+	go build example.go
