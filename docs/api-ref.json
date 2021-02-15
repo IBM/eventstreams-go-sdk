@@ -1522,6 +1522,7 @@
             "usesGsonSerialization" : false,
             "serializationTypes" : [ ]
           } ],
+          "hasFormParams" : false,
           "restfulShow" : false,
           "restfulIndex" : false,
           "restfulCreate" : false,
@@ -1535,8 +1536,7 @@
           "hasCookieParams" : false,
           "hasResponseHeaders" : true,
           "hasExamples" : false,
-          "bodyAllowed" : true,
-          "hasFormParams" : false
+          "bodyAllowed" : true
         }, {
           "responseHeaders" : [ {
             "baseName" : "X-Global-Transaction-Id",
@@ -2673,6 +2673,7 @@
             "serializationTypes" : [ ]
           } ],
           "responseModels" : [ ],
+          "hasFormParams" : false,
           "restfulShow" : false,
           "restfulIndex" : false,
           "restfulCreate" : false,
@@ -2686,8 +2687,7 @@
           "hasCookieParams" : false,
           "hasResponseHeaders" : true,
           "hasExamples" : false,
-          "bodyAllowed" : false,
-          "hasFormParams" : false
+          "bodyAllowed" : false
         }, {
           "responseHeaders" : [ {
             "baseName" : "X-Global-Transaction-Id",
@@ -4717,6 +4717,7 @@
             "usesGsonSerialization" : false,
             "serializationTypes" : [ ]
           } ],
+          "hasFormParams" : false,
           "restfulShow" : false,
           "restfulIndex" : false,
           "restfulCreate" : false,
@@ -4730,8 +4731,7 @@
           "hasCookieParams" : false,
           "hasResponseHeaders" : true,
           "hasExamples" : false,
-          "bodyAllowed" : false,
-          "hasFormParams" : false
+          "bodyAllowed" : false
         }, {
           "responseHeaders" : [ {
             "baseName" : "X-Global-Transaction-Id",
@@ -5287,6 +5287,7 @@
             "usesGsonSerialization" : false,
             "serializationTypes" : [ ]
           } ],
+          "hasFormParams" : false,
           "restfulShow" : false,
           "restfulIndex" : false,
           "restfulCreate" : false,
@@ -5300,8 +5301,7 @@
           "hasCookieParams" : false,
           "hasResponseHeaders" : true,
           "hasExamples" : false,
-          "bodyAllowed" : false,
-          "hasFormParams" : false
+          "bodyAllowed" : false
         }, {
           "responseHeaders" : [ {
             "baseName" : "X-Global-Transaction-Id",
@@ -6580,6 +6580,7 @@
             "usesGsonSerialization" : false,
             "serializationTypes" : [ ]
           } ],
+          "hasFormParams" : false,
           "restfulShow" : false,
           "restfulIndex" : false,
           "restfulCreate" : false,
@@ -6593,8 +6594,7 @@
           "hasCookieParams" : false,
           "hasResponseHeaders" : true,
           "hasExamples" : false,
-          "bodyAllowed" : true,
-          "hasFormParams" : false
+          "bodyAllowed" : true
         }, {
           "responseHeaders" : [ {
             "baseName" : "X-Global-Transaction-Id",
@@ -7033,6 +7033,7 @@
             "usesGsonSerialization" : false,
             "serializationTypes" : [ ]
           } ],
+          "hasFormParams" : false,
           "restfulShow" : false,
           "restfulIndex" : false,
           "restfulCreate" : false,
@@ -7046,8 +7047,7 @@
           "hasCookieParams" : false,
           "hasResponseHeaders" : true,
           "hasExamples" : false,
-          "bodyAllowed" : false,
-          "hasFormParams" : false
+          "bodyAllowed" : false
         }, {
           "responseHeaders" : [ {
             "baseName" : "X-Global-Transaction-Id",
@@ -7872,6 +7872,7 @@
             "usesGsonSerialization" : false,
             "serializationTypes" : [ ]
           } ],
+          "hasFormParams" : false,
           "restfulShow" : false,
           "restfulIndex" : false,
           "restfulCreate" : false,
@@ -7885,8 +7886,7 @@
           "hasCookieParams" : false,
           "hasResponseHeaders" : true,
           "hasExamples" : false,
-          "bodyAllowed" : true,
-          "hasFormParams" : false
+          "bodyAllowed" : true
         }, {
           "responseHeaders" : [ {
             "baseName" : "X-Global-Transaction-Id",
@@ -8324,6 +8324,7 @@
             "usesGsonSerialization" : false,
             "serializationTypes" : [ ]
           } ],
+          "hasFormParams" : false,
           "restfulShow" : false,
           "restfulIndex" : false,
           "restfulCreate" : false,
@@ -8337,8 +8338,7 @@
           "hasCookieParams" : false,
           "hasResponseHeaders" : true,
           "hasExamples" : false,
-          "bodyAllowed" : false,
-          "hasFormParams" : false
+          "bodyAllowed" : false
         } ],
         "pathPrefix" : "default"
       },
@@ -8363,7 +8363,7 @@
       "structName" : "AdminrestV1",
       "gitRepoId" : "GIT_REPO_ID",
       "apiRef" : "/Users/derekhowlett/vnext-git/src/github.ibm.com/mhub/admin-rest-sdk/golang-sdk/docs/api-ref.json",
-      "generatedDate" : "2021-02-15T14:56:32.187Z[Europe/London]",
+      "generatedDate" : "2021-02-15T15:14:13.562Z[Europe/London]",
       "vcapServicesName" : "adminrest",
       "appDescriptionWithNewLines" : "The administration REST API for IBM Event Streams on Cloud.",
       "sdkName" : "adminrest",
@@ -8412,7 +8412,7 @@
   "structName" : "AdminrestV1",
   "gitRepoId" : "GIT_REPO_ID",
   "apiRef" : "/Users/derekhowlett/vnext-git/src/github.ibm.com/mhub/admin-rest-sdk/golang-sdk/docs/api-ref.json",
-  "generatedDate" : "2021-02-15T14:56:32.187Z[Europe/London]",
+  "generatedDate" : "2021-02-15T15:14:13.562Z[Europe/London]",
   "hasTestableModels" : false,
   "packageImports" : [ "\"context\"", "\"encoding/json\"", "\"fmt\"", "common \"github.com/IBM/adminrest-go-sdk/common\"", "\"github.com/IBM/go-sdk-core/v4/core\"", "\"net/http\"", "\"reflect\"", "\"time\"" ],
   "vcapServicesName" : "adminrest",
