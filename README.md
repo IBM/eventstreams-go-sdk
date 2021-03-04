@@ -1,8 +1,19 @@
-[![Build Status](https://travis-ci.com/IBM/adminrest-go-sdk.svg?token=eW5FVD71iyte6tTby8gr&branch=main)](https://travis.ibm.com/IBM/adminrest-go-sdk.svg?token=eW5FVD71iyte6tTby8gr&branch=main)
+[![Build Status](https://travis-ci.com/IBM/eventstreams-go-sdk.svg?token=eW5FVD71iyte6tTby8gr&branch=main)](https://travis.ibm.com/IBM/adminrest-go-sdk.svg?token=eW5FVD71iyte6tTby8gr&branch=main)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+# IBM Cloud Eventstreams Go SDK Version 0.0.1
 
-# Eventstreams_Go_SDK 0.0.1
-Go client library to interact with the various [IBM Cloud Eventstreams APIs](https://cloud.ibm.com/apidocs?category=eventstreams_sdkv1).
+## Introduction
+
+IBM Event Streams for IBM Cloud™ is a high-throughput message bus built with Apache Kafka. 
+It is optimized for event ingestion into IBM Cloud and event stream distribution between your services and applications.
+
+Event Streams provides a REST API to help connect your existing systems to your Event Streams Kafka cluster. 
+Using the API, you can integrate Event Streams with any system that supports RESTful APIs.
+
+Documentation [IBM Cloud Eventstreams Service APIs](https://cloud.ibm.com/apidocs/event-streams).
+
+This is the Eventstreams Software Development Kit for `Go`
+It includes a library of functions used to access a Eventstreams cluster.
 
 Disclaimer: this SDK is being released initially as a **pre-release** version.
 Changes might occur which impact applications that use this SDK.
@@ -41,7 +52,7 @@ The IBM Cloud Eventstreams Go SDK allows developers to programmatically interact
 
 Service Name | Package name 
 --- | --- 
-<!-- [Example Service](https://cloud.ibm.com/apidocs/example-service) | exampleservicev1 -->
+[Admin Rest](https://cloud.ibm.com/apidocs/event-streams) | AdminRest
 
 ## Prerequisites
 
@@ -49,6 +60,7 @@ Service Name | Package name
 
 * An [IBM Cloud][ibm-cloud-onboarding] account.
 * An IAM API key to allow the SDK to access your account. Create one [here](https://cloud.ibm.com/iam/apikeys).
+* A IBM Cloud Eventstreams Instance Create one [here](https://cloud.ibm.com/registration?target=/catalog/services/event-streams)
 * Go version 1.14 or above.
 
 ## Installation
@@ -62,7 +74,7 @@ Use this command to download and install the SDK to allow your Go application to
 use it:
 
 ```
-go get -u github.com/IBM/adminrest-go-sdk
+go get -u github.ibm.com/IBM/eventstreams-go-sdk 
 ```
 
 #### Go modules  
@@ -71,7 +83,7 @@ Go application, like this:
 
 ```go
 import (
-	"github.com/IBM/adminrest-go-sdk/exampleservicev1"
+	"github.ibm.com/IBM/eventstreams-go-sdk/pkg/adminrestv1"
 )
 ```
 
@@ -84,7 +96,7 @@ to your `Gopkg.toml` file.  Here is an example:
 
 ```
 [[constraint]]
-  name = "github.com/IBM/adminrest-go-sdk"
+  name = "github.ibm.com/IBM/eventstreams-go-sdk"
   version = "0.0.1"
 
 ```
@@ -102,7 +114,7 @@ please ask a question at
 
 ## Issues
 If you encounter an issue with the project, you are welcome to submit a
-[bug report](https://github.com/IBM/adminrest-go-sdk/issues).
+[bug report](<github-repo-url>/issues).
 Before that, please search for similar issues. It's possible that someone has already reported the problem.
 
 ## Open source @ IBM
@@ -115,11 +127,6 @@ See [CONTRIBUTING](CONTRIBUTING.md).
 
 This SDK project is released under the Apache 2.0 license.
 The license's full text can be found in [LICENSE](LICENSE).
-# Introduction
-
-IBM Event Streams for IBM Cloud™ is a high-throughput message bus built with Apache Kafka. It is optimized for event ingestion into IBM Cloud and event stream distribution between your services and applications.
-
-Event Streams provides a REST API to help connect your existing systems to your Event Streams Kafka cluster. Using the API, you can integrate Event Streams with any system that supports RESTful APIs.
 
 # Event Streams Administration REST API
 
@@ -180,15 +187,17 @@ In the event of a non-200 error return code, the transaction ID is also returned
 
 ## Using the REST API to administer Kafka topics
 
-The remainder of this document describes the Go-lang implementation of the Admin Rest SDK 
-and we also provide example `example.go` to show all SDK calls in action. 
-
 To run the example :-
 
 Compile the code.
 ```sh
-	go build -o eventstreams-sdk-example
+	go build -o example
 ```
+Or simply 
+```sh
+	make build
+```
+
 Set the required environment variables
 ```sh
 # Set you API KEY.
@@ -201,7 +210,7 @@ export ADMIN_ENDPOINT="https://xyzclustername.svc01.region.eventstreams.test.clo
 
 Run the example
 ```sh
-./eventstreams-example 
+./example 
 ```
 
 ## REST API 
@@ -210,11 +219,19 @@ The following sections explain how the REST API works with examples.
 
 ### Code Setup
 
-You will need to import the IBM SDK core functions and the rest API client itself.
-```golang
-	"github.com/IBM/go-sdk-core/v4/core"
-	"github.com/IBM/eventstreams-go-sdk/pkg/adminrestv1"
-```
+	// Code Setup
+	import (
+		"fmt"
+		"net/http"
+		"os"
+	
+		"github.com/IBM/eventstreams-go-sdk/pkg/adminrestv1"
+		"github.com/IBM/go-sdk-core/v4/core"
+	)
+	
+	// End Code Setup
+
+
 
 ### Authentication
 
@@ -233,43 +250,26 @@ Use one of the following methods to authenticate:
 - To authenticate directly using the api_key:
   Place the key directly as the value of the X-Auth-Token HTTP header.
 
-```golang
-    URL := os.Getenv("ADMIN_ENDPOINT")
-	apiKey := os.Getenv("API_KEY")
+		// Start Authentication
+		basicAuthenticator, _ := core.NewBasicAuthenticator("token", apiKey)
+		// End Authentication
 
-	if URL == "" {
-		fmt.Println("Please set env ADMIN_ENDPOINT")
-		os.Exit(1)
-	}
 
-	if apiKey == "" {
-		fmt.Println("Please set env API_KEY")
-		os.Exit(1)
-	}
-
-	basicAuthenticator, err := core.NewBasicAuthenticator("token", apiKey)
-	if err != nil {
-		fmt.Printf("Failed to Authenticate with error : %s\n", err.Error())
-		os.Exit(1)
-	}
-```
 
 
 ### Create the service
 
 Create a new service object.
 
-```golang
-    // Create a new REST service.
-	ibmEventStreamsAdminRestApiService, serviceErr := ibmeventstreamsadminrestapiv1.NewIbmEventStreamsAdminRestApiV1(&ibmeventstreamsadminrestapiv1.IbmEventStreamsAdminRestApiV1Options{
-		URL:           URL,
-		Authenticator: basicAuthenticator,
-	})
-	if serviceErr != nil {
-		fmt.Println("Error Creating Service")
-		os.Exit(1)
-	}
-```
+		// Create Service
+		serviceAPI, serviceErr := adminrestv1.NewAdminrestV1(&adminrestv1.AdminrestV1Options{
+	
+			URL:           URL,
+			Authenticator: basicAuthenticator,
+		})
+		// End Create Service
+
+
 
 ### Creating a Kafka topic
 
@@ -282,30 +282,34 @@ Expected status codes
 
 #### Example
 
-```golang
-	// Set the retries policy.
-	serviceAPI.EnableRetries(0, 0)
+	func createTopic(serviceAPI *adminrestv1.AdminrestV1) error {
+		// Set the retries policy.
+		serviceAPI.EnableRetries(0, 0)
+	
+		// Construct an instance of the createTopicOptionsModel.
+		createTopicOptionsModel := new(adminrestv1.CreateTopicOptions)
+		createTopicOptionsModel.Name = core.StringPtr("test-topic")
+		createTopicOptionsModel.Partitions = core.Int64Ptr(int64(26))
+		createTopicOptionsModel.PartitionCount = core.Int64Ptr(int64(1))
+		createTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+	
+		// Create the Topic.
+		response, operationErr := serviceAPI.CreateTopic(createTopicOptionsModel)
+		if operationErr != nil {
+			return fmt.Errorf("Error Creating Topics: %s\n", operationErr.Error())
+		}
+	
+		// Check the result.
+		if response.StatusCode != http.StatusAccepted {
+			return fmt.Errorf("Error Creating Topic: status %d\n", response.StatusCode)
+		}
+	
+		fmt.Printf("\tname: %s created\n", *createTopicOptionsModel.Name)
+	
+		return nil
+	} // func.end
 
-	// Construct an instance of the createTopicOptionsModel.
-	createTopicOptionsModel := new(ibmeventstreamsadminrestapiv1.CreateTopicOptions)
-	createTopicOptionsModel.Name = core.StringPtr("test-topic")
-	createTopicOptionsModel.Partitions = core.Int64Ptr(int64(26))
-	createTopicOptionsModel.PartitionCount = core.Int64Ptr(int64(1))
-	createTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
-	// Create the Topic.
-	response, operationErr := serviceAPI.CreateTopic(createTopicOptionsModel)
-	if operationErr != nil {
-		return fmt.Errorf("Error Creating Topics: %s\n", operationErr.Error())
-	}
-
-	// Check the result.
-	if response.StatusCode != http.StatusAccepted {
-		return fmt.Errorf("Error Creating Topic: status %d\n", response.StatusCode)
-	}
-
-	fmt.Printf("\tname: %s created\n", *createTopicOptionsModel.Name) 
-```
 
 ### Deleting a Kafka topic
 
@@ -329,28 +333,28 @@ of time after the completion of a REST request to delete the topic.
 
 #### Example
 
-First create a delete topic options model which gives details of the topic.
-Then call the DeleteTopic function on the ibmEventStreamsAdminRestApiService service.
+	func deleteTopic(serviceAPI *adminrestv1.AdminrestV1) error {
+		// Construct an instance of the DeleteTopicOptions model
+		deleteTopicOptionsModel := new(adminrestv1.DeleteTopicOptions)
+		deleteTopicOptionsModel.TopicName = core.StringPtr("test-topic")
+		deleteTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+	
+		// Delete Topic
+		response, operationErr := serviceAPI.DeleteTopic(deleteTopicOptionsModel)
+		if operationErr != nil {
+			return fmt.Errorf("Error Deleting Topic: %s\n", operationErr.Error())
+		}
+	
+		// Check the result.
+		if response.StatusCode != http.StatusAccepted {
+			return fmt.Errorf("Error Deleting Topic: status %d\n", response.StatusCode)
+		}
+	
+		fmt.Printf("\tname: %s deleted\n", *deleteTopicOptionsModel.TopicName)
+		return nil
+	} // func.end
 
-```golang
-	// Construct an instance of the DeleteTopicOptions model
-	deleteTopicOptionsModel := new(ibmeventstreamsadminrestapiv1.DeleteTopicOptions)
-	deleteTopicOptionsModel.TopicName = core.StringPtr("test-topic")
-	deleteTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
-	// Delete Topic
-	response, operationErr := serviceAPI.DeleteTopic(deleteTopicOptionsModel)
-	if operationErr != nil {
-		return fmt.Errorf("Error Deleting Topic: %s\n", operationErr.Error())
-	}
-
-	// Check the result.
-	if response.StatusCode != http.StatusAccepted {
-		return fmt.Errorf("Error Deleting Topic: status %d\n", response.StatusCode)
-	}
-
-	fmt.Printf("\tname: %s deleted\n", *deleteTopicOptionsModel.TopicName)
-```
 
 ### Listing Kafka topics
 
@@ -388,26 +392,29 @@ following properties:
 
 #### Example
 
-```golang
-	// Construct an instance of the ListTopicsOptions model
-	listTopicsOptionsModel := new(ibmeventstreamsadminrestapiv1.ListTopicsOptions)
+	func listTopics(serviceAPI *adminrestv1.AdminrestV1) error {
+		// Construct an instance of the ListTopicsOptions model
+		listTopicsOptionsModel := new(adminrestv1.ListTopicsOptions)
+	
+		// Call ListTopics.
+		result, response, operationErr := serviceAPI.ListTopics(listTopicsOptionsModel)
+		if operationErr != nil {
+			return fmt.Errorf("Error Listing Topics" + operationErr.Error())
+		}
+	
+		// Check the result.
+		if response.StatusCode != http.StatusOK {
+			return fmt.Errorf("Error Listing Topics: status %d\n", response.StatusCode)
+		}
+	
+		// Loop and print topics.
+		for _, topicDetail := range result {
+			fmt.Printf("\tname: %s\n", *topicDetail.Name)
+		}
+		return nil
+	} // func.end
 
-	// Call ListTopics.
-	result, response, operationErr := serviceAPI.ListTopics(listTopicsOptionsModel)
-	if operationErr != nil {
-		return fmt.Errorf("Error Listing Topics" + operationErr.Error())
-	}
 
-	// Check the result.
-	if response.StatusCode != http.StatusOK {
-		return fmt.Errorf("Error Listing Topics: status %d\n", response.StatusCode)
-	}
-
-	// Loop and print topics.
-	for _, topicDetail := range result {
-		fmt.Printf("\tname: %s\n", *topicDetail.Name)
-	}
-```
 
 ### Getting a Kafka topic
 
@@ -446,47 +453,50 @@ Expected status codes
 ```
 
 #### Example
-```golang
-	// Construct an instance of the GetTopicOptions model
-	getTopicOptionsModel := new(ibmeventstreamsadminrestapiv1.GetTopicOptions)
-	getTopicOptionsModel.TopicName = core.StringPtr("test-topic")
-	getTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+	func topicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
+		// Construct an instance of the GetTopicOptions model
+		getTopicOptionsModel := new(adminrestv1.GetTopicOptions)
+		getTopicOptionsModel.TopicName = core.StringPtr("test-topic")
+		getTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+	
+		// Call List Topic Details.
+		result, response, operationErr := serviceAPI.GetTopic(getTopicOptionsModel)
+		if operationErr != nil {
+			return fmt.Errorf("Error Listing Topic Details" + operationErr.Error())
+		}
+	
+		// Check the result.
+		if response.StatusCode != http.StatusOK {
+			return fmt.Errorf("Error Listing Topic Details: status %d\n", response.StatusCode)
+		}
+	
+		// Print topics details.
+		fmt.Printf("\tname: \t\t\t%s\n", *result.Name)
+	
+		// The number of partitions.
+		fmt.Printf("\tno of partitions: \t%d\n", *result.Partitions)
+	
+		// The number of replication factor.
+		fmt.Printf("\treplication factor: \t%d\n", *result.ReplicationFactor)
+	
+		// // The value of config property 'retention.ms'.
+		fmt.Printf("\tretention (ms): \t%d\n", *result.RetentionMs)
+	
+		// // The value of config property 'cleanup.policy'.
+		fmt.Printf("\tcleanup policy: \t%s\n", *result.CleanupPolicy)
+	
+		// Configs *TopicConfigs
+		fmt.Printf("\ttopic configs: \t\t%+v\n", *result.Configs)
+	
+		// The replia assignment of the topic.
+		// ReplicaAssignments []ReplicaAssignment
+		for _, assignment := range result.ReplicaAssignments {
+			fmt.Printf("\tassignment:  \t\tid:%d,  \tbrokers: %+v\n", assignment.ID, assignment.Brokers)
+		}
+		return nil
+	} // func.end
 
-	// Call List Topic Details.
-	result, response, operationErr := serviceAPI.GetTopic(getTopicOptionsModel)
-	if operationErr != nil {
-		return fmt.Errorf("Error Listing Topic Details" + operationErr.Error())
-	}
 
-	// Check the result.
-	if response.StatusCode != http.StatusOK {
-		return fmt.Errorf("Error Listing Topic Details: status %d\n", response.StatusCode)
-	}
-
-	// Print topics details.
-	fmt.Printf("\tname: \t\t\t%s\n", *result.Name)
-
-	// The number of partitions.
-	fmt.Printf("\tno of partitions: \t%d\n", *result.Partitions)
-
-	// The number of replication factor.
-	fmt.Printf("\treplication factor: \t%d\n", *result.ReplicationFactor)
-
-	// // The value of config property 'retention.ms'.
-	fmt.Printf("\tretention (ms): \t%d\n", *result.RetentionMs)
-
-	// // The value of config property 'cleanup.policy'.
-	fmt.Printf("\tcleanup policy: \t%s\n", *result.CleanupPolicy)
-
-	// Configs *TopicConfigs
-	fmt.Printf("\ttopic configs: \t\t%+v\n", *result.Configs)
-
-	// The replia assignment of the topic.
-	// ReplicaAssignments []ReplicaAssignment
-	for _, assignment := range result.ReplicaAssignments {
-		fmt.Printf("\tassignment:  \t\tid:%d,  \tbrokers: %+v\n", assignment.ID, assignment.Brokers)
-	}
-```
 
 ### Updating Kafka topic's configuration
 
@@ -514,27 +524,30 @@ Expected status codes
 
 #### Example
 
-```golang
-	// Construct an instance of the UpdateTopicOptions model
-	updateTopicOptionsModel := new(ibmeventstreamsadminrestapiv1.UpdateTopicOptions)
-	updateTopicOptionsModel.TopicName = core.StringPtr("test-topic")
-	updateTopicOptionsModel.NewTotalPartitionCount = core.Int64Ptr(int64(6))
-	updateTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+	func updateTopicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
+		// Construct an instance of the UpdateTopicOptions model
+		updateTopicOptionsModel := new(adminrestv1.UpdateTopicOptions)
+		updateTopicOptionsModel.TopicName = core.StringPtr("test-topic")
+		updateTopicOptionsModel.NewTotalPartitionCount = core.Int64Ptr(int64(6))
+		updateTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+	
+		// Invoke operation with valid options model (positive test)
+		response, operationErr := serviceAPI.UpdateTopic(updateTopicOptionsModel)
+		if operationErr != nil {
+			return fmt.Errorf("Error Updating Topic: %s\n", operationErr.Error())
+		}
+	
+		// Check the result.
+		if response.StatusCode != http.StatusAccepted {
+			return fmt.Errorf("Error Updating Topics: status %d\n", response.StatusCode)
+		}
+	
+		fmt.Printf("\tname: %s updated\n", *updateTopicOptionsModel.TopicName)
+	
+		return nil
+	} // func.end
 
-	// Invoke operation with valid options model (positive test)
-	response, operationErr := serviceAPI.UpdateTopic(updateTopicOptionsModel)
-	if operationErr != nil {
-		return fmt.Errorf("Error Updating Topic: %s\n", operationErr.Error())
-	}
 
-	// Check the result.
-	if response.StatusCode != http.StatusAccepted {
-		return fmt.Errorf("Error Updating Topics: status %d\n", response.StatusCode)
-	}
-
-	fmt.Printf("\tname: %s updated\n", *updateTopicOptionsModel.TopicName)
-
-```
 
 ### List current mirroring topic selection
 
@@ -557,30 +570,21 @@ Expected status codes
 
 #### Example
 
-```golang
-	// Construct an instance of the GetMirroringTopicSelectionOptions model
-	getMirroringTopicSelectionOptionsModel := new(ibmeventstreamsadminrestapiv1.GetMirroringTopicSelectionOptions)
-	getMirroringTopicSelectionOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+	func listMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
+		// Construct an instance of the GetMirroringTopicSelectionOptions model
+		getMirroringTopicSelectionOptionsModel := new(adminrestv1.GetMirroringTopicSelectionOptions)
+		getMirroringTopicSelectionOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+	
+		// Enable retries.
+		serviceAPI.EnableRetries(0, 0)
+	
+		// Call GetMirroringTopicSelection.
+		result, response, operationErr := serviceAPI.GetMirroringTopicSelection(getMirroringTopicSelectionOptionsModel)
+		if operationErr != nil {
+			return fmt.Errorf("Error Listing Mirroring Topics: %s\n", operationErr.Error())
+		} // func.end
 
-	// Enable retries.
-	serviceAPI.EnableRetries(0, 0)
 
-	// Call GetMirroringTopicSelection.
-	result, response, operationErr := serviceAPI.GetMirroringTopicSelection(getMirroringTopicSelectionOptionsModel)
-	if operationErr != nil {
-		return fmt.Errorf("Error Listing Mirroring Topics: %s\n", operationErr.Error())
-	}
-
-	// Check the result.
-	if response.StatusCode != http.StatusAccepted {
-		return fmt.Errorf("Error Listing Mirroring Topics: status %d\n", response.StatusCode)
-	}
-
-	// Loop and print mirroring topics.
-	for _, topicName := range result.Includes {
-		fmt.Printf("\tname: %s\n", topicName)
-	}
-```
 
 ### Replace selection of topics which are mirrored
 
@@ -609,31 +613,35 @@ Expected status codes
 
 #### Example
 
-```golang
-	replaceMirroringTopicSelectionOptionsModel := new(ibmeventstreamsadminrestapiv1.ReplaceMirroringTopicSelectionOptions)
-	replaceMirroringTopicSelectionOptionsModel.Includes = []string{"test-topic"}
-	replaceMirroringTopicSelectionOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
-
-	// Enable retries.
-	serviceAPI.EnableRetries(0, 0)
-
-	// Invoke operation with valid options model (positive test)
-	result, response, operationErr := serviceAPI.ReplaceMirroringTopicSelection(replaceMirroringTopicSelectionOptionsModel)
-	if operationErr != nil {
-		return fmt.Errorf("Error Replacing Mirroring Topics: %s\n", operationErr.Error())
-	}
-
-	// Check the result.
-	if response.StatusCode != http.StatusAccepted {
-		return fmt.Errorf("Error Replacing Mirroring Topics: status %d\n", response.StatusCode)
-	}
-
-	// Loop and print mirroring topics.
-	for _, topicName := range result.Includes {
-		fmt.Printf("\ttopic added: %s\n", topicName)
-	}
+	func replaceMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
+		// Construct an instance of the ReplaceMirroringTopicSelectionOptions model
+		replaceMirroringTopicSelectionOptionsModel := new(adminrestv1.ReplaceMirroringTopicSelectionOptions)
+		replaceMirroringTopicSelectionOptionsModel.Includes = []string{"test-topic"}
+		replaceMirroringTopicSelectionOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 	
-```
+		// Enable retries.
+		serviceAPI.EnableRetries(0, 0)
+	
+		// Invoke operation with valid options model (positive test)
+		result, response, operationErr := serviceAPI.ReplaceMirroringTopicSelection(replaceMirroringTopicSelectionOptionsModel)
+		if operationErr != nil {
+			return fmt.Errorf("Error Replacing Mirroring Topics: %s\n", operationErr.Error())
+		}
+	
+		// Check the result.
+		if response.StatusCode != http.StatusAccepted {
+			return fmt.Errorf("Error Replacing Mirroring Topics: status %d\n", response.StatusCode)
+		}
+	
+		// Loop and print mirroring topics.
+		for _, topicName := range result.Includes {
+			fmt.Printf("\ttopic added: %s\n", topicName)
+		}
+	
+		return nil
+	} // func.end
+
+
 
 ### List active mirroring topics
 
@@ -658,24 +666,28 @@ Expected status codes
 
 #### Example
 
-```golang
-	// Construct an instance of the GetMirroringActiveTopicsOptions model
-	getMirroringActiveTopicsOptionsModel := new(serviceName.GetMirroringActiveTopicsOptions)
-	getMirroringActiveTopicsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+	func getMirroringActiveTopics(serviceAPI *adminrestv1.AdminrestV1) error {
+		// Construct an instance of the GetMirroringActiveTopicsOptions model
+		getMirroringActiveTopicsOptionsModel := new(adminrestv1.GetMirroringActiveTopicsOptions)
+		getMirroringActiveTopicsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+	
+		// Call GetMirroringActiveTopics.
+		result, response, operationErr := serviceAPI.GetMirroringActiveTopics(getMirroringActiveTopicsOptionsModel)
+		if operationErr != nil {
+			return fmt.Errorf("Error Listing Active Mirroring Topics: %s\n", operationErr.Error())
+		}
+	
+		// Check the result.
+		if response.StatusCode != http.StatusAccepted {
+			return fmt.Errorf("Error Listing Active Mirroring Topics: status %d\n", response.StatusCode)
+		}
+	
+		// Loop and print mirroring topics.
+		for _, topicName := range result.ActiveTopics {
+			fmt.Printf("\tname: %s\n", topicName)
+		}
+	
+		return nil
+	} // func.end
 
-	// Call GetMirroringActiveTopics.
-	result, response, operationErr := serviceAPI.GetMirroringActiveTopics(getMirroringActiveTopicsOptionsModel)
-	if operationErr != nil {
-		return fmt.Errorf("Error Listing Active Mirroring Topics: %s\n", operationErr.Error())
-	}
 
-	// Check the result.
-	if response.StatusCode != http.StatusAccepted {
-		return fmt.Errorf("Error Listing Mirroring Topics: status %d\n", response.StatusCode)
-	}
-
-	// Lopp and print mirroring topics.
-	for _, topicName := range result.ActiveTopics {
-		fmt.Printf("\tname: %s\n", topicName)
-	}
-```

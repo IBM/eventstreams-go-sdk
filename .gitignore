@@ -1,2 +1,24 @@
+.DS_Store
+.env
+
+# ignore vendor/
+vendor/
+
+# SDK generator
+.openapi-generator-ignore
+.openapi-generator/VERSION
+/.project
+
+# credentials files
+*.env
+
+# IDE files
+*.idea
+.vscode/
+*.log
+
+# coverage
+coverage.txt
+
+# example binary
 example
-pkg/adminrestv1/testoutput.log
