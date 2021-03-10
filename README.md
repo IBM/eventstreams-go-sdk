@@ -147,20 +147,28 @@ operations:
   
 The Admin REST API is also [documented using swagger](./admin-rest-api.yaml).
 
-Note: This Admin REST API works with both Enterprise plan and Standard plan. The Admin REST API that works with Classic plan is located in [here](../admin-rest-api-classic-plan-only). They are compatible in topic management capabilities.
+Note: This Admin REST API works with both Enterprise plan and Standard plan.
 
 ## Access control
+---
+
 All requests support below authorization methods:
  * Basic authorization with user and password. (
-  For both standard and enterprise plan, user is 'token', password is the API key from `ibmcloud resource service-keys` for the service instance.)
+  For both standard, enterprise and lite plans, user is 'token', password is the API key from `ibmcloud resource service-keys` for the service instance.)
  * Bearer authorization with bearer token. (This token can be either API key or JWT token obtained from IAM upon login to IBM Cloud. Use `ibmcloud iam oauth-tokens` to retrieve the token after `ibmcloud login`)
  * `X-Auth-Token` header to be set to the API key. This header is deprecated.
 
 ##  Administration API endpoint
+---
 Administration API endpoint is the `kafka_admin_url` property in the service key for the service instance. This command can be used to retrieve this property.
 ```bash
 $ibmcloud resource service-key "${service_instance_key_name}" --output json > jq -r '.[]|.credentials.kafka_admin_url'
 ```
+
+## Environment Setup
+In the examples you must set and export environment variables as follows:
+- Either the `API_KEY` or `BEARER_TOKEN` to use for authentication.
+- `KAFKA_ADMIN_URL` to point to your Eventstreams admin endpoint.
 
 In addition, the `Content-type` header has to be set to `application/json`.
 
@@ -186,6 +194,7 @@ In the event of a non-200 error return code, the transaction ID is also returned
 
 
 ## Using the REST API to administer Kafka topics
+---
 
 To run the example :-
 
@@ -204,7 +213,7 @@ Set the required environment variables
 export API_KEY="abc123456789"
 
 # Set the Admin Endpoint to point to your cluster.
-export ADMIN_ENDPOINT="https://xyzclustername.svc01.region.eventstreams.test.cloud.ibm.com"
+export KAFKA_ADMIN_URL="https://xyzclustername.svc01.region.eventstreams.test.cloud.ibm.com"
 
 ```
 
@@ -214,7 +223,7 @@ Run the example
 ```
 
 ## REST API 
-
+---
 The following sections explain how the REST API works with examples.
 
 ### Code Setup
@@ -234,7 +243,7 @@ The following sections explain how the REST API works with examples.
 
 
 ### Authentication
-
+---
 Use one of the following methods to authenticate:
 
 - To authenticate using Basic Auth:
@@ -250,34 +259,73 @@ Use one of the following methods to authenticate:
 - To authenticate directly using the api_key:
   Place the key directly as the value of the X-Auth-Token HTTP header.
 
-		// Start Authentication
-		basicAuthenticator, _ := core.NewBasicAuthenticator("token", apiKey)
-		// End Authentication
+#### Example
+
+Here's an example of how to create the authenticator using either an API key or a BEARER_TOKEN
+
+		// Create Authenticator
+		var authenticator core.Authenticator
+	
+		if apiKey != "" {
+			var err error
+			// Create an Basic IAM authenticator.
+			authenticator, err = core.NewBasicAuthenticator("token", apiKey)
+			if err != nil {
+				fmt.Printf("failed to create new basic authenticator: %s\n", err.Error())
+				os.Exit(1)
+			}
+		} else {
+			var err error
+			// Create an IAM Bearer Token authenticator.
+			authenticator, err = core.NewBearerTokenAuthenticator(bearerToken)
+			if err != nil {
+				fmt.Printf("failed to create new bearer token authenticator: %s\n", err.Error())
+				os.Exit(1)
+			}
+		}
+		// End Authenticator
 
 
 
 
 ### Create the service
-
+---
 Create a new service object.
 
 		// Create Service
 		serviceAPI, serviceErr := adminrestv1.NewAdminrestV1(&adminrestv1.AdminrestV1Options{
-	
 			URL:           URL,
-			Authenticator: basicAuthenticator,
+			Authenticator: authenticator,
 		})
 		// End Create Service
 
 
 
 ### Creating a Kafka topic
+---
+To create a Kafka topic the admin REST SDK issues a POST request to the /admin/topics path. 
+The body of the request contains a JSON document, for example:
+{
+    "name": "topicname",
+    "partitions": 1,
+    "configs": {
+        "retentionMs": 86400000,
+        "cleanupPolicy": "delete"
+    }
+}
 
-To get a Kafka topic detail information, the admin REST SDK issues a GET request to the `/admin/topics/TOPICNAME`
-path (where `TOPICNAME` is the name of the Kafka topic that you want to get).  
+The only required field is name is `Partitions` which is defaults to 1 if not set.
 
-Expected status codes
-  - 200: Retrieve topic details successfully in following format:
+Expected HTTP status codes:
+
+- 202: Topic creation request was accepted.
+- 400: Invalid request JSON.
+- 403: Not authorized to create topic.
+- 422: Semantically invalid request.
+
+If the request to create a Kafka topic succeeds then HTTP status code 202 (Accepted) is returned. If the operation fails then a HTTP status code of 422 (Un-processable Entity) is returned, and a JSON object containing additional information about the failure is returned as the body of the response.
+
+
 
 
 #### Example
@@ -311,8 +359,13 @@ Expected status codes
 
 
 
-### Deleting a Kafka topic
 
+
+
+
+
+### Deleting a Kafka topic
+---
 To delete a Kafka topic, the admin REST SDK issues a DELETE request to the `/admin/topics/TOPICNAME`
 path (where `TOPICNAME` is the name of the Kafka topic that you want to delete).
 
@@ -357,12 +410,12 @@ of time after the completion of a REST request to delete the topic.
 
 
 ### Listing Kafka topics
-
+---
 You can list all of your Kafka topics by issuing a GET request to the
 `/admin/topics` path. 
 
 Expected status codes:
-  - 200: the topic list is returned as JSON in the following format:
+- 200: the topic list is returned as JSON in the following format:
 ```json
 [
   {
@@ -417,7 +470,7 @@ following properties:
 
 
 ### Getting a Kafka topic
-
+---
 To get a Kafka topic detail information, issue a GET request to the `/admin/topics/TOPICNAME`
 path (where `TOPICNAME` is the name of the Kafka topic that you want to get).  
 
@@ -499,7 +552,7 @@ Expected status codes
 
 
 ### Updating Kafka topic's configuration
-
+---
 To increase a topic's partition number or to update a topic's configuration, the admin REST SDK issues an
 `PATCH` request to `/admin/topics/{topic}` with the following body:
 ```json
@@ -517,10 +570,10 @@ Supported configuration keys are 'cleanup.policy', 'retention.ms', 'retention.by
 And partition number can only be increased, not decreased.
 
 Expected status codes
-  - 202: Update topic request was accepted.
-  - 400: Invalid request JSON/number of partitions is invalid.
-  - 404: Topic specified does not exist.
-  - 422: Semantically invalid request.
+- 202: Update topic request was accepted.
+- 400: Invalid request JSON/number of partitions is invalid.
+- 404: Topic specified does not exist.
+- 422: Semantically invalid request.
 
 #### Example
 
@@ -551,22 +604,24 @@ Expected status codes
 
 ### List current mirroring topic selection
 
-Mirroring user controls are available on the target cluster in a mirroring environment.
+Mirroring user controls are only available on the target cluster in a mirroring environment.
 
 To get the current topic selection, issue an GET request to /admin/mirroring/topic-selection
 
 
 Expected status codes
-    - 200: Retrieved topic selection successfully in following format:
-	{
-	"includes": [
-		"^prefix1_.*",
-		"^prefix2_.*"
-	]
-	}
-    - 403: Unauthorized to use mirroring user controls.
-    - 404: Mirroring not enabled. The mirroring user control apis are only available on a target in a - pair of clusters with mirroring enabled between them.
-    - 503: An error occurred handling the request.
+- 200: Retrieved topic selection successfully in following format:
+```
+{
+  "includes": [
+    "^prefix1_.*",
+    "^prefix2_.*"
+  ]
+}
+```
+- 403: Unauthorized to use mirroring user controls.
+- 404: Mirroring not enabled. The mirroring user control APIs are only available on the target cluster of a mirrored pair.
+- 503: An error occurred handling the request.
 
 #### Example
 
@@ -596,20 +651,20 @@ To replace the current topic selection, issue a POST request to /admin/mirroring
 
 Expected status codes
 
-    200: Replaced topic selection successfully. The new selection is returned in following format:
-
-	{
-	"includes": [
-		"^prefix1_.*",
-		"^prefix2_.*"
-	]
-	}
-
-    400: Invalid request. The request data cannot be parsed and used to replace the topic selection.
-    403: Unauthorized to use mirroring user controls.
-    404: Mirroring not enabled. The mirroring user control apis are only available on a target in a pair of clusters with mirroring enabled between them.
-    415: Unsupported media type. Content-Type header with application/json is required.
-    503: An error occurred handling the request.
+- 200: Replaced topic selection successfully. The new selection is returned in following format:
+```
+{
+  "includes": [
+    "^prefix1_.*",
+    "^prefix2_.*"
+  ]
+}
+```
+- 400: Invalid request. The request data cannot be parsed and used to replace the topic selection.
+- 403: Unauthorized to use mirroring user controls.
+- 404: Mirroring not enabled. The mirroring user control APIs are only available on the target cluster of a mirrored pair.
+- 415: Unsupported media type. Content-Type header with application/json is required.
+- 503: An error occurred handling the request.
 
 #### Example
 
@@ -644,25 +699,25 @@ Expected status codes
 
 
 ### List active mirroring topics
-
+---
 Mirroring user controls are available on the target cluster in a mirroring environment.
 
 To get the list of currently mirrored topics, issue an GET request to /admin/mirroring/active-topics
 
 Expected status codes
 
-    200: Retrieved active topics successfully in following format:
-
-	{
-	"active_topics": [
-		"topic1",
-		"topic2"
-	]
-	}
-
-    403: Unauthorized to use mirroring user controls.
-    404: Mirroring not enabled. The mirroring user control apis are only available on a target in a pair of clusters with mirroring enabled between them.
-    503: An error occurred handling the request.
+- 200: Retrieved active topics successfully in following format:
+```
+{
+  "active_topics": [
+    "topic1",
+    "topic2"
+  ]
+}
+```
+- 403: Unauthorized to use mirroring user controls.
+- 404: Mirroring not enabled. The mirroring user control APIs are only available on the target cluster of a mirrored pair.
+- 503: An error occurred handling the request.
 
 #### Example
 

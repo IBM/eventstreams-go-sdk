@@ -1,6 +1,4 @@
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
-github.com/IBM/eventstreams-go-sdk v0.0.0-20210215101515-b3fe79ce4b0d h1:MyS3sT/QLQvO1jLRfa463hLWCPw+kODR3/DAdMpG8g8=
-github.com/IBM/go-sdk-core v5.0.2+incompatible h1:Vce45sFaxUOMjHvCjkWHNdj31iiLQ40aTK9hjRvnjDQ=
 github.com/IBM/go-sdk-core/v4 v4.10.0 h1:aLoKusSFVsxMJeKHf8csj9tBWt4Y50kVvfxoKh6scN0=
 github.com/IBM/go-sdk-core/v4 v4.10.0/go.mod h1:0uz2ca0MZ2DwsBRGl9Jp3EaCTqxmKZTdvV/CkCB7JnI=
 github.com/asaskevich/govalidator v0.0.0-20190424111038-f61b66f89f4a/go.mod h1:lB+ZfQJz7igIIfQNfa7Ml4HSf2uFQQRzpGGRXenZAgY=

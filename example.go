@@ -26,27 +26,50 @@ import (
 // End Code Setup
 
 func main() {
-	URL := os.Getenv("ADMIN_ENDPOINT")
+	URL := os.Getenv("KAFKA_ADMIN_URL")
 	apiKey := os.Getenv("API_KEY")
+	bearerToken := os.Getenv("BEARER_TOKEN")
 
 	if URL == "" {
-		fmt.Println("Please set env ADMIN_ENDPOINT")
+		fmt.Println("Please set env KAFKA_ADMIN_URL")
 		os.Exit(1)
 	}
 
-	if apiKey == "" {
-		fmt.Println("Please set env API_KEY")
+	if apiKey == "" && bearerToken == "" {
+		fmt.Println("Please set either an API_KEY or a BEARER_TOKEN")
 		os.Exit(1)
 	}
-	// Start Authentication
-	basicAuthenticator, _ := core.NewBasicAuthenticator("token", apiKey)
-	// End Authentication
+
+	if apiKey != "" && bearerToken != "" {
+		fmt.Println("Please set either an API_KEY or a BEARER_TOKEN not both")
+		os.Exit(1)
+	}
+	// Create Authenticator
+	var authenticator core.Authenticator
+
+	if apiKey != "" {
+		var err error
+		// Create an Basic IAM authenticator.
+		authenticator, err = core.NewBasicAuthenticator("token", apiKey)
+		if err != nil {
+			fmt.Printf("failed to create new basic authenticator: %s\n", err.Error())
+			os.Exit(1)
+		}
+	} else {
+		var err error
+		// Create an IAM Bearer Token authenticator.
+		authenticator, err = core.NewBearerTokenAuthenticator(bearerToken)
+		if err != nil {
+			fmt.Printf("failed to create new bearer token authenticator: %s\n", err.Error())
+			os.Exit(1)
+		}
+	}
+	// End Authenticator
 
 	// Create Service
 	serviceAPI, serviceErr := adminrestv1.NewAdminrestV1(&adminrestv1.AdminrestV1Options{
-
 		URL:           URL,
-		Authenticator: basicAuthenticator,
+		Authenticator: authenticator,
 	})
 	// End Create Service
 

@@ -1,4 +1,4 @@
-module eventstreams-go-sdk
+module github.com/IBM/eventstreams-go-sdk
 
 go 1.13
 
