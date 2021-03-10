@@ -227,15 +227,11 @@ func topicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 } // func.end
 
 func createTopic(serviceAPI *adminrestv1.AdminrestV1) error {
-	// Set the retries policy.
-	serviceAPI.EnableRetries(0, 0)
-
 	// Construct an instance of the createTopicOptionsModel.
 	createTopicOptionsModel := new(adminrestv1.CreateTopicOptions)
 	createTopicOptionsModel.Name = core.StringPtr("test-topic")
 	createTopicOptionsModel.Partitions = core.Int64Ptr(int64(26))
 	createTopicOptionsModel.PartitionCount = core.Int64Ptr(int64(1))
-	createTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 	// Create the Topic.
 	response, operationErr := serviceAPI.CreateTopic(createTopicOptionsModel)

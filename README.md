@@ -59,6 +59,7 @@ Service Name | Package name
 [ibm-cloud-onboarding]: https://cloud.ibm.com/registration
 
 * An [IBM Cloud][ibm-cloud-onboarding] account.
+* The [IBM Cloud CLI.](https://cloud.ibm.com/docs/cli?topic=cli-getting-started)
 * An IAM API key to allow the SDK to access your account. Create one [here](https://cloud.ibm.com/iam/apikeys).
 * A IBM Cloud Eventstreams Instance Create one [here](https://cloud.ibm.com/registration?target=/catalog/services/event-streams)
 * Go version 1.14 or above.
@@ -200,11 +201,11 @@ To run the example :-
 
 Compile the code.
 ```sh
-	go build -o example
+go build -o example
 ```
 Or simply 
 ```sh
-	make build
+make build
 ```
 
 Set the required environment variables
@@ -247,14 +248,19 @@ The following sections explain how the REST API works with examples.
 Use one of the following methods to authenticate:
 
 - To authenticate using Basic Auth:
-  Use the user and api_key properties of the above objects as the username and password. Place these values into the Authorization header of the HTTP request in the form Basic <base64 encoding of username and password joined by a single colon (:)>.
+  Place these values into the Authorization header of the HTTP request in the form Basic <credentials> 
+  where <credentials> is the username and password joined by a single colon `:` base64 encoded. 
+  For example:
+  ```sh
+  echo -n "token:<APIKEY>" | base64
+  ```
 
 - To authenticate using a bearer token:
   To obtain your token using the IBM Cloud CLI, first log in to IBM Cloud, then run the following command:
   ```
-    ibmcloud iam oauth-tokens
+  ibmcloud iam oauth-tokens
   ```
-    Place this token in the Authorization header of the HTTP request in the form Bearer. Both API key or JWT tokens are supported.
+  Place this token in the Authorization header of the HTTP request in the form Bearer. Both API key or JWT tokens are supported.
 
 - To authenticate directly using the api_key:
   Place the key directly as the value of the X-Auth-Token HTTP header.
@@ -288,7 +294,7 @@ Here's an example of how to create the authenticator using either an API key or 
 
 
 
-### Create the service
+### Creating a client for the Admin REST API.
 ---
 Create a new service object.
 
@@ -331,15 +337,11 @@ If the request to create a Kafka topic succeeds then HTTP status code 202 (Accep
 #### Example
 
 	func createTopic(serviceAPI *adminrestv1.AdminrestV1) error {
-		// Set the retries policy.
-		serviceAPI.EnableRetries(0, 0)
-	
 		// Construct an instance of the createTopicOptionsModel.
 		createTopicOptionsModel := new(adminrestv1.CreateTopicOptions)
 		createTopicOptionsModel.Name = core.StringPtr("test-topic")
 		createTopicOptionsModel.Partitions = core.Int64Ptr(int64(26))
 		createTopicOptionsModel.PartitionCount = core.Int64Ptr(int64(1))
-		createTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 	
 		// Create the Topic.
 		response, operationErr := serviceAPI.CreateTopic(createTopicOptionsModel)
@@ -439,7 +441,7 @@ following properties:
 | Property name     | Description                                             |
 |-------------------|---------------------------------------------------------|
 | name              | The name of the Kafka topic.                            |
-| partitions        | The number of partitions assigned to the Kafka topic.   |
+| partitions        | The number of partitions of the Kafka topic.            |
 | retentionsMs      | The retention period for messages on the topic (in ms). |
 | cleanupPolicy     | The cleanup policy of the Kafka topic.                  |
 
@@ -707,14 +709,14 @@ To get the list of currently mirrored topics, issue an GET request to /admin/mir
 Expected status codes
 
 - 200: Retrieved active topics successfully in following format:
-```
-{
-  "active_topics": [
-    "topic1",
-    "topic2"
-  ]
-}
-```
+  ```
+  {
+    "active_topics": [
+      "topic1",
+      "topic2"
+    ]
+  }
+  ```
 - 403: Unauthorized to use mirroring user controls.
 - 404: Mirroring not enabled. The mirroring user control APIs are only available on the target cluster of a mirrored pair.
 - 503: An error occurred handling the request.
