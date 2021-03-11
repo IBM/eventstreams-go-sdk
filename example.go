@@ -187,6 +187,7 @@ func topicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 	// Construct an instance of the GetTopicOptions model
 	getTopicOptionsModel := new(adminrestv1.GetTopicOptions)
 	getTopicOptionsModel.TopicName = core.StringPtr("test-topic")
+	getTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 	// Call List Topic Details.
 	result, response, operationErr := serviceAPI.GetTopic(getTopicOptionsModel)
@@ -229,6 +230,7 @@ func createTopic(serviceAPI *adminrestv1.AdminrestV1) error {
 	// Construct an instance of the createTopicOptionsModel.
 	createTopicOptionsModel := new(adminrestv1.CreateTopicOptions)
 	createTopicOptionsModel.Name = core.StringPtr("test-topic")
+	createTopicOptionsModel.Partitions = core.Int64Ptr(int64(26))
 	createTopicOptionsModel.PartitionCount = core.Int64Ptr(int64(1))
 
 	// Create the Topic.
@@ -251,6 +253,7 @@ func deleteTopic(serviceAPI *adminrestv1.AdminrestV1) error {
 	// Construct an instance of the DeleteTopicOptions model
 	deleteTopicOptionsModel := new(adminrestv1.DeleteTopicOptions)
 	deleteTopicOptionsModel.TopicName = core.StringPtr("test-topic")
+	deleteTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 	// Delete Topic
 	response, operationErr := serviceAPI.DeleteTopic(deleteTopicOptionsModel)
@@ -272,8 +275,9 @@ func updateTopicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 	updateTopicOptionsModel := new(adminrestv1.UpdateTopicOptions)
 	updateTopicOptionsModel.TopicName = core.StringPtr("test-topic")
 	updateTopicOptionsModel.NewTotalPartitionCount = core.Int64Ptr(int64(6))
+	updateTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
-	// Invoke operation with valid options model.
+	// Invoke operation with valid options model (positive test)
 	response, operationErr := serviceAPI.UpdateTopic(updateTopicOptionsModel)
 	if operationErr != nil {
 		return fmt.Errorf("Error Updating Topic: %s\n", operationErr.Error())
@@ -294,8 +298,12 @@ func replaceMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
 	// Construct an instance of the ReplaceMirroringTopicSelectionOptions model
 	replaceMirroringTopicSelectionOptionsModel := new(adminrestv1.ReplaceMirroringTopicSelectionOptions)
 	replaceMirroringTopicSelectionOptionsModel.Includes = []string{"test-topic"}
+	replaceMirroringTopicSelectionOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
-	// Invoke operation with valid options model.
+	// Enable retries.
+	serviceAPI.EnableRetries(0, 0)
+
+	// Invoke operation with valid options model (positive test)
 	result, response, operationErr := serviceAPI.ReplaceMirroringTopicSelection(replaceMirroringTopicSelectionOptionsModel)
 	if operationErr != nil {
 		return fmt.Errorf("Error Replacing Mirroring Topics: %s\n", operationErr.Error())
@@ -318,6 +326,10 @@ func replaceMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
 func listMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
 	// Construct an instance of the GetMirroringTopicSelectionOptions model
 	getMirroringTopicSelectionOptionsModel := new(adminrestv1.GetMirroringTopicSelectionOptions)
+	getMirroringTopicSelectionOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+	// Enable retries.
+	serviceAPI.EnableRetries(0, 0)
 
 	// Call GetMirroringTopicSelection.
 	result, response, operationErr := serviceAPI.GetMirroringTopicSelection(getMirroringTopicSelectionOptionsModel)
@@ -342,6 +354,7 @@ func listMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
 func getMirroringActiveTopics(serviceAPI *adminrestv1.AdminrestV1) error {
 	// Construct an instance of the GetMirroringActiveTopicsOptions model
 	getMirroringActiveTopicsOptionsModel := new(adminrestv1.GetMirroringActiveTopicsOptions)
+	getMirroringActiveTopicsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 	// Call GetMirroringActiveTopics.
 	result, response, operationErr := serviceAPI.GetMirroringActiveTopics(getMirroringActiveTopicsOptionsModel)

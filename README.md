@@ -148,6 +148,8 @@ operations:
   
 The Admin REST API is also [documented using swagger](./admin-rest-api.yaml).
 
+Note: This Admin REST API works with both Enterprise plan and Standard plan.
+
 ## Access control
 ---
 
@@ -267,7 +269,6 @@ Use one of the following methods to authenticate:
 
 Here's an example of how to create the authenticator using either an API key or a BEARER_TOKEN
 
-```
 		// Create Authenticator
 		var authenticator core.Authenticator
 	
@@ -291,7 +292,6 @@ Here's an example of how to create the authenticator using either an API key or 
 		// End Authenticator
 
 
-```
 
 
 ### Creating a client for the Admin REST API.
@@ -311,7 +311,6 @@ Create a new service object.
 ---
 To create a Kafka topic the admin REST SDK issues a POST request to the /admin/topics path. 
 The body of the request contains a JSON document, for example:
-```
 {
     "name": "topicname",
     "partitions": 1,
@@ -320,9 +319,8 @@ The body of the request contains a JSON document, for example:
         "cleanupPolicy": "delete"
     }
 }
-```
 
-The only required field is name. The partitions fields defaults to 1 if not set.
+The only required field is name is `Partitions` which is defaults to 1 if not set.
 
 Expected HTTP status codes:
 
@@ -338,11 +336,11 @@ If the request to create a Kafka topic succeeds then HTTP status code 202 (Accep
 
 #### Example
 
-```
 	func createTopic(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the createTopicOptionsModel.
 		createTopicOptionsModel := new(adminrestv1.CreateTopicOptions)
 		createTopicOptionsModel.Name = core.StringPtr("test-topic")
+		createTopicOptionsModel.Partitions = core.Int64Ptr(int64(26))
 		createTopicOptionsModel.PartitionCount = core.Int64Ptr(int64(1))
 	
 		// Create the Topic.
@@ -362,7 +360,7 @@ If the request to create a Kafka topic succeeds then HTTP status code 202 (Accep
 	} // func.end
 
 
-```
+
 
 
 
@@ -380,9 +378,9 @@ Expected return codes:
   
 A 202 (Accepted) status code is returned if the REST API accepts the delete
 request or status code 422 (Un-processable Entity) if the delete request is
-rejected. If a delete request is rejected then the body of the HTTP response 
-will contain a JSON object which provides additional information about why 
-the request was rejected.
+rejected. If a delete request is rejected then the body of the HTTP response
+will contain a [JSON object](#information-returned-when-a-request-fails) which
+provides additional information about why the request was rejected.
 
 Kafka deletes topics asynchronously. Deleted topics may still appear in the
 response to a [list topics request](#listing-kafka-topics) for a short period
@@ -390,11 +388,11 @@ of time after the completion of a REST request to delete the topic.
 
 #### Example
 
-```
 	func deleteTopic(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the DeleteTopicOptions model
 		deleteTopicOptionsModel := new(adminrestv1.DeleteTopicOptions)
 		deleteTopicOptionsModel.TopicName = core.StringPtr("test-topic")
+		deleteTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 	
 		// Delete Topic
 		response, operationErr := serviceAPI.DeleteTopic(deleteTopicOptionsModel)
@@ -412,7 +410,6 @@ of time after the completion of a REST request to delete the topic.
 	} // func.end
 
 
-```
 
 ### Listing Kafka topics
 ---
@@ -450,7 +447,6 @@ following properties:
 
 #### Example
 
-```
 	func listTopics(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the ListTopicsOptions model
 		listTopicsOptionsModel := new(adminrestv1.ListTopicsOptions)
@@ -474,7 +470,6 @@ following properties:
 	} // func.end
 
 
-```
 
 ### Getting a Kafka topic
 ---
@@ -482,7 +477,7 @@ To get a Kafka topic detail information, issue a GET request to the `/admin/topi
 path (where `TOPICNAME` is the name of the Kafka topic that you want to get).  
 
 Expected status codes
-- 200: Retrieve topic details successfully in following format:
+  - 200: Retrieve topic details successfully in following format:
 ```json
 {
   "name": "MYTOPIC",
@@ -511,16 +506,13 @@ Expected status codes
   ]
 }
 ```
-- 403: Not authorized.
-- 404: Topic does not exist.
 
 #### Example
-
-```
 	func topicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the GetTopicOptions model
 		getTopicOptionsModel := new(adminrestv1.GetTopicOptions)
 		getTopicOptionsModel.TopicName = core.StringPtr("test-topic")
+		getTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 	
 		// Call List Topic Details.
 		result, response, operationErr := serviceAPI.GetTopic(getTopicOptionsModel)
@@ -560,13 +552,11 @@ Expected status codes
 	} // func.end
 
 
-```
 
 ### Updating Kafka topic's configuration
 ---
-To increase a Kafka topic's partition number or to update a Kafka topic's configuration, issue a
-`PATCH` request to `/admin/topics/TOPICNAME` with the following body:
-(where TOPICNAME is the name of the Kafka topic that you want to update).
+To increase a topic's partition number or to update a topic's configuration, the admin REST SDK issues an
+`PATCH` request to `/admin/topics/{topic}` with the following body:
 ```json
 {
   "new_total_partition_count": 4,
@@ -589,14 +579,14 @@ Expected status codes
 
 #### Example
 
-```
 	func updateTopicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the UpdateTopicOptions model
 		updateTopicOptionsModel := new(adminrestv1.UpdateTopicOptions)
 		updateTopicOptionsModel.TopicName = core.StringPtr("test-topic")
 		updateTopicOptionsModel.NewTotalPartitionCount = core.Int64Ptr(int64(6))
+		updateTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 	
-		// Invoke operation with valid options model.
+		// Invoke operation with valid options model (positive test)
 		response, operationErr := serviceAPI.UpdateTopic(updateTopicOptionsModel)
 		if operationErr != nil {
 			return fmt.Errorf("Error Updating Topic: %s\n", operationErr.Error())
@@ -613,7 +603,6 @@ Expected status codes
 	} // func.end
 
 
-```
 
 ### List current mirroring topic selection
 
@@ -638,10 +627,13 @@ Expected status codes
 
 #### Example
 
-```
 	func listMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the GetMirroringTopicSelectionOptions model
 		getMirroringTopicSelectionOptionsModel := new(adminrestv1.GetMirroringTopicSelectionOptions)
+		getMirroringTopicSelectionOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+	
+		// Enable retries.
+		serviceAPI.EnableRetries(0, 0)
 	
 		// Call GetMirroringTopicSelection.
 		result, response, operationErr := serviceAPI.GetMirroringTopicSelection(getMirroringTopicSelectionOptionsModel)
@@ -650,7 +642,6 @@ Expected status codes
 		} // func.end
 
 
-```
 
 ### Replace selection of topics which are mirrored
 
@@ -679,13 +670,16 @@ Expected status codes
 
 #### Example
 
-```
 	func replaceMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the ReplaceMirroringTopicSelectionOptions model
 		replaceMirroringTopicSelectionOptionsModel := new(adminrestv1.ReplaceMirroringTopicSelectionOptions)
 		replaceMirroringTopicSelectionOptionsModel.Includes = []string{"test-topic"}
+		replaceMirroringTopicSelectionOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 	
-		// Invoke operation with valid options model.
+		// Enable retries.
+		serviceAPI.EnableRetries(0, 0)
+	
+		// Invoke operation with valid options model (positive test)
 		result, response, operationErr := serviceAPI.ReplaceMirroringTopicSelection(replaceMirroringTopicSelectionOptionsModel)
 		if operationErr != nil {
 			return fmt.Errorf("Error Replacing Mirroring Topics: %s\n", operationErr.Error())
@@ -705,7 +699,6 @@ Expected status codes
 	} // func.end
 
 
-```
 
 ### List active mirroring topics
 ---
@@ -730,10 +723,10 @@ Expected status codes
 
 #### Example
 
-```
 	func getMirroringActiveTopics(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the GetMirroringActiveTopicsOptions model
 		getMirroringActiveTopicsOptionsModel := new(adminrestv1.GetMirroringActiveTopicsOptions)
+		getMirroringActiveTopicsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 	
 		// Call GetMirroringActiveTopics.
 		result, response, operationErr := serviceAPI.GetMirroringActiveTopics(getMirroringActiveTopicsOptionsModel)
@@ -755,4 +748,3 @@ Expected status codes
 	} // func.end
 
 
-```
