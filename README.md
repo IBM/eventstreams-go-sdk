@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.com/IBM/eventstreams-go-sdk.svg?token=eW5FVD71iyte6tTby8gr&branch=main)](https://travis.ibm.com/IBM/adminrest-go-sdk.svg?token=eW5FVD71iyte6tTby8gr&branch=main)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-# IBM Cloud Eventstreams Go SDK Version 0.0.1
+# IBM Cloud Eventstreams Go SDK Version 1.0.0
 
 ## Introduction
 
@@ -38,6 +38,7 @@ Changes might occur which impact applications that use this SDK.
     + [Go modules](#go-modules)
     + [`dep` dependency manager](#dep-dependency-manager)
 - [Using the SDK](#using-the-sdk)
+- [REST API documentation](#event-streams-administration-rest-api)
 - [Questions](#questions)
 - [Issues](#issues)
 - [Open source @ IBM](#open-source--ibm)
@@ -56,16 +57,14 @@ Service Name | Package name
 
 ## Prerequisites
 
-[ibm-cloud-onboarding]: https://cloud.ibm.com/registration
-
-* An [IBM Cloud][ibm-cloud-onboarding] account.
+* An [IBM Cloud][https://cloud.ibm.com/registration] account.
 * The [IBM Cloud CLI.](https://cloud.ibm.com/docs/cli?topic=cli-getting-started)
 * An IAM API key to allow the SDK to access your account. Create one [here](https://cloud.ibm.com/iam/apikeys).
 * A IBM Cloud Eventstreams Instance Create one [here](https://cloud.ibm.com/registration?target=/catalog/services/event-streams)
 * Go version 1.14 or above.
 
 ## Installation
-The current version of this SDK: 0.0.1
+The current version of this SDK: 1.0.0
 
 There are a few different ways to download and install the Eventstreams Go SDK project for use by your
 Go application:
@@ -115,7 +114,7 @@ please ask a question at
 
 ## Issues
 If you encounter an issue with the project, you are welcome to submit a
-[bug report](<github-repo-url>/issues).
+[bug report](https://github.com/IBM/eventstreams-go-sdk/issues).
 Before that, please search for similar issues. It's possible that someone has already reported the problem.
 
 ## Open source @ IBM
@@ -227,6 +226,7 @@ The following sections explain how the REST API works with examples.
 
 ### Code Setup
 
+```golang
 	// Code Setup
 	import (
 		"fmt"
@@ -238,7 +238,7 @@ The following sections explain how the REST API works with examples.
 	)
 	
 	// End Code Setup
-
+```
 
 
 ### Authentication
@@ -268,6 +268,7 @@ Use one of the following methods to authenticate:
 Here's an example of how to create the authenticator using either an API key or a BEARER_TOKEN
 
 ```
+```golang
 		// Create Authenticator
 		var authenticator core.Authenticator
 	
@@ -289,7 +290,7 @@ Here's an example of how to create the authenticator using either an API key or 
 			}
 		}
 		// End Authenticator
-
+```
 
 ```
 
@@ -298,13 +299,14 @@ Here's an example of how to create the authenticator using either an API key or 
 ---
 Create a new service object.
 
+```golang
 		// Create Service
 		serviceAPI, serviceErr := adminrestv1.NewAdminrestV1(&adminrestv1.AdminrestV1Options{
 			URL:           URL,
 			Authenticator: authenticator,
 		})
 		// End Create Service
-
+```
 
 
 ### Creating a Kafka topic
@@ -339,6 +341,7 @@ If the request to create a Kafka topic succeeds then HTTP status code 202 (Accep
 #### Example
 
 ```
+```golang
 	func createTopic(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the createTopicOptionsModel.
 		createTopicOptionsModel := new(adminrestv1.CreateTopicOptions)
@@ -360,7 +363,7 @@ If the request to create a Kafka topic succeeds then HTTP status code 202 (Accep
 	
 		return nil
 	} // func.end
-
+```
 
 ```
 
@@ -377,6 +380,7 @@ Expected return codes:
 - 202: Topic deletion request was accepted.
 - 403: Not authorized to delete topic.
 - 404: Topic does not exist.
+- 422: Semantically invalid request.
   
 A 202 (Accepted) status code is returned if the REST API accepts the delete
 request or status code 422 (Un-processable Entity) if the delete request is
@@ -391,6 +395,7 @@ of time after the completion of a REST request to delete the topic.
 #### Example
 
 ```
+```golang
 	func deleteTopic(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the DeleteTopicOptions model
 		deleteTopicOptionsModel := new(adminrestv1.DeleteTopicOptions)
@@ -410,7 +415,7 @@ of time after the completion of a REST request to delete the topic.
 		fmt.Printf("\tname: %s deleted\n", *deleteTopicOptionsModel.TopicName)
 		return nil
 	} // func.end
-
+```
 
 ```
 
@@ -451,6 +456,7 @@ following properties:
 #### Example
 
 ```
+```golang
 	func listTopics(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the ListTopicsOptions model
 		listTopicsOptionsModel := new(adminrestv1.ListTopicsOptions)
@@ -472,7 +478,7 @@ following properties:
 		}
 		return nil
 	} // func.end
-
+```
 
 ```
 
@@ -517,6 +523,7 @@ Expected status codes
 #### Example
 
 ```
+```golang
 	func topicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the GetTopicOptions model
 		getTopicOptionsModel := new(adminrestv1.GetTopicOptions)
@@ -558,7 +565,7 @@ Expected status codes
 		}
 		return nil
 	} // func.end
-
+```
 
 ```
 
@@ -590,6 +597,7 @@ Expected status codes
 #### Example
 
 ```
+```golang
 	func updateTopicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the UpdateTopicOptions model
 		updateTopicOptionsModel := new(adminrestv1.UpdateTopicOptions)
@@ -611,7 +619,7 @@ Expected status codes
 	
 		return nil
 	} // func.end
-
+```
 
 ```
 
@@ -639,6 +647,7 @@ Expected status codes
 #### Example
 
 ```
+```golang
 	func listMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the GetMirroringTopicSelectionOptions model
 		getMirroringTopicSelectionOptionsModel := new(adminrestv1.GetMirroringTopicSelectionOptions)
@@ -648,7 +657,7 @@ Expected status codes
 		if operationErr != nil {
 			return fmt.Errorf("Error Listing Mirroring Topics: %s\n", operationErr.Error())
 		} // func.end
-
+```
 
 ```
 
@@ -680,6 +689,7 @@ Expected status codes
 #### Example
 
 ```
+```golang
 	func replaceMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the ReplaceMirroringTopicSelectionOptions model
 		replaceMirroringTopicSelectionOptionsModel := new(adminrestv1.ReplaceMirroringTopicSelectionOptions)
@@ -703,7 +713,7 @@ Expected status codes
 	
 		return nil
 	} // func.end
-
+```
 
 ```
 
@@ -731,6 +741,7 @@ Expected status codes
 #### Example
 
 ```
+```golang
 	func getMirroringActiveTopics(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the GetMirroringActiveTopicsOptions model
 		getMirroringActiveTopicsOptionsModel := new(adminrestv1.GetMirroringActiveTopicsOptions)
@@ -753,6 +764,6 @@ Expected status codes
 	
 		return nil
 	} // func.end
-
+```
 
 ```
