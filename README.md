@@ -58,7 +58,7 @@ Service Name | Package name
 
 ## Prerequisites
 
-* An [IBM Cloud][https://cloud.ibm.com/registration] account.
+* An [IBM Cloud](https://cloud.ibm.com/registration) account.
 * The [IBM Cloud CLI.](https://cloud.ibm.com/docs/cli?topic=cli-getting-started)
 * An IAM API key to allow the SDK to access your account. Create one [here](https://cloud.ibm.com/iam/apikeys).
 * A IBM Cloud Eventstreams Instance Create one [here](https://cloud.ibm.com/registration?target=/catalog/services/event-streams)
@@ -268,7 +268,6 @@ Use one of the following methods to authenticate:
 
 Here's an example of how to create the authenticator using either an API key or a BEARER_TOKEN
 
-```
 ```golang
 		// Create Authenticator
 		var authenticator core.Authenticator
@@ -293,8 +292,6 @@ Here's an example of how to create the authenticator using either an API key or 
 		// End Authenticator
 ```
 
-```
-
 
 ### Creating a client for the Admin REST API.
 ---
@@ -314,7 +311,7 @@ Create a new service object.
 ---
 To create a Kafka topic the admin REST SDK issues a POST request to the /admin/topics path. 
 The body of the request contains a JSON document, for example:
-```
+```json
 {
     "name": "topicname",
     "partitions": 1,
@@ -341,7 +338,6 @@ If the request to create a Kafka topic succeeds then HTTP status code 202 (Accep
 
 #### Example
 
-```
 ```golang
 	func createTopic(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the createTopicOptionsModel.
@@ -365,10 +361,6 @@ If the request to create a Kafka topic succeeds then HTTP status code 202 (Accep
 		return nil
 	} // func.end
 ```
-
-```
-
-
 
 
 
@@ -395,7 +387,6 @@ of time after the completion of a REST request to delete the topic.
 
 #### Example
 
-```
 ```golang
 	func deleteTopic(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the DeleteTopicOptions model
@@ -418,7 +409,6 @@ of time after the completion of a REST request to delete the topic.
 	} // func.end
 ```
 
-```
 
 ### Listing Kafka topics
 ---
@@ -456,7 +446,6 @@ following properties:
 
 #### Example
 
-```
 ```golang
 	func listTopics(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the ListTopicsOptions model
@@ -481,7 +470,6 @@ following properties:
 	} // func.end
 ```
 
-```
 
 ### Getting a Kafka topic
 ---
@@ -523,7 +511,6 @@ Expected status codes
 
 #### Example
 
-```
 ```golang
 	func topicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the GetTopicOptions model
@@ -568,7 +555,6 @@ Expected status codes
 	} // func.end
 ```
 
-```
 
 ### Updating Kafka topic's configuration
 ---
@@ -597,7 +583,6 @@ Expected status codes
 
 #### Example
 
-```
 ```golang
 	func updateTopicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the UpdateTopicOptions model
@@ -622,7 +607,6 @@ Expected status codes
 	} // func.end
 ```
 
-```
 
 ### List current mirroring topic selection
 
@@ -633,7 +617,7 @@ To get the current topic selection, issue an GET request to /admin/mirroring/top
 
 Expected status codes
 - 200: Retrieved topic selection successfully in following format:
-```
+```json
 {
   "includes": [
     "^prefix1_.*",
@@ -647,7 +631,6 @@ Expected status codes
 
 #### Example
 
-```
 ```golang
 	func listMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the GetMirroringTopicSelectionOptions model
@@ -660,7 +643,6 @@ Expected status codes
 		} // func.end
 ```
 
-```
 
 ### Replace selection of topics which are mirrored
 
@@ -673,7 +655,7 @@ To replace the current topic selection, issue a POST request to /admin/mirroring
 Expected status codes
 
 - 200: Replaced topic selection successfully. The new selection is returned in following format:
-```
+```json
 {
   "includes": [
     "^prefix1_.*",
@@ -689,7 +671,6 @@ Expected status codes
 
 #### Example
 
-```
 ```golang
 	func replaceMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the ReplaceMirroringTopicSelectionOptions model
@@ -716,7 +697,6 @@ Expected status codes
 	} // func.end
 ```
 
-```
 
 ### List active mirroring topics
 ---
@@ -727,21 +707,20 @@ To get the list of currently mirrored topics, issue an GET request to /admin/mir
 Expected status codes
 
 - 200: Retrieved active topics successfully in following format:
-  ```
-  {
-    "active_topics": [
-      "topic1",
-      "topic2"
-    ]
-  }
-  ```
+```json
+{
+  "active_topics": [
+    "topic1",
+    "topic2"
+  ]
+}
+```
 - 403: Unauthorized to use mirroring user controls.
 - 404: Mirroring not enabled. The mirroring user control APIs are only available on the target cluster of a mirrored pair.
 - 503: An error occurred handling the request.
 
 #### Example
 
-```
 ```golang
 	func getMirroringActiveTopics(serviceAPI *adminrestv1.AdminrestV1) error {
 		// Construct an instance of the GetMirroringActiveTopicsOptions model
@@ -767,4 +746,3 @@ Expected status codes
 	} // func.end
 ```
 
-```
