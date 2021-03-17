@@ -143,7 +143,7 @@ operations:
   - [Delete a Kafka topic](#deleting-a-kafka-topic)
   - [Update a Kafka topic configuration](#updating-kafka-topics-configuration)
   - [List which topics are mirrored](#list-current-mirroring-topic-selection)
-  - [Replace selection of topics which are mirrored](#replace-mirroring-topic-selection)
+  - [Replace selection of topics which are mirrored](#replace-selection-of-topics-which-are-mirrored)
   - [List active mirroring topics](#list-active-mirroring-topics)
   
 The Admin REST API is also [documented using swagger](./admin-rest-api.yaml).
@@ -359,7 +359,9 @@ If the request to create a Kafka topic succeeds then HTTP status code 202 (Accep
 		fmt.Printf("\tname: %s created\n", *createTopicOptionsModel.Name)
 	
 		return nil
-	} // func.end
+	}
+	
+	// func.end
 ```
 
 
@@ -406,7 +408,9 @@ of time after the completion of a REST request to delete the topic.
 	
 		fmt.Printf("\tname: %s deleted\n", *deleteTopicOptionsModel.TopicName)
 		return nil
-	} // func.end
+	}
+	
+	// func.end
 ```
 
 
@@ -467,7 +471,9 @@ following properties:
 			fmt.Printf("\tname: %s\n", *topicDetail.Name)
 		}
 		return nil
-	} // func.end
+	}
+	
+	// func.end
 ```
 
 
@@ -551,7 +557,9 @@ Expected status codes
 		for _, assignment := range result.ReplicaAssignments {
 			fmt.Printf("\tassignment:  \t\tid:%d,  \tbrokers: %+v\n", assignment.ID, assignment.Brokers)
 		}
+	
 		return nil
+	
 	} // func.end
 ```
 
@@ -604,7 +612,9 @@ Expected status codes
 		fmt.Printf("\tname: %s updated\n", *updateTopicOptionsModel.TopicName)
 	
 		return nil
-	} // func.end
+	}
+	
+	// func.end
 ```
 
 
@@ -640,7 +650,22 @@ Expected status codes
 		result, response, operationErr := serviceAPI.GetMirroringTopicSelection(getMirroringTopicSelectionOptionsModel)
 		if operationErr != nil {
 			return fmt.Errorf("Error Listing Mirroring Topics: %s\n", operationErr.Error())
-		} // func.end
+		}
+	
+		// Check the result.
+		if response.StatusCode != http.StatusAccepted {
+			return fmt.Errorf("Error Listing Mirroring Topics: status %d\n", response.StatusCode)
+		}
+	
+		// Loop and print mirroring topics.
+		for _, topicName := range result.Includes {
+			fmt.Printf("\tname: %s\n", topicName)
+		}
+	
+		return nil
+	}
+	
+	// func.end
 ```
 
 
@@ -694,7 +719,9 @@ Expected status codes
 		}
 	
 		return nil
-	} // func.end
+	}
+	
+	// func.end
 ```
 
 
@@ -743,6 +770,8 @@ Expected status codes
 		}
 	
 		return nil
-	} // func.end
+	}
+	
+	// func.end
 ```
 
