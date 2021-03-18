@@ -41,12 +41,12 @@ const (
 //
 // If you plan to gather metrics for your SDK, the User-Agent header value must
 // be a string similar to the following:
-// admin-rest-sdk/0.0.1 (lang=go; arch=x86_64; os=Linux; go.version=1.12.9)
+// eventstreams-go-sdk/1.0.0 (lang=go; arch=x86_64; os=Linux; go.version=1.12.9)
 //
 // In the example above, the analytics tool will parse the user-agent header and
 // use the following properties:
-// "admin-rest-sdk" - the name of your sdk
-// "0.0.1"- the version of your sdk
+// "eventstreams-go-sdk" - the name of your sdk
+// "1.0.0"- the version of your sdk
 // "lang=go" - the language of the current sdk
 // "arch=x86_64; os=Linux; go.version=1.12.9" - system information
 //
