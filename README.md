@@ -94,7 +94,7 @@ to your `Gopkg.toml` file.  Here is an example:
 ```
 [[constraint]]
   name = "github.ibm.com/IBM/eventstreams-go-sdk"
-version = 1.1.0
+  version = "1.1.0"
 
 ```
 
@@ -204,7 +204,7 @@ make build
 
 Set the required environment variables
 ```sh
-# Set you API KEY.
+# Set your API KEY (or a bearer token could be used by setting the BEARER_TOKEN environment variable instead, but not both)
 export API_KEY="abc123456789"
 
 # Set the Admin Endpoint to point to your cluster.
