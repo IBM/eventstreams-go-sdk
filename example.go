@@ -181,9 +181,7 @@ func listTopics(serviceAPI *adminrestv1.AdminrestV1) error {
 		fmt.Printf("\tname: %s\n", *topicDetail.Name)
 	}
 	return nil
-}
-
-// func.end
+} // func.end
 
 func topicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 	// Construct an instance of the GetTopicOptions model
@@ -249,9 +247,7 @@ func createTopic(serviceAPI *adminrestv1.AdminrestV1) error {
 	fmt.Printf("\tname: %s created\n", *createTopicOptionsModel.Name)
 
 	return nil
-}
-
-// func.end
+} // func.end
 
 func deleteTopic(serviceAPI *adminrestv1.AdminrestV1) error {
 	// Construct an instance of the DeleteTopicOptions model
@@ -271,9 +267,7 @@ func deleteTopic(serviceAPI *adminrestv1.AdminrestV1) error {
 
 	fmt.Printf("\tname: %s deleted\n", *deleteTopicOptionsModel.TopicName)
 	return nil
-}
-
-// func.end
+} // func.end
 
 func updateTopicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 	// Construct an instance of the UpdateTopicOptions model
@@ -295,9 +289,7 @@ func updateTopicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 	fmt.Printf("\tname: %s updated\n", *updateTopicOptionsModel.TopicName)
 
 	return nil
-}
-
-// func.end
+} // func.end
 
 // nolint
 func replaceMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
@@ -322,9 +314,7 @@ func replaceMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
 	}
 
 	return nil
-}
-
-// func.end
+} // func.end
 
 // nolint
 func listMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
@@ -348,9 +338,7 @@ func listMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
 	}
 
 	return nil
-}
-
-// func.end
+} // func.end
 
 // nolint
 func getMirroringActiveTopics(serviceAPI *adminrestv1.AdminrestV1) error {
@@ -374,6 +362,4 @@ func getMirroringActiveTopics(serviceAPI *adminrestv1.AdminrestV1) error {
 	}
 
 	return nil
-}
-
-// func.end
+} // func.end

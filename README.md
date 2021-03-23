@@ -237,7 +237,6 @@ import (
 // End Code Setup
 ```
 
-
 ### Authentication
 ---
 Use one of the following methods to authenticate:
@@ -288,7 +287,6 @@ Here's an example of how to create the authenticator using either an API key or 
 	// End Authenticator
 ```
 
-
 ### Creating a client for the Admin REST API.
 ---
 Create a new service object.
@@ -301,7 +299,6 @@ Create a new service object.
 	})
 	// End Create Service
 ```
-
 
 ### Creating a Kafka topic
 ---
@@ -355,11 +352,8 @@ func createTopic(serviceAPI *adminrestv1.AdminrestV1) error {
 	fmt.Printf("\tname: %s created\n", *createTopicOptionsModel.Name)
 
 	return nil
-}
-
-// func.end
+} 
 ```
-
 
 
 ### Deleting a Kafka topic
@@ -404,11 +398,8 @@ func deleteTopic(serviceAPI *adminrestv1.AdminrestV1) error {
 
 	fmt.Printf("\tname: %s deleted\n", *deleteTopicOptionsModel.TopicName)
 	return nil
-}
-
-// func.end
+} 
 ```
-
 
 ### Listing Kafka topics
 ---
@@ -467,11 +458,8 @@ func listTopics(serviceAPI *adminrestv1.AdminrestV1) error {
 		fmt.Printf("\tname: %s\n", *topicDetail.Name)
 	}
 	return nil
-}
-
-// func.end
+} 
 ```
-
 
 ### Getting a Kafka topic
 ---
@@ -556,9 +544,8 @@ func topicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 
 	return nil
 
-} // func.end
+} 
 ```
-
 
 ### Updating Kafka topic's configuration
 ---
@@ -608,11 +595,8 @@ func updateTopicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 	fmt.Printf("\tname: %s updated\n", *updateTopicOptionsModel.TopicName)
 
 	return nil
-}
-
-// func.end
+} 
 ```
-
 
 ### List current mirroring topic selection
 
@@ -659,11 +643,8 @@ func listMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
 	}
 
 	return nil
-}
-
-// func.end
+} 
 ```
-
 
 ### Replace selection of topics which are mirrored
 
@@ -715,11 +696,8 @@ func replaceMirroringTopicSelection(serviceAPI *adminrestv1.AdminrestV1) error {
 	}
 
 	return nil
-}
-
-// func.end
+} 
 ```
-
 
 ### List active mirroring topics
 ---
@@ -766,8 +744,5 @@ func getMirroringActiveTopics(serviceAPI *adminrestv1.AdminrestV1) error {
 	}
 
 	return nil
-}
-
-// func.end
+} 
 ```
-
