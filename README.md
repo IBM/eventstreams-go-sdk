@@ -51,6 +51,7 @@ The IBM Cloud Eventstreams Go SDK allows developers to programmatically interact
 Service Name | Package name 
 --- | --- 
 [Admin Rest](https://cloud.ibm.com/apidocs/event-streams) | AdminRest
+[Schema Registry](https://cloud.ibm.com/docs/EventStreams?topic=EventStreams-ES_schema_registry&locale=en#schema_registry_rest_endpoints) | SchemaRegistry
 
 ## Prerequisites
 
@@ -143,6 +144,7 @@ operations:
   - [List active mirroring topics](#list-active-mirroring-topics)
   
 The Admin REST API is also [documented using swagger](./admin-rest-api.yaml).
+The Schema Registry REST API allows the users to administer the schemas associated with an instance of the service. Refer to [Event Streams schema registry documentation](https://cloud.ibm.com/docs/EventStreams?topic=EventStreams-ES_schema_registry&locale=en#schema_registry_rest_endpoints) for a list of REST APIs that are supported.
 
 ## Access control
 ---
