@@ -17,9 +17,10 @@
 package adminrestv1
 
 import (
+	"testing"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"testing"
 )
 
 func TestAdminrestV1(t *testing.T) {

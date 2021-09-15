@@ -15,7 +15,7 @@
  */
 
 /*
- * IBM OpenAPI SDK Code Generator Version: 3.25.0-2b3f843a-20210115-164628
+ * IBM OpenAPI SDK Code Generator Version: 3.37.1-66e80f2e-20210813-202232
  */
 
 // Package adminrestv1 : Operations and models for the AdminrestV1 service
@@ -25,16 +25,17 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/IBM/eventstreams-go-sdk/pkg/common"
-	"github.com/IBM/go-sdk-core/v4/core"
 	"net/http"
 	"reflect"
 	"time"
+
+	"github.com/IBM/eventstreams-go-sdk/pkg/common"
+	"github.com/IBM/go-sdk-core/v5/core"
 )
 
 // AdminrestV1 : The administration REST API for IBM Event Streams on Cloud.
 //
-// Version: 1.1.0
+// Version: 1.1.1
 type AdminrestV1 struct {
 	Service *core.BaseService
 }
@@ -272,13 +273,16 @@ func (adminrest *AdminrestV1) ListTopicsWithContext(ctx context.Context, listTop
 	var rawResponse []json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
+		err = fmt.Errorf("error: %v, %v", err.Error(), response)
 		return
 	}
-	err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalTopicDetail)
-	if err != nil {
-		return
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalTopicDetail)
+		if err != nil {
+			return
+		}
+		response.Result = result
 	}
-	response.Result = result
 
 	return
 }
@@ -332,11 +336,13 @@ func (adminrest *AdminrestV1) GetTopicWithContext(ctx context.Context, getTopicO
 	if err != nil {
 		return
 	}
-	err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalTopicDetail)
-	if err != nil {
-		return
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalTopicDetail)
+		if err != nil {
+			return
+		}
+		response.Result = result
 	}
-	response.Result = result
 
 	return
 }
@@ -493,11 +499,13 @@ func (adminrest *AdminrestV1) GetMirroringTopicSelectionWithContext(ctx context.
 	if err != nil {
 		return
 	}
-	err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringTopicSelection)
-	if err != nil {
-		return
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringTopicSelection)
+		if err != nil {
+			return
+		}
+		response.Result = result
 	}
-	response.Result = result
 
 	return
 }
@@ -557,11 +565,13 @@ func (adminrest *AdminrestV1) ReplaceMirroringTopicSelectionWithContext(ctx cont
 	if err != nil {
 		return
 	}
-	err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringTopicSelection)
-	if err != nil {
-		return
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringTopicSelection)
+		if err != nil {
+			return
+		}
+		response.Result = result
 	}
-	response.Result = result
 
 	return
 }
@@ -607,11 +617,13 @@ func (adminrest *AdminrestV1) GetMirroringActiveTopicsWithContext(ctx context.Co
 	if err != nil {
 		return
 	}
-	err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringActiveTopics)
-	if err != nil {
-		return
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringActiveTopics)
+		if err != nil {
+			return
+		}
+		response.Result = result
 	}
-	response.Result = result
 
 	return
 }
@@ -619,16 +631,16 @@ func (adminrest *AdminrestV1) GetMirroringActiveTopicsWithContext(ctx context.Co
 // CreateTopicOptions : The CreateTopic options.
 type CreateTopicOptions struct {
 	// The name of topic to be created.
-	Name *string
+	Name *string `json:"name,omitempty"`
 
 	// The number of partitions.
-	Partitions *int64
+	Partitions *int64 `json:"partitions,omitempty"`
 
 	// The number of partitions, this field takes precedence over 'partitions'. Default value is 1 if not specified.
-	PartitionCount *int64
+	PartitionCount *int64 `json:"partition_count,omitempty"`
 
 	// The config properties to be set for the new topic.
-	Configs []ConfigCreate
+	Configs []ConfigCreate `json:"configs,omitempty"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -640,27 +652,27 @@ func (*AdminrestV1) NewCreateTopicOptions() *CreateTopicOptions {
 }
 
 // SetName : Allow user to set Name
-func (options *CreateTopicOptions) SetName(name string) *CreateTopicOptions {
-	options.Name = core.StringPtr(name)
-	return options
+func (_options *CreateTopicOptions) SetName(name string) *CreateTopicOptions {
+	_options.Name = core.StringPtr(name)
+	return _options
 }
 
 // SetPartitions : Allow user to set Partitions
-func (options *CreateTopicOptions) SetPartitions(partitions int64) *CreateTopicOptions {
-	options.Partitions = core.Int64Ptr(partitions)
-	return options
+func (_options *CreateTopicOptions) SetPartitions(partitions int64) *CreateTopicOptions {
+	_options.Partitions = core.Int64Ptr(partitions)
+	return _options
 }
 
 // SetPartitionCount : Allow user to set PartitionCount
-func (options *CreateTopicOptions) SetPartitionCount(partitionCount int64) *CreateTopicOptions {
-	options.PartitionCount = core.Int64Ptr(partitionCount)
-	return options
+func (_options *CreateTopicOptions) SetPartitionCount(partitionCount int64) *CreateTopicOptions {
+	_options.PartitionCount = core.Int64Ptr(partitionCount)
+	return _options
 }
 
 // SetConfigs : Allow user to set Configs
-func (options *CreateTopicOptions) SetConfigs(configs []ConfigCreate) *CreateTopicOptions {
-	options.Configs = configs
-	return options
+func (_options *CreateTopicOptions) SetConfigs(configs []ConfigCreate) *CreateTopicOptions {
+	_options.Configs = configs
+	return _options
 }
 
 // SetHeaders : Allow user to set Headers
@@ -672,7 +684,7 @@ func (options *CreateTopicOptions) SetHeaders(param map[string]string) *CreateTo
 // DeleteTopicOptions : The DeleteTopic options.
 type DeleteTopicOptions struct {
 	// The topic name for the topic to be listed.
-	TopicName *string `validate:"required,ne="`
+	TopicName *string `json:"-" validate:"required,ne="`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -686,9 +698,9 @@ func (*AdminrestV1) NewDeleteTopicOptions(topicName string) *DeleteTopicOptions 
 }
 
 // SetTopicName : Allow user to set TopicName
-func (options *DeleteTopicOptions) SetTopicName(topicName string) *DeleteTopicOptions {
-	options.TopicName = core.StringPtr(topicName)
-	return options
+func (_options *DeleteTopicOptions) SetTopicName(topicName string) *DeleteTopicOptions {
+	_options.TopicName = core.StringPtr(topicName)
+	return _options
 }
 
 // SetHeaders : Allow user to set Headers
@@ -736,7 +748,7 @@ func (options *GetMirroringTopicSelectionOptions) SetHeaders(param map[string]st
 // GetTopicOptions : The GetTopic options.
 type GetTopicOptions struct {
 	// The topic name for the topic to be listed.
-	TopicName *string `validate:"required,ne="`
+	TopicName *string `json:"-" validate:"required,ne="`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -750,9 +762,9 @@ func (*AdminrestV1) NewGetTopicOptions(topicName string) *GetTopicOptions {
 }
 
 // SetTopicName : Allow user to set TopicName
-func (options *GetTopicOptions) SetTopicName(topicName string) *GetTopicOptions {
-	options.TopicName = core.StringPtr(topicName)
-	return options
+func (_options *GetTopicOptions) SetTopicName(topicName string) *GetTopicOptions {
+	_options.TopicName = core.StringPtr(topicName)
+	return _options
 }
 
 // SetHeaders : Allow user to set Headers
@@ -767,13 +779,13 @@ type ListTopicsOptions struct {
 	// wildcards representing 0 or more characters, e.g. `topic-name*` will filter all topic names that begin with the
 	// string `topic-name` followed by any character sequence. A more complex filter pattern can be used by surrounding a
 	// regular expression in forward slash (`/`) delimiters, e.g. `/topic-name.* /`.
-	TopicFilter *string
+	TopicFilter *string `json:"-"`
 
 	// The number of topic names to be returns.
-	PerPage *int64
+	PerPage *int64 `json:"-"`
 
 	// The page number to be returned. The number 1 represents the first page. The default value is 1.
-	Page *int64
+	Page *int64 `json:"-"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -785,21 +797,21 @@ func (*AdminrestV1) NewListTopicsOptions() *ListTopicsOptions {
 }
 
 // SetTopicFilter : Allow user to set TopicFilter
-func (options *ListTopicsOptions) SetTopicFilter(topicFilter string) *ListTopicsOptions {
-	options.TopicFilter = core.StringPtr(topicFilter)
-	return options
+func (_options *ListTopicsOptions) SetTopicFilter(topicFilter string) *ListTopicsOptions {
+	_options.TopicFilter = core.StringPtr(topicFilter)
+	return _options
 }
 
 // SetPerPage : Allow user to set PerPage
-func (options *ListTopicsOptions) SetPerPage(perPage int64) *ListTopicsOptions {
-	options.PerPage = core.Int64Ptr(perPage)
-	return options
+func (_options *ListTopicsOptions) SetPerPage(perPage int64) *ListTopicsOptions {
+	_options.PerPage = core.Int64Ptr(perPage)
+	return _options
 }
 
 // SetPage : Allow user to set Page
-func (options *ListTopicsOptions) SetPage(page int64) *ListTopicsOptions {
-	options.Page = core.Int64Ptr(page)
-	return options
+func (_options *ListTopicsOptions) SetPage(page int64) *ListTopicsOptions {
+	_options.Page = core.Int64Ptr(page)
+	return _options
 }
 
 // SetHeaders : Allow user to set Headers
@@ -810,7 +822,7 @@ func (options *ListTopicsOptions) SetHeaders(param map[string]string) *ListTopic
 
 // ReplaceMirroringTopicSelectionOptions : The ReplaceMirroringTopicSelection options.
 type ReplaceMirroringTopicSelectionOptions struct {
-	Includes []string
+	Includes []string `json:"includes,omitempty"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -822,9 +834,9 @@ func (*AdminrestV1) NewReplaceMirroringTopicSelectionOptions() *ReplaceMirroring
 }
 
 // SetIncludes : Allow user to set Includes
-func (options *ReplaceMirroringTopicSelectionOptions) SetIncludes(includes []string) *ReplaceMirroringTopicSelectionOptions {
-	options.Includes = includes
-	return options
+func (_options *ReplaceMirroringTopicSelectionOptions) SetIncludes(includes []string) *ReplaceMirroringTopicSelectionOptions {
+	_options.Includes = includes
+	return _options
 }
 
 // SetHeaders : Allow user to set Headers
@@ -852,14 +864,14 @@ func UnmarshalReplicaAssignmentBrokers(m map[string]json.RawMessage, result inte
 // UpdateTopicOptions : The UpdateTopic options.
 type UpdateTopicOptions struct {
 	// The topic name for the topic to be listed.
-	TopicName *string `validate:"required,ne="`
+	TopicName *string `json:"-" validate:"required,ne="`
 
 	// The new partition number to be increased.
-	NewTotalPartitionCount *int64
+	NewTotalPartitionCount *int64 `json:"new_total_partition_count,omitempty"`
 
 	// The config properties to be updated for the topic. Valid config keys are 'cleanup.policy', 'retention.ms',
 	// 'retention.bytes', 'segment.bytes', 'segment.ms', 'segment.index.bytes'.
-	Configs []ConfigUpdate
+	Configs []ConfigUpdate `json:"configs,omitempty"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -873,21 +885,21 @@ func (*AdminrestV1) NewUpdateTopicOptions(topicName string) *UpdateTopicOptions 
 }
 
 // SetTopicName : Allow user to set TopicName
-func (options *UpdateTopicOptions) SetTopicName(topicName string) *UpdateTopicOptions {
-	options.TopicName = core.StringPtr(topicName)
-	return options
+func (_options *UpdateTopicOptions) SetTopicName(topicName string) *UpdateTopicOptions {
+	_options.TopicName = core.StringPtr(topicName)
+	return _options
 }
 
 // SetNewTotalPartitionCount : Allow user to set NewTotalPartitionCount
-func (options *UpdateTopicOptions) SetNewTotalPartitionCount(newTotalPartitionCount int64) *UpdateTopicOptions {
-	options.NewTotalPartitionCount = core.Int64Ptr(newTotalPartitionCount)
-	return options
+func (_options *UpdateTopicOptions) SetNewTotalPartitionCount(newTotalPartitionCount int64) *UpdateTopicOptions {
+	_options.NewTotalPartitionCount = core.Int64Ptr(newTotalPartitionCount)
+	return _options
 }
 
 // SetConfigs : Allow user to set Configs
-func (options *UpdateTopicOptions) SetConfigs(configs []ConfigUpdate) *UpdateTopicOptions {
-	options.Configs = configs
-	return options
+func (_options *UpdateTopicOptions) SetConfigs(configs []ConfigUpdate) *UpdateTopicOptions {
+	_options.Configs = configs
+	return _options
 }
 
 // SetHeaders : Allow user to set Headers

@@ -223,7 +223,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, "%s", `{"id": "ID", "type": "COMPATIBILITY", "config": "BACKWARD"}`)
+					fmt.Fprintf(res, "%s", `{"type": "COMPATIBILITY", "config": "BACKWARD"}`)
 				}))
 			})
 			It(`Invoke GetGlobalRule successfully with retries`, func() {
@@ -277,7 +277,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, "%s", `{"id": "ID", "type": "COMPATIBILITY", "config": "BACKWARD"}`)
+					fmt.Fprintf(res, "%s", `{"type": "COMPATIBILITY", "config": "BACKWARD"}`)
 				}))
 			})
 			It(`Invoke GetGlobalRule successfully`, func() {
@@ -401,7 +401,6 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				updateGlobalRuleOptionsModel.Rule = core.StringPtr("COMPATIBILITY")
 				updateGlobalRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
 				updateGlobalRuleOptionsModel.Config = core.StringPtr("BACKWARD")
-				updateGlobalRuleOptionsModel.ID = core.StringPtr("testString")
 				updateGlobalRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Expect response parsing to fail since we are receiving a text/plain response
 				result, response, operationErr := schemaregistryService.UpdateGlobalRule(updateGlobalRuleOptionsModel)
@@ -454,7 +453,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, "%s", `{"id": "ID", "type": "COMPATIBILITY", "config": "BACKWARD"}`)
+					fmt.Fprintf(res, "%s", `{"type": "COMPATIBILITY", "config": "BACKWARD"}`)
 				}))
 			})
 			It(`Invoke UpdateGlobalRule successfully with retries`, func() {
@@ -471,7 +470,6 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				updateGlobalRuleOptionsModel.Rule = core.StringPtr("COMPATIBILITY")
 				updateGlobalRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
 				updateGlobalRuleOptionsModel.Config = core.StringPtr("BACKWARD")
-				updateGlobalRuleOptionsModel.ID = core.StringPtr("testString")
 				updateGlobalRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with a Context to test a timeout error
@@ -527,7 +525,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, "%s", `{"id": "ID", "type": "COMPATIBILITY", "config": "BACKWARD"}`)
+					fmt.Fprintf(res, "%s", `{"type": "COMPATIBILITY", "config": "BACKWARD"}`)
 				}))
 			})
 			It(`Invoke UpdateGlobalRule successfully`, func() {
@@ -549,7 +547,6 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				updateGlobalRuleOptionsModel.Rule = core.StringPtr("COMPATIBILITY")
 				updateGlobalRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
 				updateGlobalRuleOptionsModel.Config = core.StringPtr("BACKWARD")
-				updateGlobalRuleOptionsModel.ID = core.StringPtr("testString")
 				updateGlobalRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
@@ -572,7 +569,6 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				updateGlobalRuleOptionsModel.Rule = core.StringPtr("COMPATIBILITY")
 				updateGlobalRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
 				updateGlobalRuleOptionsModel.Config = core.StringPtr("BACKWARD")
-				updateGlobalRuleOptionsModel.ID = core.StringPtr("testString")
 				updateGlobalRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := schemaregistryService.SetServiceURL("")
@@ -616,7 +612,6 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				updateGlobalRuleOptionsModel.Rule = core.StringPtr("COMPATIBILITY")
 				updateGlobalRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
 				updateGlobalRuleOptionsModel.Config = core.StringPtr("BACKWARD")
-				updateGlobalRuleOptionsModel.ID = core.StringPtr("testString")
 				updateGlobalRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation
@@ -658,9 +653,8 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaRuleOptions model
 				createSchemaRuleOptionsModel := new(schemaregistryv1.CreateSchemaRuleOptions)
 				createSchemaRuleOptionsModel.ID = core.StringPtr("testString")
-				createSchemaRuleOptionsModel.NewType = core.StringPtr("COMPATIBILITY")
-				createSchemaRuleOptionsModel.NewConfig = core.StringPtr("BACKWARD")
-				createSchemaRuleOptionsModel.NewID = core.StringPtr("testString")
+				createSchemaRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
+				createSchemaRuleOptionsModel.Config = core.StringPtr("BACKWARD")
 				createSchemaRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Expect response parsing to fail since we are receiving a text/plain response
 				result, response, operationErr := schemaregistryService.CreateSchemaRule(createSchemaRuleOptionsModel)
@@ -713,7 +707,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, "%s", `{"id": "ID", "type": "COMPATIBILITY", "config": "BACKWARD"}`)
+					fmt.Fprintf(res, "%s", `{"type": "COMPATIBILITY", "config": "BACKWARD"}`)
 				}))
 			})
 			It(`Invoke CreateSchemaRule successfully with retries`, func() {
@@ -728,9 +722,8 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaRuleOptions model
 				createSchemaRuleOptionsModel := new(schemaregistryv1.CreateSchemaRuleOptions)
 				createSchemaRuleOptionsModel.ID = core.StringPtr("testString")
-				createSchemaRuleOptionsModel.NewType = core.StringPtr("COMPATIBILITY")
-				createSchemaRuleOptionsModel.NewConfig = core.StringPtr("BACKWARD")
-				createSchemaRuleOptionsModel.NewID = core.StringPtr("testString")
+				createSchemaRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
+				createSchemaRuleOptionsModel.Config = core.StringPtr("BACKWARD")
 				createSchemaRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with a Context to test a timeout error
@@ -786,7 +779,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, "%s", `{"id": "ID", "type": "COMPATIBILITY", "config": "BACKWARD"}`)
+					fmt.Fprintf(res, "%s", `{"type": "COMPATIBILITY", "config": "BACKWARD"}`)
 				}))
 			})
 			It(`Invoke CreateSchemaRule successfully`, func() {
@@ -806,9 +799,8 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaRuleOptions model
 				createSchemaRuleOptionsModel := new(schemaregistryv1.CreateSchemaRuleOptions)
 				createSchemaRuleOptionsModel.ID = core.StringPtr("testString")
-				createSchemaRuleOptionsModel.NewType = core.StringPtr("COMPATIBILITY")
-				createSchemaRuleOptionsModel.NewConfig = core.StringPtr("BACKWARD")
-				createSchemaRuleOptionsModel.NewID = core.StringPtr("testString")
+				createSchemaRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
+				createSchemaRuleOptionsModel.Config = core.StringPtr("BACKWARD")
 				createSchemaRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
@@ -829,9 +821,8 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaRuleOptions model
 				createSchemaRuleOptionsModel := new(schemaregistryv1.CreateSchemaRuleOptions)
 				createSchemaRuleOptionsModel.ID = core.StringPtr("testString")
-				createSchemaRuleOptionsModel.NewType = core.StringPtr("COMPATIBILITY")
-				createSchemaRuleOptionsModel.NewConfig = core.StringPtr("BACKWARD")
-				createSchemaRuleOptionsModel.NewID = core.StringPtr("testString")
+				createSchemaRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
+				createSchemaRuleOptionsModel.Config = core.StringPtr("BACKWARD")
 				createSchemaRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := schemaregistryService.SetServiceURL("")
@@ -873,9 +864,8 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaRuleOptions model
 				createSchemaRuleOptionsModel := new(schemaregistryv1.CreateSchemaRuleOptions)
 				createSchemaRuleOptionsModel.ID = core.StringPtr("testString")
-				createSchemaRuleOptionsModel.NewType = core.StringPtr("COMPATIBILITY")
-				createSchemaRuleOptionsModel.NewConfig = core.StringPtr("BACKWARD")
-				createSchemaRuleOptionsModel.NewID = core.StringPtr("testString")
+				createSchemaRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
+				createSchemaRuleOptionsModel.Config = core.StringPtr("BACKWARD")
 				createSchemaRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation
@@ -954,7 +944,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, "%s", `{"id": "ID", "type": "COMPATIBILITY", "config": "BACKWARD"}`)
+					fmt.Fprintf(res, "%s", `{"type": "COMPATIBILITY", "config": "BACKWARD"}`)
 				}))
 			})
 			It(`Invoke GetSchemaRule successfully with retries`, func() {
@@ -1009,7 +999,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, "%s", `{"id": "ID", "type": "COMPATIBILITY", "config": "BACKWARD"}`)
+					fmt.Fprintf(res, "%s", `{"type": "COMPATIBILITY", "config": "BACKWARD"}`)
 				}))
 			})
 			It(`Invoke GetSchemaRule successfully`, func() {
@@ -1135,9 +1125,8 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				updateSchemaRuleOptionsModel := new(schemaregistryv1.UpdateSchemaRuleOptions)
 				updateSchemaRuleOptionsModel.ID = core.StringPtr("testString")
 				updateSchemaRuleOptionsModel.Rule = core.StringPtr("COMPATIBILITY")
-				updateSchemaRuleOptionsModel.NewType = core.StringPtr("COMPATIBILITY")
-				updateSchemaRuleOptionsModel.NewConfig = core.StringPtr("BACKWARD")
-				updateSchemaRuleOptionsModel.NewID = core.StringPtr("testString")
+				updateSchemaRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
+				updateSchemaRuleOptionsModel.Config = core.StringPtr("BACKWARD")
 				updateSchemaRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Expect response parsing to fail since we are receiving a text/plain response
 				result, response, operationErr := schemaregistryService.UpdateSchemaRule(updateSchemaRuleOptionsModel)
@@ -1190,7 +1179,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, "%s", `{"id": "ID", "type": "COMPATIBILITY", "config": "BACKWARD"}`)
+					fmt.Fprintf(res, "%s", `{"type": "COMPATIBILITY", "config": "BACKWARD"}`)
 				}))
 			})
 			It(`Invoke UpdateSchemaRule successfully with retries`, func() {
@@ -1206,9 +1195,8 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				updateSchemaRuleOptionsModel := new(schemaregistryv1.UpdateSchemaRuleOptions)
 				updateSchemaRuleOptionsModel.ID = core.StringPtr("testString")
 				updateSchemaRuleOptionsModel.Rule = core.StringPtr("COMPATIBILITY")
-				updateSchemaRuleOptionsModel.NewType = core.StringPtr("COMPATIBILITY")
-				updateSchemaRuleOptionsModel.NewConfig = core.StringPtr("BACKWARD")
-				updateSchemaRuleOptionsModel.NewID = core.StringPtr("testString")
+				updateSchemaRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
+				updateSchemaRuleOptionsModel.Config = core.StringPtr("BACKWARD")
 				updateSchemaRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with a Context to test a timeout error
@@ -1264,7 +1252,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, "%s", `{"id": "ID", "type": "COMPATIBILITY", "config": "BACKWARD"}`)
+					fmt.Fprintf(res, "%s", `{"type": "COMPATIBILITY", "config": "BACKWARD"}`)
 				}))
 			})
 			It(`Invoke UpdateSchemaRule successfully`, func() {
@@ -1285,9 +1273,8 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				updateSchemaRuleOptionsModel := new(schemaregistryv1.UpdateSchemaRuleOptions)
 				updateSchemaRuleOptionsModel.ID = core.StringPtr("testString")
 				updateSchemaRuleOptionsModel.Rule = core.StringPtr("COMPATIBILITY")
-				updateSchemaRuleOptionsModel.NewType = core.StringPtr("COMPATIBILITY")
-				updateSchemaRuleOptionsModel.NewConfig = core.StringPtr("BACKWARD")
-				updateSchemaRuleOptionsModel.NewID = core.StringPtr("testString")
+				updateSchemaRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
+				updateSchemaRuleOptionsModel.Config = core.StringPtr("BACKWARD")
 				updateSchemaRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
@@ -1309,9 +1296,8 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				updateSchemaRuleOptionsModel := new(schemaregistryv1.UpdateSchemaRuleOptions)
 				updateSchemaRuleOptionsModel.ID = core.StringPtr("testString")
 				updateSchemaRuleOptionsModel.Rule = core.StringPtr("COMPATIBILITY")
-				updateSchemaRuleOptionsModel.NewType = core.StringPtr("COMPATIBILITY")
-				updateSchemaRuleOptionsModel.NewConfig = core.StringPtr("BACKWARD")
-				updateSchemaRuleOptionsModel.NewID = core.StringPtr("testString")
+				updateSchemaRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
+				updateSchemaRuleOptionsModel.Config = core.StringPtr("BACKWARD")
 				updateSchemaRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := schemaregistryService.SetServiceURL("")
@@ -1354,9 +1340,8 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				updateSchemaRuleOptionsModel := new(schemaregistryv1.UpdateSchemaRuleOptions)
 				updateSchemaRuleOptionsModel.ID = core.StringPtr("testString")
 				updateSchemaRuleOptionsModel.Rule = core.StringPtr("COMPATIBILITY")
-				updateSchemaRuleOptionsModel.NewType = core.StringPtr("COMPATIBILITY")
-				updateSchemaRuleOptionsModel.NewConfig = core.StringPtr("BACKWARD")
-				updateSchemaRuleOptionsModel.NewID = core.StringPtr("testString")
+				updateSchemaRuleOptionsModel.Type = core.StringPtr("COMPATIBILITY")
+				updateSchemaRuleOptionsModel.Config = core.StringPtr("BACKWARD")
 				updateSchemaRuleOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation
@@ -2329,7 +2314,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaOptions model
 				createSchemaOptionsModel := new(schemaregistryv1.CreateSchemaOptions)
 				createSchemaOptionsModel.Schema = map[string]interface{}{"anyKey": "anyValue"}
-				createSchemaOptionsModel.XRegistryArtifactID = core.StringPtr("testString")
+				createSchemaOptionsModel.ID = core.StringPtr("testString")
 				createSchemaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Expect response parsing to fail since we are receiving a text/plain response
 				result, response, operationErr := schemaregistryService.CreateSchema(createSchemaOptionsModel)
@@ -2399,7 +2384,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaOptions model
 				createSchemaOptionsModel := new(schemaregistryv1.CreateSchemaOptions)
 				createSchemaOptionsModel.Schema = map[string]interface{}{"anyKey": "anyValue"}
-				createSchemaOptionsModel.XRegistryArtifactID = core.StringPtr("testString")
+				createSchemaOptionsModel.ID = core.StringPtr("testString")
 				createSchemaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with a Context to test a timeout error
@@ -2477,7 +2462,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaOptions model
 				createSchemaOptionsModel := new(schemaregistryv1.CreateSchemaOptions)
 				createSchemaOptionsModel.Schema = map[string]interface{}{"anyKey": "anyValue"}
-				createSchemaOptionsModel.XRegistryArtifactID = core.StringPtr("testString")
+				createSchemaOptionsModel.ID = core.StringPtr("testString")
 				createSchemaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
@@ -2498,7 +2483,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaOptions model
 				createSchemaOptionsModel := new(schemaregistryv1.CreateSchemaOptions)
 				createSchemaOptionsModel.Schema = map[string]interface{}{"anyKey": "anyValue"}
-				createSchemaOptionsModel.XRegistryArtifactID = core.StringPtr("testString")
+				createSchemaOptionsModel.ID = core.StringPtr("testString")
 				createSchemaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := schemaregistryService.SetServiceURL("")
@@ -2533,7 +2518,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaOptions model
 				createSchemaOptionsModel := new(schemaregistryv1.CreateSchemaOptions)
 				createSchemaOptionsModel.Schema = map[string]interface{}{"anyKey": "anyValue"}
-				createSchemaOptionsModel.XRegistryArtifactID = core.StringPtr("testString")
+				createSchemaOptionsModel.ID = core.StringPtr("testString")
 				createSchemaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation
@@ -3088,29 +3073,27 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaOptions model
 				createSchemaOptionsModel := schemaregistryService.NewCreateSchemaOptions()
 				createSchemaOptionsModel.SetSchema(map[string]interface{}{"anyKey": "anyValue"})
-				createSchemaOptionsModel.SetXRegistryArtifactID("testString")
+				createSchemaOptionsModel.SetID("testString")
 				createSchemaOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(createSchemaOptionsModel).ToNot(BeNil())
 				Expect(createSchemaOptionsModel.Schema).To(Equal(map[string]interface{}{"anyKey": "anyValue"}))
-				Expect(createSchemaOptionsModel.XRegistryArtifactID).To(Equal(core.StringPtr("testString")))
+				Expect(createSchemaOptionsModel.ID).To(Equal(core.StringPtr("testString")))
 				Expect(createSchemaOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewCreateSchemaRuleOptions successfully`, func() {
 				// Construct an instance of the CreateSchemaRuleOptions model
 				id := "testString"
-				createSchemaRuleOptionsNewType := "COMPATIBILITY"
-				createSchemaRuleOptionsNewConfig := "BACKWARD"
-				createSchemaRuleOptionsModel := schemaregistryService.NewCreateSchemaRuleOptions(id, createSchemaRuleOptionsNewType, createSchemaRuleOptionsNewConfig)
+				createSchemaRuleOptionsType := "COMPATIBILITY"
+				createSchemaRuleOptionsConfig := "BACKWARD"
+				createSchemaRuleOptionsModel := schemaregistryService.NewCreateSchemaRuleOptions(id, createSchemaRuleOptionsType, createSchemaRuleOptionsConfig)
 				createSchemaRuleOptionsModel.SetID("testString")
-				createSchemaRuleOptionsModel.SetNewType("COMPATIBILITY")
-				createSchemaRuleOptionsModel.SetNewConfig("BACKWARD")
-				createSchemaRuleOptionsModel.SetNewID("testString")
+				createSchemaRuleOptionsModel.SetType("COMPATIBILITY")
+				createSchemaRuleOptionsModel.SetConfig("BACKWARD")
 				createSchemaRuleOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(createSchemaRuleOptionsModel).ToNot(BeNil())
 				Expect(createSchemaRuleOptionsModel.ID).To(Equal(core.StringPtr("testString")))
-				Expect(createSchemaRuleOptionsModel.NewType).To(Equal(core.StringPtr("COMPATIBILITY")))
-				Expect(createSchemaRuleOptionsModel.NewConfig).To(Equal(core.StringPtr("BACKWARD")))
-				Expect(createSchemaRuleOptionsModel.NewID).To(Equal(core.StringPtr("testString")))
+				Expect(createSchemaRuleOptionsModel.Type).To(Equal(core.StringPtr("COMPATIBILITY")))
+				Expect(createSchemaRuleOptionsModel.Config).To(Equal(core.StringPtr("BACKWARD")))
 				Expect(createSchemaRuleOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewCreateVersionOptions successfully`, func() {
@@ -3233,13 +3216,11 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				updateGlobalRuleOptionsModel.SetRule("COMPATIBILITY")
 				updateGlobalRuleOptionsModel.SetType("COMPATIBILITY")
 				updateGlobalRuleOptionsModel.SetConfig("BACKWARD")
-				updateGlobalRuleOptionsModel.SetID("testString")
 				updateGlobalRuleOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(updateGlobalRuleOptionsModel).ToNot(BeNil())
 				Expect(updateGlobalRuleOptionsModel.Rule).To(Equal(core.StringPtr("COMPATIBILITY")))
 				Expect(updateGlobalRuleOptionsModel.Type).To(Equal(core.StringPtr("COMPATIBILITY")))
 				Expect(updateGlobalRuleOptionsModel.Config).To(Equal(core.StringPtr("BACKWARD")))
-				Expect(updateGlobalRuleOptionsModel.ID).To(Equal(core.StringPtr("testString")))
 				Expect(updateGlobalRuleOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewUpdateSchemaOptions successfully`, func() {
@@ -3258,21 +3239,19 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the UpdateSchemaRuleOptions model
 				id := "testString"
 				rule := "COMPATIBILITY"
-				updateSchemaRuleOptionsNewType := "COMPATIBILITY"
-				updateSchemaRuleOptionsNewConfig := "BACKWARD"
-				updateSchemaRuleOptionsModel := schemaregistryService.NewUpdateSchemaRuleOptions(id, rule, updateSchemaRuleOptionsNewType, updateSchemaRuleOptionsNewConfig)
+				updateSchemaRuleOptionsType := "COMPATIBILITY"
+				updateSchemaRuleOptionsConfig := "BACKWARD"
+				updateSchemaRuleOptionsModel := schemaregistryService.NewUpdateSchemaRuleOptions(id, rule, updateSchemaRuleOptionsType, updateSchemaRuleOptionsConfig)
 				updateSchemaRuleOptionsModel.SetID("testString")
 				updateSchemaRuleOptionsModel.SetRule("COMPATIBILITY")
-				updateSchemaRuleOptionsModel.SetNewType("COMPATIBILITY")
-				updateSchemaRuleOptionsModel.SetNewConfig("BACKWARD")
-				updateSchemaRuleOptionsModel.SetNewID("testString")
+				updateSchemaRuleOptionsModel.SetType("COMPATIBILITY")
+				updateSchemaRuleOptionsModel.SetConfig("BACKWARD")
 				updateSchemaRuleOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(updateSchemaRuleOptionsModel).ToNot(BeNil())
 				Expect(updateSchemaRuleOptionsModel.ID).To(Equal(core.StringPtr("testString")))
 				Expect(updateSchemaRuleOptionsModel.Rule).To(Equal(core.StringPtr("COMPATIBILITY")))
-				Expect(updateSchemaRuleOptionsModel.NewType).To(Equal(core.StringPtr("COMPATIBILITY")))
-				Expect(updateSchemaRuleOptionsModel.NewConfig).To(Equal(core.StringPtr("BACKWARD")))
-				Expect(updateSchemaRuleOptionsModel.NewID).To(Equal(core.StringPtr("testString")))
+				Expect(updateSchemaRuleOptionsModel.Type).To(Equal(core.StringPtr("COMPATIBILITY")))
+				Expect(updateSchemaRuleOptionsModel.Config).To(Equal(core.StringPtr("BACKWARD")))
 				Expect(updateSchemaRuleOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewRule successfully`, func() {

@@ -15,7 +15,7 @@
  */
 
 /*
- * IBM OpenAPI SDK Code Generator Version: 3.34.1-ad041667-20210617-195430
+ * IBM OpenAPI SDK Code Generator Version: 3.37.1-66e80f2e-20210813-202232
  */
 
 // Package schemaregistryv1 : Operations and models for the SchemaregistryV1 service
@@ -264,9 +264,6 @@ func (schemaregistry *SchemaregistryV1) UpdateGlobalRuleWithContext(ctx context.
 	if updateGlobalRuleOptions.Config != nil {
 		body["config"] = updateGlobalRuleOptions.Config
 	}
-	if updateGlobalRuleOptions.ID != nil {
-		body["id"] = updateGlobalRuleOptions.ID
-	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
 		return
@@ -335,14 +332,11 @@ func (schemaregistry *SchemaregistryV1) CreateSchemaRuleWithContext(ctx context.
 	builder.AddHeader("Content-Type", "application/json")
 
 	body := make(map[string]interface{})
-	if createSchemaRuleOptions.NewType != nil {
-		body["type"] = createSchemaRuleOptions.NewType
+	if createSchemaRuleOptions.Type != nil {
+		body["type"] = createSchemaRuleOptions.Type
 	}
-	if createSchemaRuleOptions.NewConfig != nil {
-		body["config"] = createSchemaRuleOptions.NewConfig
-	}
-	if createSchemaRuleOptions.NewID != nil {
-		body["id"] = createSchemaRuleOptions.NewID
+	if createSchemaRuleOptions.Config != nil {
+		body["config"] = createSchemaRuleOptions.Config
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
@@ -475,14 +469,11 @@ func (schemaregistry *SchemaregistryV1) UpdateSchemaRuleWithContext(ctx context.
 	builder.AddHeader("Content-Type", "application/json")
 
 	body := make(map[string]interface{})
-	if updateSchemaRuleOptions.NewType != nil {
-		body["type"] = updateSchemaRuleOptions.NewType
+	if updateSchemaRuleOptions.Type != nil {
+		body["type"] = updateSchemaRuleOptions.Type
 	}
-	if updateSchemaRuleOptions.NewConfig != nil {
-		body["config"] = updateSchemaRuleOptions.NewConfig
-	}
-	if updateSchemaRuleOptions.NewID != nil {
-		body["id"] = updateSchemaRuleOptions.NewID
+	if updateSchemaRuleOptions.Config != nil {
+		body["config"] = updateSchemaRuleOptions.Config
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
@@ -854,8 +845,8 @@ func (schemaregistry *SchemaregistryV1) CreateSchemaWithContext(ctx context.Cont
 	}
 	builder.AddHeader("Accept", "application/json")
 	builder.AddHeader("Content-Type", "application/json")
-	if createSchemaOptions.XRegistryArtifactID != nil {
-		builder.AddHeader("X-Registry-ArtifactId", fmt.Sprint(*createSchemaOptions.XRegistryArtifactID))
+	if createSchemaOptions.ID != nil {
+		builder.AddHeader("X-Registry-ArtifactId", fmt.Sprint(*createSchemaOptions.ID))
 	}
 
 	body := make(map[string]interface{})
@@ -1057,10 +1048,10 @@ func (schemaregistry *SchemaregistryV1) UpdateSchemaWithContext(ctx context.Cont
 // CreateSchemaOptions : The CreateSchema options.
 type CreateSchemaOptions struct {
 	// The AVRO schema.
-	Schema map[string]interface{}
+	Schema map[string]interface{} `json:"schema,omitempty"`
 
 	// The name to assign to the new schema. This must be unique. If this value is not specified then a UUID is used.
-	XRegistryArtifactID *string
+	ID *string `json:"-"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -1077,9 +1068,9 @@ func (_options *CreateSchemaOptions) SetSchema(schema map[string]interface{}) *C
 	return _options
 }
 
-// SetXRegistryArtifactID : Allow user to set XRegistryArtifactID
-func (_options *CreateSchemaOptions) SetXRegistryArtifactID(xRegistryArtifactID string) *CreateSchemaOptions {
-	_options.XRegistryArtifactID = core.StringPtr(xRegistryArtifactID)
+// SetID : Allow user to set ID
+func (_options *CreateSchemaOptions) SetID(ID string) *CreateSchemaOptions {
+	_options.ID = core.StringPtr(ID)
 	return _options
 }
 
@@ -1092,46 +1083,42 @@ func (options *CreateSchemaOptions) SetHeaders(param map[string]string) *CreateS
 // CreateSchemaRuleOptions : The CreateSchemaRule options.
 type CreateSchemaRuleOptions struct {
 	// The ID of the schema that the rule is to be associated with.
-	ID *string `validate:"required,ne="`
+	ID *string `json:"-" validate:"required,ne="`
 
 	// The type of the rule. Currently only one type is supported (`COMPATIBILITY`).
-	NewType *string `validate:"required"`
+	Type *string `json:"type" validate:"required"`
 
 	// The configuration value for the rule. Which values are valid depends on the value of this object's `type` property.
-	NewConfig *string `validate:"required"`
-
-	// The ID of the schema. This is either taken from the `X-Registry-ArtifactId` header when the request is made to
-	// create the schema or is an automatically assigned UUID value.
-	NewID *string
+	Config *string `json:"config" validate:"required"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
 }
 
-// Constants associated with the CreateSchemaRuleOptions.NewType property.
+// Constants associated with the CreateSchemaRuleOptions.Type property.
 // The type of the rule. Currently only one type is supported (`COMPATIBILITY`).
 const (
-	CreateSchemaRuleOptionsNewTypeCompatibilityConst = "COMPATIBILITY"
+	CreateSchemaRuleOptionsTypeCompatibilityConst = "COMPATIBILITY"
 )
 
-// Constants associated with the CreateSchemaRuleOptions.NewConfig property.
+// Constants associated with the CreateSchemaRuleOptions.Config property.
 // The configuration value for the rule. Which values are valid depends on the value of this object's `type` property.
 const (
-	CreateSchemaRuleOptionsNewConfigBackwardConst           = "BACKWARD"
-	CreateSchemaRuleOptionsNewConfigBackwardTransitiveConst = "BACKWARD_TRANSITIVE"
-	CreateSchemaRuleOptionsNewConfigForwardConst            = "FORWARD"
-	CreateSchemaRuleOptionsNewConfigForwardTransitiveConst  = "FORWARD_TRANSITIVE"
-	CreateSchemaRuleOptionsNewConfigFullConst               = "FULL"
-	CreateSchemaRuleOptionsNewConfigFullTransitiveConst     = "FULL_TRANSITIVE"
-	CreateSchemaRuleOptionsNewConfigNoneConst               = "NONE"
+	CreateSchemaRuleOptionsConfigBackwardConst           = "BACKWARD"
+	CreateSchemaRuleOptionsConfigBackwardTransitiveConst = "BACKWARD_TRANSITIVE"
+	CreateSchemaRuleOptionsConfigForwardConst            = "FORWARD"
+	CreateSchemaRuleOptionsConfigForwardTransitiveConst  = "FORWARD_TRANSITIVE"
+	CreateSchemaRuleOptionsConfigFullConst               = "FULL"
+	CreateSchemaRuleOptionsConfigFullTransitiveConst     = "FULL_TRANSITIVE"
+	CreateSchemaRuleOptionsConfigNoneConst               = "NONE"
 )
 
 // NewCreateSchemaRuleOptions : Instantiate CreateSchemaRuleOptions
-func (*SchemaregistryV1) NewCreateSchemaRuleOptions(id string, newType string, newConfig string) *CreateSchemaRuleOptions {
+func (*SchemaregistryV1) NewCreateSchemaRuleOptions(id string, typeVar string, config string) *CreateSchemaRuleOptions {
 	return &CreateSchemaRuleOptions{
-		ID:        core.StringPtr(id),
-		NewType:   core.StringPtr(newType),
-		NewConfig: core.StringPtr(newConfig),
+		ID:     core.StringPtr(id),
+		Type:   core.StringPtr(typeVar),
+		Config: core.StringPtr(config),
 	}
 }
 
@@ -1141,21 +1128,15 @@ func (_options *CreateSchemaRuleOptions) SetID(id string) *CreateSchemaRuleOptio
 	return _options
 }
 
-// SetNewType : Allow user to set NewType
-func (_options *CreateSchemaRuleOptions) SetNewType(newType string) *CreateSchemaRuleOptions {
-	_options.NewType = core.StringPtr(newType)
+// SetType : Allow user to set Type
+func (_options *CreateSchemaRuleOptions) SetType(typeVar string) *CreateSchemaRuleOptions {
+	_options.Type = core.StringPtr(typeVar)
 	return _options
 }
 
-// SetNewConfig : Allow user to set NewConfig
-func (_options *CreateSchemaRuleOptions) SetNewConfig(newConfig string) *CreateSchemaRuleOptions {
-	_options.NewConfig = core.StringPtr(newConfig)
-	return _options
-}
-
-// SetNewID : Allow user to set NewID
-func (_options *CreateSchemaRuleOptions) SetNewID(newID string) *CreateSchemaRuleOptions {
-	_options.NewID = core.StringPtr(newID)
+// SetConfig : Allow user to set Config
+func (_options *CreateSchemaRuleOptions) SetConfig(config string) *CreateSchemaRuleOptions {
+	_options.Config = core.StringPtr(config)
 	return _options
 }
 
@@ -1168,10 +1149,10 @@ func (options *CreateSchemaRuleOptions) SetHeaders(param map[string]string) *Cre
 // CreateVersionOptions : The CreateVersion options.
 type CreateVersionOptions struct {
 	// A schema ID. This identifies the schema for which a new version will be created.
-	ID *string `validate:"required,ne="`
+	ID *string `json:"-" validate:"required,ne="`
 
 	// The AVRO schema.
-	Schema map[string]interface{}
+	Schema map[string]interface{} `json:"schema,omitempty"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -1205,7 +1186,7 @@ func (options *CreateVersionOptions) SetHeaders(param map[string]string) *Create
 // DeleteSchemaOptions : The DeleteSchema options.
 type DeleteSchemaOptions struct {
 	// The ID of the schema to delete.
-	ID *string `validate:"required,ne="`
+	ID *string `json:"-" validate:"required,ne="`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -1233,10 +1214,10 @@ func (options *DeleteSchemaOptions) SetHeaders(param map[string]string) *DeleteS
 // DeleteSchemaRuleOptions : The DeleteSchemaRule options.
 type DeleteSchemaRuleOptions struct {
 	// The ID of the schema that the rule is to be deleted from.
-	ID *string `validate:"required,ne="`
+	ID *string `json:"-" validate:"required,ne="`
 
 	// The type of rule to delete. Currently only the value that can be specified is `COMPATIBILITY`.
-	Rule *string `validate:"required,ne="`
+	Rule *string `json:"-" validate:"required,ne="`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -1277,10 +1258,10 @@ func (options *DeleteSchemaRuleOptions) SetHeaders(param map[string]string) *Del
 // DeleteVersionOptions : The DeleteVersion options.
 type DeleteVersionOptions struct {
 	// A schema ID that identifies the schema to delete a version from.
-	ID *string `validate:"required,ne="`
+	ID *string `json:"-" validate:"required,ne="`
 
 	// The schema version number to delete.
-	Version *int64 `validate:"required"`
+	Version *int64 `json:"-" validate:"required"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -1315,7 +1296,7 @@ func (options *DeleteVersionOptions) SetHeaders(param map[string]string) *Delete
 // GetGlobalRuleOptions : The GetGlobalRule options.
 type GetGlobalRuleOptions struct {
 	// The type of the global rule to retrieve. Currently only `COMPATIBILITY` is supported.
-	Rule *string `validate:"required,ne="`
+	Rule *string `json:"-" validate:"required,ne="`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -1348,8 +1329,8 @@ func (options *GetGlobalRuleOptions) SetHeaders(param map[string]string) *GetGlo
 
 // GetLatestSchemaOptions : The GetLatestSchema options.
 type GetLatestSchemaOptions struct {
-	// The ID of a schema. The latest version of this schema will be returned in the response body.
-	ID *string `validate:"required,ne="`
+	// The ID of a schema.
+	ID *string `json:"-" validate:"required,ne="`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -1377,10 +1358,10 @@ func (options *GetLatestSchemaOptions) SetHeaders(param map[string]string) *GetL
 // GetSchemaRuleOptions : The GetSchemaRule options.
 type GetSchemaRuleOptions struct {
 	// The ID of the schema to retrieve the rule for.
-	ID *string `validate:"required,ne="`
+	ID *string `json:"-" validate:"required,ne="`
 
 	// The type of rule to retrieve. Currently only the value that can be specified is `COMPATIBILITY`.
-	Rule *string `validate:"required,ne="`
+	Rule *string `json:"-" validate:"required,ne="`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -1421,10 +1402,10 @@ func (options *GetSchemaRuleOptions) SetHeaders(param map[string]string) *GetSch
 // GetVersionOptions : The GetVersion options.
 type GetVersionOptions struct {
 	// The schema ID identifying which schema to return a version from.
-	ID *string `validate:"required,ne="`
+	ID *string `json:"-" validate:"required,ne="`
 
 	// The version number that identifies the particular schema version to return.
-	Version *int64 `validate:"required"`
+	Version *int64 `json:"-" validate:"required"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -1477,7 +1458,7 @@ func (options *ListSchemasOptions) SetHeaders(param map[string]string) *ListSche
 // ListVersionsOptions : The ListVersions options.
 type ListVersionsOptions struct {
 	// The schema ID for which the list of versions will be returned.
-	ID *string `validate:"required,ne="`
+	ID *string `json:"-" validate:"required,ne="`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -1505,17 +1486,13 @@ func (options *ListVersionsOptions) SetHeaders(param map[string]string) *ListVer
 // UpdateGlobalRuleOptions : The UpdateGlobalRule options.
 type UpdateGlobalRuleOptions struct {
 	// The type of the global rule to update. Currently only `COMPATIBILITY` is supported.
-	Rule *string `validate:"required,ne="`
+	Rule *string `json:"-" validate:"required,ne="`
 
 	// The type of the rule. Currently only one type is supported (`COMPATIBILITY`).
-	Type *string `validate:"required"`
+	Type *string `json:"type" validate:"required"`
 
 	// The configuration value for the rule. Which values are valid depends on the value of this object's `type` property.
-	Config *string `validate:"required"`
-
-	// The ID of the schema. This is either taken from the `X-Registry-ArtifactId` header when the request is made to
-	// create the schema or is an automatically assigned UUID value.
-	ID *string
+	Config *string `json:"config" validate:"required"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -1572,12 +1549,6 @@ func (_options *UpdateGlobalRuleOptions) SetConfig(config string) *UpdateGlobalR
 	return _options
 }
 
-// SetID : Allow user to set ID
-func (_options *UpdateGlobalRuleOptions) SetID(id string) *UpdateGlobalRuleOptions {
-	_options.ID = core.StringPtr(id)
-	return _options
-}
-
 // SetHeaders : Allow user to set Headers
 func (options *UpdateGlobalRuleOptions) SetHeaders(param map[string]string) *UpdateGlobalRuleOptions {
 	options.Headers = param
@@ -1587,10 +1558,10 @@ func (options *UpdateGlobalRuleOptions) SetHeaders(param map[string]string) *Upd
 // UpdateSchemaOptions : The UpdateSchema options.
 type UpdateSchemaOptions struct {
 	// The ID of the schema to update.
-	ID *string `validate:"required,ne="`
+	ID *string `json:"-" validate:"required,ne="`
 
 	// The AVRO schema.
-	Schema map[string]interface{}
+	Schema map[string]interface{} `json:"schema,omitempty"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -1624,20 +1595,16 @@ func (options *UpdateSchemaOptions) SetHeaders(param map[string]string) *UpdateS
 // UpdateSchemaRuleOptions : The UpdateSchemaRule options.
 type UpdateSchemaRuleOptions struct {
 	// The ID of the schema for which to update the rule configuration.
-	ID *string `validate:"required,ne="`
+	ID *string `json:"-" validate:"required,ne="`
 
 	// The type of rule to update. Currently only the value that can be specified is `COMPATIBILITY`.
-	Rule *string `validate:"required,ne="`
+	Rule *string `json:"-" validate:"required,ne="`
 
 	// The type of the rule. Currently only one type is supported (`COMPATIBILITY`).
-	NewType *string `validate:"required"`
+	Type *string `json:"type" validate:"required"`
 
 	// The configuration value for the rule. Which values are valid depends on the value of this object's `type` property.
-	NewConfig *string `validate:"required"`
-
-	// The ID of the schema. This is either taken from the `X-Registry-ArtifactId` header when the request is made to
-	// create the schema or is an automatically assigned UUID value.
-	NewID *string
+	Config *string `json:"config" validate:"required"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -1649,31 +1616,31 @@ const (
 	UpdateSchemaRuleOptionsRuleCompatibilityConst = "COMPATIBILITY"
 )
 
-// Constants associated with the UpdateSchemaRuleOptions.NewType property.
+// Constants associated with the UpdateSchemaRuleOptions.Type property.
 // The type of the rule. Currently only one type is supported (`COMPATIBILITY`).
 const (
-	UpdateSchemaRuleOptionsNewTypeCompatibilityConst = "COMPATIBILITY"
+	UpdateSchemaRuleOptionsTypeCompatibilityConst = "COMPATIBILITY"
 )
 
-// Constants associated with the UpdateSchemaRuleOptions.NewConfig property.
+// Constants associated with the UpdateSchemaRuleOptions.Config property.
 // The configuration value for the rule. Which values are valid depends on the value of this object's `type` property.
 const (
-	UpdateSchemaRuleOptionsNewConfigBackwardConst           = "BACKWARD"
-	UpdateSchemaRuleOptionsNewConfigBackwardTransitiveConst = "BACKWARD_TRANSITIVE"
-	UpdateSchemaRuleOptionsNewConfigForwardConst            = "FORWARD"
-	UpdateSchemaRuleOptionsNewConfigForwardTransitiveConst  = "FORWARD_TRANSITIVE"
-	UpdateSchemaRuleOptionsNewConfigFullConst               = "FULL"
-	UpdateSchemaRuleOptionsNewConfigFullTransitiveConst     = "FULL_TRANSITIVE"
-	UpdateSchemaRuleOptionsNewConfigNoneConst               = "NONE"
+	UpdateSchemaRuleOptionsConfigBackwardConst           = "BACKWARD"
+	UpdateSchemaRuleOptionsConfigBackwardTransitiveConst = "BACKWARD_TRANSITIVE"
+	UpdateSchemaRuleOptionsConfigForwardConst            = "FORWARD"
+	UpdateSchemaRuleOptionsConfigForwardTransitiveConst  = "FORWARD_TRANSITIVE"
+	UpdateSchemaRuleOptionsConfigFullConst               = "FULL"
+	UpdateSchemaRuleOptionsConfigFullTransitiveConst     = "FULL_TRANSITIVE"
+	UpdateSchemaRuleOptionsConfigNoneConst               = "NONE"
 )
 
 // NewUpdateSchemaRuleOptions : Instantiate UpdateSchemaRuleOptions
-func (*SchemaregistryV1) NewUpdateSchemaRuleOptions(id string, rule string, newType string, newConfig string) *UpdateSchemaRuleOptions {
+func (*SchemaregistryV1) NewUpdateSchemaRuleOptions(id string, rule string, typeVar string, config string) *UpdateSchemaRuleOptions {
 	return &UpdateSchemaRuleOptions{
-		ID:        core.StringPtr(id),
-		Rule:      core.StringPtr(rule),
-		NewType:   core.StringPtr(newType),
-		NewConfig: core.StringPtr(newConfig),
+		ID:     core.StringPtr(id),
+		Rule:   core.StringPtr(rule),
+		Type:   core.StringPtr(typeVar),
+		Config: core.StringPtr(config),
 	}
 }
 
@@ -1689,21 +1656,15 @@ func (_options *UpdateSchemaRuleOptions) SetRule(rule string) *UpdateSchemaRuleO
 	return _options
 }
 
-// SetNewType : Allow user to set NewType
-func (_options *UpdateSchemaRuleOptions) SetNewType(newType string) *UpdateSchemaRuleOptions {
-	_options.NewType = core.StringPtr(newType)
+// SetType : Allow user to set Type
+func (_options *UpdateSchemaRuleOptions) SetType(typeVar string) *UpdateSchemaRuleOptions {
+	_options.Type = core.StringPtr(typeVar)
 	return _options
 }
 
-// SetNewConfig : Allow user to set NewConfig
-func (_options *UpdateSchemaRuleOptions) SetNewConfig(newConfig string) *UpdateSchemaRuleOptions {
-	_options.NewConfig = core.StringPtr(newConfig)
-	return _options
-}
-
-// SetNewID : Allow user to set NewID
-func (_options *UpdateSchemaRuleOptions) SetNewID(newID string) *UpdateSchemaRuleOptions {
-	_options.NewID = core.StringPtr(newID)
+// SetConfig : Allow user to set Config
+func (_options *UpdateSchemaRuleOptions) SetConfig(config string) *UpdateSchemaRuleOptions {
+	_options.Config = core.StringPtr(config)
 	return _options
 }
 
@@ -1757,10 +1718,6 @@ func UnmarshalError(m map[string]json.RawMessage, result interface{}) (err error
 
 // Rule : Rules define constraints on whether the schema registry will accept a new version of a schema.
 type Rule struct {
-	// The ID of the schema. This is either taken from the `X-Registry-ArtifactId` header when the request is made to
-	// create the schema or is an automatically assigned UUID value.
-	ID *string `json:"id,omitempty"`
-
 	// The type of the rule. Currently only one type is supported (`COMPATIBILITY`).
 	Type *string `json:"type" validate:"required"`
 
@@ -1799,10 +1756,6 @@ func (*SchemaregistryV1) NewRule(typeVar string, config string) (_model *Rule, e
 // UnmarshalRule unmarshals an instance of Rule from the specified map of raw messages.
 func UnmarshalRule(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(Rule)
-	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
-	if err != nil {
-		return
-	}
 	err = core.UnmarshalPrimitive(m, "type", &obj.Type)
 	if err != nil {
 		return
