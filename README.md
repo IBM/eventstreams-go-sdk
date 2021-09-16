@@ -35,7 +35,6 @@ It includes a library of functions used to access a Eventstreams cluster.
     + [Go modules](#go-modules)
     + [`dep` dependency manager](#dep-dependency-manager)
 - [Using the SDK](#using-the-sdk)
-- [REST API documentation](#event-streams-administration-rest-api)
 - [Questions](#questions)
 - [Issues](#issues)
 - [Open source @ IBM](#open-source--ibm)
@@ -50,8 +49,8 @@ The IBM Cloud Eventstreams Go SDK allows developers to programmatically interact
 
 Service Name | Package name 
 --- | --- 
-[Admin Rest](https://cloud.ibm.com/apidocs/event-streams) | AdminRest
-[Schema Registry](https://cloud.ibm.com/docs/EventStreams?topic=EventStreams-ES_schema_registry&locale=en#schema_registry_rest_endpoints) | SchemaRegistry
+[Admin Rest](https://cloud.ibm.com/apidocs/event-streams) | pkg/adminrestv1
+[Schema Registry](https://cloud.ibm.com/docs/EventStreams?topic=EventStreams-ES_schema_registry&locale=en#schema_registry_rest_endpoints) | pkg/schemaregistryv1
 
 ## Prerequisites
 

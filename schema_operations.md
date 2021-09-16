@@ -2,7 +2,7 @@
 This REST API allows users of the
 [IBM Event Streams service](https://cloud.ibm.com/docs/services/EventStreams/index.html)
 to manage
-[schema](#using-the-rest-api-to-administer-kafka-topics)
+[schema](#using-the-rest-api-to-manage-schema)
 associated with an instance of the service. You can use this API to perform the following
 operations:
   - [Create a schema](#creating-a-schema)
