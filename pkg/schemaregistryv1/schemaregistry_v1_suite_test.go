@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package adminrestv1
+package schemaregistryv1_test
 
 import (
 	"testing"
@@ -23,7 +23,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestAdminrestV1(t *testing.T) {
+func TestSchemaregistryV1(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "AdminrestV1 Suite")
+	RunSpecs(t, "SchemaregistryV1 Suite")
 }

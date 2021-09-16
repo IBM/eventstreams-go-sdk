@@ -20,17 +20,17 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-
-	"github.com/IBM/go-sdk-core/v4/core"
-	"github.com/go-openapi/strfmt"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"time"
+
+	"github.com/IBM/go-sdk-core/v5/core"
+	"github.com/go-openapi/strfmt"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
 var _ = Describe(`AdminrestV1`, func() {
@@ -160,7 +160,6 @@ var _ = Describe(`AdminrestV1`, func() {
 			fmt.Fprintf(GinkgoWriter, "Expected error: %s\n", err.Error())
 		})
 	})
-
 	Describe(`CreateTopic(createTopicOptions *CreateTopicOptions)`, func() {
 		createTopicPath := "/admin/topics"
 		Context(`Using mock server endpoint`, func() {
@@ -257,7 +256,7 @@ var _ = Describe(`AdminrestV1`, func() {
 	})
 	Describe(`ListTopics(listTopicsOptions *ListTopicsOptions) - Operation response error`, func() {
 		listTopicsPath := "/admin/topics"
-		Context(`Using mock server endpoint`, func() {
+		Context(`Using mock server endpoint with invalid JSON response`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 					defer GinkgoRecover()
@@ -266,11 +265,8 @@ var _ = Describe(`AdminrestV1`, func() {
 					Expect(req.URL.EscapedPath()).To(Equal(listTopicsPath))
 					Expect(req.Method).To(Equal("GET"))
 					Expect(req.URL.Query()["topic_filter"]).To(Equal([]string{"testString"}))
-
 					Expect(req.URL.Query()["per_page"]).To(Equal([]string{fmt.Sprint(int64(38))}))
-
 					Expect(req.URL.Query()["page"]).To(Equal([]string{fmt.Sprint(int64(38))}))
-
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
 					fmt.Fprintf(res, `} this is not valid json {`)
@@ -308,7 +304,6 @@ var _ = Describe(`AdminrestV1`, func() {
 			})
 		})
 	})
-
 	Describe(`ListTopics(listTopicsOptions *ListTopicsOptions)`, func() {
 		listTopicsPath := "/admin/topics"
 		Context(`Using mock server endpoint with timeout`, func() {
@@ -321,11 +316,8 @@ var _ = Describe(`AdminrestV1`, func() {
 					Expect(req.Method).To(Equal("GET"))
 
 					Expect(req.URL.Query()["topic_filter"]).To(Equal([]string{"testString"}))
-
 					Expect(req.URL.Query()["per_page"]).To(Equal([]string{fmt.Sprint(int64(38))}))
-
 					Expect(req.URL.Query()["page"]).To(Equal([]string{fmt.Sprint(int64(38))}))
-
 					// Sleep a short time to support a timeout test
 					time.Sleep(100 * time.Millisecond)
 
@@ -386,11 +378,8 @@ var _ = Describe(`AdminrestV1`, func() {
 					Expect(req.Method).To(Equal("GET"))
 
 					Expect(req.URL.Query()["topic_filter"]).To(Equal([]string{"testString"}))
-
 					Expect(req.URL.Query()["per_page"]).To(Equal([]string{fmt.Sprint(int64(38))}))
-
 					Expect(req.URL.Query()["page"]).To(Equal([]string{fmt.Sprint(int64(38))}))
-
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
@@ -452,10 +441,46 @@ var _ = Describe(`AdminrestV1`, func() {
 				testServer.Close()
 			})
 		})
+		Context(`Using mock server endpoint with missing response body`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Set success status code with no respoonse body
+					res.WriteHeader(200)
+				}))
+			})
+			It(`Invoke ListTopics successfully`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the ListTopicsOptions model
+				listTopicsOptionsModel := new(ListTopicsOptions)
+				listTopicsOptionsModel.TopicFilter = core.StringPtr("testString")
+				listTopicsOptionsModel.PerPage = core.Int64Ptr(int64(38))
+				listTopicsOptionsModel.Page = core.Int64Ptr(int64(38))
+				listTopicsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation
+				result, response, operationErr := adminrestService.ListTopics(listTopicsOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+
+				// Verify a nil result
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
 	})
 	Describe(`GetTopic(getTopicOptions *GetTopicOptions) - Operation response error`, func() {
 		getTopicPath := "/admin/topics/testString"
-		Context(`Using mock server endpoint`, func() {
+		Context(`Using mock server endpoint with invalid JSON response`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 					defer GinkgoRecover()
@@ -498,7 +523,6 @@ var _ = Describe(`AdminrestV1`, func() {
 			})
 		})
 	})
-
 	Describe(`GetTopic(getTopicOptions *GetTopicOptions)`, func() {
 		getTopicPath := "/admin/topics/testString"
 		Context(`Using mock server endpoint with timeout`, func() {
@@ -631,8 +655,41 @@ var _ = Describe(`AdminrestV1`, func() {
 				testServer.Close()
 			})
 		})
-	})
+		Context(`Using mock server endpoint with missing response body`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
 
+					// Set success status code with no respoonse body
+					res.WriteHeader(200)
+				}))
+			})
+			It(`Invoke GetTopic successfully`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the GetTopicOptions model
+				getTopicOptionsModel := new(GetTopicOptions)
+				getTopicOptionsModel.TopicName = core.StringPtr("testString")
+				getTopicOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation
+				result, response, operationErr := adminrestService.GetTopic(getTopicOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+
+				// Verify a nil result
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
 	Describe(`DeleteTopic(deleteTopicOptions *DeleteTopicOptions)`, func() {
 		deleteTopicPath := "/admin/topics/testString"
 		Context(`Using mock server endpoint`, func() {
@@ -701,7 +758,6 @@ var _ = Describe(`AdminrestV1`, func() {
 			})
 		})
 	})
-
 	Describe(`UpdateTopic(updateTopicOptions *UpdateTopicOptions)`, func() {
 		updateTopicPath := "/admin/topics/testString"
 		Context(`Using mock server endpoint`, func() {
@@ -804,7 +860,7 @@ var _ = Describe(`AdminrestV1`, func() {
 	})
 	Describe(`GetMirroringTopicSelection(getMirroringTopicSelectionOptions *GetMirroringTopicSelectionOptions) - Operation response error`, func() {
 		getMirroringTopicSelectionPath := "/admin/mirroring/topic-selection"
-		Context(`Using mock server endpoint`, func() {
+		Context(`Using mock server endpoint with invalid JSON response`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 					defer GinkgoRecover()
@@ -846,7 +902,6 @@ var _ = Describe(`AdminrestV1`, func() {
 			})
 		})
 	})
-
 	Describe(`GetMirroringTopicSelection(getMirroringTopicSelectionOptions *GetMirroringTopicSelectionOptions)`, func() {
 		getMirroringTopicSelectionPath := "/admin/mirroring/topic-selection"
 		Context(`Using mock server endpoint with timeout`, func() {
@@ -969,10 +1024,43 @@ var _ = Describe(`AdminrestV1`, func() {
 				testServer.Close()
 			})
 		})
+		Context(`Using mock server endpoint with missing response body`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Set success status code with no respoonse body
+					res.WriteHeader(200)
+				}))
+			})
+			It(`Invoke GetMirroringTopicSelection successfully`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the GetMirroringTopicSelectionOptions model
+				getMirroringTopicSelectionOptionsModel := new(GetMirroringTopicSelectionOptions)
+				getMirroringTopicSelectionOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation
+				result, response, operationErr := adminrestService.GetMirroringTopicSelection(getMirroringTopicSelectionOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+
+				// Verify a nil result
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
 	})
 	Describe(`ReplaceMirroringTopicSelection(replaceMirroringTopicSelectionOptions *ReplaceMirroringTopicSelectionOptions) - Operation response error`, func() {
 		replaceMirroringTopicSelectionPath := "/admin/mirroring/topic-selection"
-		Context(`Using mock server endpoint`, func() {
+		Context(`Using mock server endpoint with invalid JSON response`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 					defer GinkgoRecover()
@@ -1015,7 +1103,6 @@ var _ = Describe(`AdminrestV1`, func() {
 			})
 		})
 	})
-
 	Describe(`ReplaceMirroringTopicSelection(replaceMirroringTopicSelectionOptions *ReplaceMirroringTopicSelectionOptions)`, func() {
 		replaceMirroringTopicSelectionPath := "/admin/mirroring/topic-selection"
 		Context(`Using mock server endpoint with timeout`, func() {
@@ -1173,10 +1260,44 @@ var _ = Describe(`AdminrestV1`, func() {
 				testServer.Close()
 			})
 		})
+		Context(`Using mock server endpoint with missing response body`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Set success status code with no respoonse body
+					res.WriteHeader(200)
+				}))
+			})
+			It(`Invoke ReplaceMirroringTopicSelection successfully`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the ReplaceMirroringTopicSelectionOptions model
+				replaceMirroringTopicSelectionOptionsModel := new(ReplaceMirroringTopicSelectionOptions)
+				replaceMirroringTopicSelectionOptionsModel.Includes = []string{"testString"}
+				replaceMirroringTopicSelectionOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation
+				result, response, operationErr := adminrestService.ReplaceMirroringTopicSelection(replaceMirroringTopicSelectionOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+
+				// Verify a nil result
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
 	})
 	Describe(`GetMirroringActiveTopics(getMirroringActiveTopicsOptions *GetMirroringActiveTopicsOptions) - Operation response error`, func() {
 		getMirroringActiveTopicsPath := "/admin/mirroring/active-topics"
-		Context(`Using mock server endpoint`, func() {
+		Context(`Using mock server endpoint with invalid JSON response`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 					defer GinkgoRecover()
@@ -1218,7 +1339,6 @@ var _ = Describe(`AdminrestV1`, func() {
 			})
 		})
 	})
-
 	Describe(`GetMirroringActiveTopics(getMirroringActiveTopicsOptions *GetMirroringActiveTopicsOptions)`, func() {
 		getMirroringActiveTopicsPath := "/admin/mirroring/active-topics"
 		Context(`Using mock server endpoint with timeout`, func() {
@@ -1335,6 +1455,39 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(operationErr).ToNot(BeNil())
 				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
 				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+		Context(`Using mock server endpoint with missing response body`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Set success status code with no respoonse body
+					res.WriteHeader(200)
+				}))
+			})
+			It(`Invoke GetMirroringActiveTopics successfully`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the GetMirroringActiveTopicsOptions model
+				getMirroringActiveTopicsOptionsModel := new(GetMirroringActiveTopicsOptions)
+				getMirroringActiveTopicsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation
+				result, response, operationErr := adminrestService.GetMirroringActiveTopics(getMirroringActiveTopicsOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+
+				// Verify a nil result
 				Expect(result).To(BeNil())
 			})
 			AfterEach(func() {
@@ -1467,11 +1620,11 @@ var _ = Describe(`AdminrestV1`, func() {
 			Expect(mockReader).ToNot(BeNil())
 		})
 		It(`Invoke CreateMockDate() successfully`, func() {
-			mockDate := CreateMockDate()
+			mockDate := CreateMockDate("2019-01-01")
 			Expect(mockDate).ToNot(BeNil())
 		})
 		It(`Invoke CreateMockDateTime() successfully`, func() {
-			mockDateTime := CreateMockDateTime()
+			mockDateTime := CreateMockDateTime("2019-01-01T12:00:00.000Z")
 			Expect(mockDateTime).ToNot(BeNil())
 		})
 	})
@@ -1496,13 +1649,19 @@ func CreateMockReader(mockData string) io.ReadCloser {
 	return ioutil.NopCloser(bytes.NewReader([]byte(mockData)))
 }
 
-func CreateMockDate() *strfmt.Date {
-	d := strfmt.Date(time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC))
+func CreateMockDate(mockData string) *strfmt.Date {
+	d, err := core.ParseDate(mockData)
+	if err != nil {
+		return nil
+	}
 	return &d
 }
 
-func CreateMockDateTime() *strfmt.DateTime {
-	d := strfmt.DateTime(time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC))
+func CreateMockDateTime(mockData string) *strfmt.DateTime {
+	d, err := core.ParseDateTime(mockData)
+	if err != nil {
+		return nil
+	}
 	return &d
 }
 

@@ -20,7 +20,7 @@ import (
 	"os"
 
 	"github.com/IBM/eventstreams-go-sdk/pkg/adminrestv1"
-	"github.com/IBM/go-sdk-core/v4/core"
+	"github.com/IBM/go-sdk-core/v5/core"
 )
 
 // End Code Setup
