@@ -1,5 +1,5 @@
 /**
- * (C) Copyright IBM Corp. 2021.
+ * (C) Copyright IBM Corp. 2023.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1604,6 +1604,61 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(updateTopicOptionsModel.Configs).To(Equal([]ConfigUpdate{*configUpdateModel}))
 				Expect(updateTopicOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
+			It(`Invoke NewCreateQuotasOptions successfully`, func() {
+				// Construct an instance of the CreateQuotasOptions model
+				entityName := "testString"
+				createQuotasOptionsModel := adminrestService.NewCreateQuotasOptions(entityName)
+				createQuotasOptionsModel.SetEntityName("testString")
+				createQuotasOptionsModel.SetProducerByteRate(int64(1024))
+				createQuotasOptionsModel.SetConsumerByteRate(int64(1024))
+				createQuotasOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
+				Expect(createQuotasOptionsModel).ToNot(BeNil())
+				Expect(createQuotasOptionsModel.EntityName).To(Equal(core.StringPtr("testString")))
+				Expect(createQuotasOptionsModel.ProducerByteRate).To(Equal(core.Int64Ptr(int64(1024))))
+				Expect(createQuotasOptionsModel.ConsumerByteRate).To(Equal(core.Int64Ptr(int64(1024))))
+				Expect(createQuotasOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
+			})
+			It(`Invoke NewDeleteQuotasOptions successfully`, func() {
+				// Construct an instance of the DeleteQuotasOptions model
+				entityName := "testString"
+				deleteQuotasOptionsModel := adminrestService.NewDeleteQuotasOptions(entityName)
+				deleteQuotasOptionsModel.SetEntityName("testString")
+				deleteQuotasOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
+				Expect(deleteQuotasOptionsModel).ToNot(BeNil())
+				Expect(deleteQuotasOptionsModel.EntityName).To(Equal(core.StringPtr("testString")))
+				Expect(deleteQuotasOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
+			})
+			It(`Invoke NewGetQuotasOptions successfully`, func() {
+				// Construct an instance of the GetQuotasOptions model
+				entityName := "testString"
+				getQuotasOptionsModel := adminrestService.NewGetQuotasOptions(entityName)
+				getQuotasOptionsModel.SetEntityName("testString")
+				getQuotasOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
+				Expect(getQuotasOptionsModel).ToNot(BeNil())
+				Expect(getQuotasOptionsModel.EntityName).To(Equal(core.StringPtr("testString")))
+				Expect(getQuotasOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
+			})
+			It(`Invoke NewListQuotasOptions successfully`, func() {
+				// Construct an instance of the ListQuotasOptions model
+				listQuotasOptionsModel := adminrestService.NewListQuotasOptions()
+				listQuotasOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
+				Expect(listQuotasOptionsModel).ToNot(BeNil())
+				Expect(listQuotasOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
+			})
+			It(`Invoke NewUpdateQuotasOptions successfully`, func() {
+				// Construct an instance of the UpdateQuotasOptions model
+				entityName := "testString"
+				updateQuotasOptionsModel := adminrestService.NewUpdateQuotasOptions(entityName)
+				updateQuotasOptionsModel.SetEntityName("testString")
+				updateQuotasOptionsModel.SetProducerByteRate(int64(1024))
+				updateQuotasOptionsModel.SetConsumerByteRate(int64(1024))
+				updateQuotasOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
+				Expect(updateQuotasOptionsModel).ToNot(BeNil())
+				Expect(updateQuotasOptionsModel.EntityName).To(Equal(core.StringPtr("testString")))
+				Expect(updateQuotasOptionsModel.ProducerByteRate).To(Equal(core.Int64Ptr(int64(1024))))
+				Expect(updateQuotasOptionsModel.ConsumerByteRate).To(Equal(core.Int64Ptr(int64(1024))))
+				Expect(updateQuotasOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
+			})
 		})
 	})
 	Describe(`Utility function tests`, func() {
@@ -1626,6 +1681,663 @@ var _ = Describe(`AdminrestV1`, func() {
 		It(`Invoke CreateMockDateTime() successfully`, func() {
 			mockDateTime := CreateMockDateTime("2019-01-01T12:00:00.000Z")
 			Expect(mockDateTime).ToNot(BeNil())
+		})
+	})
+
+	Describe(`CreateQuotas(createQuotasOptions *CreateQuotasOptions)`, func() {
+		createQuotasPath := "/admin/quotas/testString"
+		Context(`Using mock server endpoint`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(createQuotasPath))
+					Expect(req.Method).To(Equal("POST"))
+
+					// For gzip-disabled operation, verify Content-Encoding is not set.
+					Expect(req.Header.Get("Content-Encoding")).To(BeEmpty())
+
+					// If there is a body, then make sure we can read it
+					bodyBuf := new(bytes.Buffer)
+					if req.Header.Get("Content-Encoding") == "gzip" {
+						body, err := core.NewGzipDecompressionReader(req.Body)
+						Expect(err).To(BeNil())
+						_, err = bodyBuf.ReadFrom(body)
+						Expect(err).To(BeNil())
+					} else {
+						_, err := bodyBuf.ReadFrom(req.Body)
+						Expect(err).To(BeNil())
+					}
+					fmt.Fprintf(GinkgoWriter, "  Request body: %s", bodyBuf.String())
+
+					res.WriteHeader(201)
+				}))
+			})
+			It(`Invoke CreateQuotas successfully`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Invoke operation with nil options model (negative test)
+				response, operationErr := adminrestService.CreateQuotas(nil)
+				Expect(operationErr).NotTo(BeNil())
+				Expect(response).To(BeNil())
+
+				// Construct an instance of the CreateQuotasOptions model
+				createQuotasOptionsModel := new(CreateQuotasOptions)
+				createQuotasOptionsModel.EntityName = core.StringPtr("testString")
+				createQuotasOptionsModel.ProducerByteRate = core.Int64Ptr(int64(1024))
+				createQuotasOptionsModel.ConsumerByteRate = core.Int64Ptr(int64(1024))
+				createQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with valid options model (positive test)
+				response, operationErr = adminrestService.CreateQuotas(createQuotasOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+			})
+			It(`Invoke CreateQuotas with error: Operation validation and request error`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the CreateQuotasOptions model
+				createQuotasOptionsModel := new(CreateQuotasOptions)
+				createQuotasOptionsModel.EntityName = core.StringPtr("testString")
+				createQuotasOptionsModel.ProducerByteRate = core.Int64Ptr(int64(1024))
+				createQuotasOptionsModel.ConsumerByteRate = core.Int64Ptr(int64(1024))
+				createQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Invoke operation with empty URL (negative test)
+				err := adminrestService.SetServiceURL("")
+				Expect(err).To(BeNil())
+				response, operationErr := adminrestService.CreateQuotas(createQuotasOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
+				Expect(response).To(BeNil())
+				// Construct a second instance of the CreateQuotasOptions model with no property values
+				createQuotasOptionsModelNew := new(CreateQuotasOptions)
+				// Invoke operation with invalid model (negative test)
+				response, operationErr = adminrestService.CreateQuotas(createQuotasOptionsModelNew)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
+	Describe(`UpdateQuotas(updateQuotasOptions *UpdateQuotasOptions)`, func() {
+		updateQuotasPath := "/admin/quotas/testString"
+		Context(`Using mock server endpoint`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(updateQuotasPath))
+					Expect(req.Method).To(Equal("PATCH"))
+
+					// For gzip-disabled operation, verify Content-Encoding is not set.
+					Expect(req.Header.Get("Content-Encoding")).To(BeEmpty())
+
+					// If there is a body, then make sure we can read it
+					bodyBuf := new(bytes.Buffer)
+					if req.Header.Get("Content-Encoding") == "gzip" {
+						body, err := core.NewGzipDecompressionReader(req.Body)
+						Expect(err).To(BeNil())
+						_, err = bodyBuf.ReadFrom(body)
+						Expect(err).To(BeNil())
+					} else {
+						_, err := bodyBuf.ReadFrom(req.Body)
+						Expect(err).To(BeNil())
+					}
+					fmt.Fprintf(GinkgoWriter, "  Request body: %s", bodyBuf.String())
+
+					res.WriteHeader(202)
+				}))
+			})
+			It(`Invoke UpdateQuotas successfully`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Invoke operation with nil options model (negative test)
+				response, operationErr := adminrestService.UpdateQuotas(nil)
+				Expect(operationErr).NotTo(BeNil())
+				Expect(response).To(BeNil())
+
+				// Construct an instance of the UpdateQuotasOptions model
+				updateQuotasOptionsModel := new(UpdateQuotasOptions)
+				updateQuotasOptionsModel.EntityName = core.StringPtr("testString")
+				updateQuotasOptionsModel.ProducerByteRate = core.Int64Ptr(int64(1024))
+				updateQuotasOptionsModel.ConsumerByteRate = core.Int64Ptr(int64(1024))
+				updateQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with valid options model (positive test)
+				response, operationErr = adminrestService.UpdateQuotas(updateQuotasOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+			})
+			It(`Invoke UpdateQuotas with error: Operation validation and request error`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the UpdateQuotasOptions model
+				updateQuotasOptionsModel := new(UpdateQuotasOptions)
+				updateQuotasOptionsModel.EntityName = core.StringPtr("testString")
+				updateQuotasOptionsModel.ProducerByteRate = core.Int64Ptr(int64(1024))
+				updateQuotasOptionsModel.ConsumerByteRate = core.Int64Ptr(int64(1024))
+				updateQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Invoke operation with empty URL (negative test)
+				err := adminrestService.SetServiceURL("")
+				Expect(err).To(BeNil())
+				response, operationErr := adminrestService.UpdateQuotas(updateQuotasOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
+				Expect(response).To(BeNil())
+				// Construct a second instance of the UpdateQuotasOptions model with no property values
+				updateQuotasOptionsModelNew := new(UpdateQuotasOptions)
+				// Invoke operation with invalid model (negative test)
+				response, operationErr = adminrestService.UpdateQuotas(updateQuotasOptionsModelNew)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
+	Describe(`DeleteQuotas(deleteQuotasOptions *DeleteQuotasOptions)`, func() {
+		deleteQuotasPath := "/admin/quotas/testString"
+		Context(`Using mock server endpoint`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(deleteQuotasPath))
+					Expect(req.Method).To(Equal("DELETE"))
+
+					res.WriteHeader(202)
+				}))
+			})
+			It(`Invoke DeleteQuotas successfully`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Invoke operation with nil options model (negative test)
+				response, operationErr := adminrestService.DeleteQuotas(nil)
+				Expect(operationErr).NotTo(BeNil())
+				Expect(response).To(BeNil())
+
+				// Construct an instance of the DeleteQuotasOptions model
+				deleteQuotasOptionsModel := new(DeleteQuotasOptions)
+				deleteQuotasOptionsModel.EntityName = core.StringPtr("testString")
+				deleteQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with valid options model (positive test)
+				response, operationErr = adminrestService.DeleteQuotas(deleteQuotasOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+			})
+			It(`Invoke DeleteQuotas with error: Operation validation and request error`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the DeleteQuotasOptions model
+				deleteQuotasOptionsModel := new(DeleteQuotasOptions)
+				deleteQuotasOptionsModel.EntityName = core.StringPtr("testString")
+				deleteQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Invoke operation with empty URL (negative test)
+				err := adminrestService.SetServiceURL("")
+				Expect(err).To(BeNil())
+				response, operationErr := adminrestService.DeleteQuotas(deleteQuotasOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
+				Expect(response).To(BeNil())
+				// Construct a second instance of the DeleteQuotasOptions model with no property values
+				deleteQuotasOptionsModelNew := new(DeleteQuotasOptions)
+				// Invoke operation with invalid model (negative test)
+				response, operationErr = adminrestService.DeleteQuotas(deleteQuotasOptionsModelNew)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
+	Describe(`GetQuotas(getQuotasOptions *GetQuotasOptions) - Operation response error`, func() {
+		getQuotasPath := "/admin/quotas/testString"
+		Context(`Using mock server endpoint with invalid JSON response`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(getQuotasPath))
+					Expect(req.Method).To(Equal("GET"))
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(200)
+					fmt.Fprint(res, `} this is not valid json {`)
+				}))
+			})
+			It(`Invoke GetQuotas with error: Operation response processing error`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the GetQuotasOptions model
+				getQuotasOptionsModel := new(GetQuotasOptions)
+				getQuotasOptionsModel.EntityName = core.StringPtr("testString")
+				getQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Expect response parsing to fail since we are receiving a text/plain response
+				result, response, operationErr := adminrestService.GetQuotas(getQuotasOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).To(BeNil())
+
+				// Enable retries and test again
+				adminrestService.EnableRetries(0, 0)
+				result, response, operationErr = adminrestService.GetQuotas(getQuotasOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
+	Describe(`GetQuotas(getQuotasOptions *GetQuotasOptions)`, func() {
+		getQuotasPath := "/admin/quotas/testString"
+		Context(`Using mock server endpoint with timeout`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(getQuotasPath))
+					Expect(req.Method).To(Equal("GET"))
+
+					// Sleep a short time to support a timeout test
+					time.Sleep(100 * time.Millisecond)
+
+					// Set mock response
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(200)
+					fmt.Fprintf(res, "%s", `{"producer_byte_rate": 1024, "consumer_byte_rate": 1024}`)
+				}))
+			})
+			It(`Invoke GetQuotas successfully with retries`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+				adminrestService.EnableRetries(0, 0)
+
+				// Construct an instance of the GetQuotasOptions model
+				getQuotasOptionsModel := new(GetQuotasOptions)
+				getQuotasOptionsModel.EntityName = core.StringPtr("testString")
+				getQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with a Context to test a timeout error
+				ctx, cancelFunc := context.WithTimeout(context.Background(), 80*time.Millisecond)
+				defer cancelFunc()
+				_, _, operationErr := adminrestService.GetQuotasWithContext(ctx, getQuotasOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
+
+				// Disable retries and test again
+				adminrestService.DisableRetries()
+				result, response, operationErr := adminrestService.GetQuotas(getQuotasOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).ToNot(BeNil())
+
+				// Re-test the timeout error with retries disabled
+				ctx, cancelFunc2 := context.WithTimeout(context.Background(), 80*time.Millisecond)
+				defer cancelFunc2()
+				_, _, operationErr = adminrestService.GetQuotasWithContext(ctx, getQuotasOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+		Context(`Using mock server endpoint`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(getQuotasPath))
+					Expect(req.Method).To(Equal("GET"))
+
+					// Set mock response
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(200)
+					fmt.Fprintf(res, "%s", `{"producer_byte_rate": 1024, "consumer_byte_rate": 1024}`)
+				}))
+			})
+			It(`Invoke GetQuotas successfully`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Invoke operation with nil options model (negative test)
+				result, response, operationErr := adminrestService.GetQuotas(nil)
+				Expect(operationErr).NotTo(BeNil())
+				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
+
+				// Construct an instance of the GetQuotasOptions model
+				getQuotasOptionsModel := new(GetQuotasOptions)
+				getQuotasOptionsModel.EntityName = core.StringPtr("testString")
+				getQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with valid options model (positive test)
+				result, response, operationErr = adminrestService.GetQuotas(getQuotasOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).ToNot(BeNil())
+
+			})
+			It(`Invoke GetQuotas with error: Operation validation and request error`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the GetQuotasOptions model
+				getQuotasOptionsModel := new(GetQuotasOptions)
+				getQuotasOptionsModel.EntityName = core.StringPtr("testString")
+				getQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Invoke operation with empty URL (negative test)
+				err := adminrestService.SetServiceURL("")
+				Expect(err).To(BeNil())
+				result, response, operationErr := adminrestService.GetQuotas(getQuotasOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
+				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
+				// Construct a second instance of the GetQuotasOptions model with no property values
+				getQuotasOptionsModelNew := new(GetQuotasOptions)
+				// Invoke operation with invalid model (negative test)
+				result, response, operationErr = adminrestService.GetQuotas(getQuotasOptionsModelNew)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+		Context(`Using mock server endpoint with missing response body`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Set success status code with no respoonse body
+					res.WriteHeader(200)
+				}))
+			})
+			It(`Invoke GetQuotas successfully`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the GetQuotasOptions model
+				getQuotasOptionsModel := new(GetQuotasOptions)
+				getQuotasOptionsModel.EntityName = core.StringPtr("testString")
+				getQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation
+				result, response, operationErr := adminrestService.GetQuotas(getQuotasOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+
+				// Verify a nil result
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
+	Describe(`ListQuotas(listQuotasOptions *ListQuotasOptions) - Operation response error`, func() {
+		listQuotasPath := "/admin/quotas"
+		Context(`Using mock server endpoint with invalid JSON response`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(listQuotasPath))
+					Expect(req.Method).To(Equal("GET"))
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(200)
+					fmt.Fprint(res, `} this is not valid json {`)
+				}))
+			})
+			It(`Invoke ListQuotas with error: Operation response processing error`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the ListQuotasOptions model
+				listQuotasOptionsModel := new(ListQuotasOptions)
+				listQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Expect response parsing to fail since we are receiving a text/plain response
+				result, response, operationErr := adminrestService.ListQuotas(listQuotasOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).To(BeNil())
+
+				// Enable retries and test again
+				adminrestService.EnableRetries(0, 0)
+				result, response, operationErr = adminrestService.ListQuotas(listQuotasOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
+	Describe(`ListQuotas(listQuotasOptions *ListQuotasOptions)`, func() {
+		listQuotasPath := "/admin/quotas"
+		Context(`Using mock server endpoint with timeout`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(listQuotasPath))
+					Expect(req.Method).To(Equal("GET"))
+
+					// Sleep a short time to support a timeout test
+					time.Sleep(100 * time.Millisecond)
+
+					// Set mock response
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(200)
+					fmt.Fprintf(res, "%s", `{"data": [{"entity_name": "EntityName", "producer_byte_rate": 16, "consumer_byte_rate": 16}]}`)
+				}))
+			})
+			It(`Invoke ListQuotas successfully with retries`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+				adminrestService.EnableRetries(0, 0)
+
+				// Construct an instance of the ListQuotasOptions model
+				listQuotasOptionsModel := new(ListQuotasOptions)
+				listQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with a Context to test a timeout error
+				ctx, cancelFunc := context.WithTimeout(context.Background(), 80*time.Millisecond)
+				defer cancelFunc()
+				_, _, operationErr := adminrestService.ListQuotasWithContext(ctx, listQuotasOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
+
+				// Disable retries and test again
+				adminrestService.DisableRetries()
+				result, response, operationErr := adminrestService.ListQuotas(listQuotasOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).ToNot(BeNil())
+
+				// Re-test the timeout error with retries disabled
+				ctx, cancelFunc2 := context.WithTimeout(context.Background(), 80*time.Millisecond)
+				defer cancelFunc2()
+				_, _, operationErr = adminrestService.ListQuotasWithContext(ctx, listQuotasOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+		Context(`Using mock server endpoint`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(listQuotasPath))
+					Expect(req.Method).To(Equal("GET"))
+
+					// Set mock response
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(200)
+					fmt.Fprintf(res, "%s", `{"data": [{"entity_name": "EntityName", "producer_byte_rate": 16, "consumer_byte_rate": 16}]}`)
+				}))
+			})
+			It(`Invoke ListQuotas successfully`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Invoke operation with nil options model (negative test)
+				result, response, operationErr := adminrestService.ListQuotas(nil)
+				Expect(operationErr).NotTo(BeNil())
+				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
+
+				// Construct an instance of the ListQuotasOptions model
+				listQuotasOptionsModel := new(ListQuotasOptions)
+				listQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with valid options model (positive test)
+				result, response, operationErr = adminrestService.ListQuotas(listQuotasOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).ToNot(BeNil())
+
+			})
+			It(`Invoke ListQuotas with error: Operation request error`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the ListQuotasOptions model
+				listQuotasOptionsModel := new(ListQuotasOptions)
+				listQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Invoke operation with empty URL (negative test)
+				err := adminrestService.SetServiceURL("")
+				Expect(err).To(BeNil())
+				result, response, operationErr := adminrestService.ListQuotas(listQuotasOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
+				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+		Context(`Using mock server endpoint with missing response body`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Set success status code with no respoonse body
+					res.WriteHeader(200)
+				}))
+			})
+			It(`Invoke ListQuotas successfully`, func() {
+				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the ListQuotasOptions model
+				listQuotasOptionsModel := new(ListQuotasOptions)
+				listQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation
+				result, response, operationErr := adminrestService.ListQuotas(listQuotasOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+
+				// Verify a nil result
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
 		})
 	})
 })
