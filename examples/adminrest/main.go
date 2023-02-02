@@ -18,7 +18,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"reflect"
 
 	"github.com/IBM/eventstreams-go-sdk/pkg/adminrestv1"
 	"github.com/IBM/go-sdk-core/v5/core"
@@ -79,63 +78,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("\n***** Kafka throughput quotas started *****")
-	// Always try to delete quotas for the test entity
-	fmt.Printf("\nDelete Quotas")
-	_ = deleteQuotas(serviceAPI)
-
-	fmt.Printf("\nList Quotas")
-	err := listQuotas(serviceAPI)
-	if err != nil {
-		fmt.Printf("\n%s", err.Error())
-		os.Exit(1)
-	}
-
-	fmt.Printf("\nCreate Quotas")
-	err = createQuotas(serviceAPI)
-	if err != nil {
-		fmt.Printf("\n%s", err.Error())
-		os.Exit(1)
-	}
-
-	fmt.Printf("\nList Quotas")
-	err = listQuotas(serviceAPI)
-	if err != nil {
-		fmt.Printf("\n%s", err.Error())
-		os.Exit(1)
-	}
-
-	fmt.Printf("\nUpdate Quotas")
-	err = updateQuotas(serviceAPI)
-	if err != nil {
-		fmt.Printf("\n%s", err.Error())
-		os.Exit(1)
-	}
-
-	fmt.Printf("\nGet Quotas")
-	err = getQuotas(serviceAPI)
-	if err != nil {
-		fmt.Printf("\n%s", err.Error())
-		os.Exit(1)
-	}
-
-	fmt.Printf("\nDelete Quotas")
-	_ = deleteQuotas(serviceAPI)
-
-	fmt.Printf("\nList Quotas")
-	err = listQuotas(serviceAPI)
-	if err != nil {
-		fmt.Printf("\n%s", err.Error())
-		os.Exit(1)
-	}
-	fmt.Println("\n***** Kafka throughput quotas ended *****")
-
 	// Always try to delete test-topic
 	fmt.Printf("Delete Topic\n")
 	_ = deleteTopic(serviceAPI)
 
 	fmt.Printf("List Topics\n")
-	err = listTopics(serviceAPI)
+	err := listTopics(serviceAPI)
 	if err != nil {
 		fmt.Printf("%s\n", err.Error())
 		os.Exit(1)
@@ -211,6 +159,59 @@ func main() {
 		fmt.Printf("%s\n", err.Error())
 		os.Exit(1)
 	}
+	// Quotas are only supported by Event Streams Enterprise plan instances
+	// // Always try to delete quota for the test entity
+	// fmt.Printf("Delete Quota")
+	// _ = deleteQuota(serviceAPI)
+
+	// fmt.Printf("\nList Quotas")
+	// err = listQuotas(serviceAPI)
+	// if err != nil {
+	// 	fmt.Printf("\n%s", err.Error())
+	// 	os.Exit(1)
+	// }
+
+	// fmt.Printf("\nCreate Quota")
+	// err = createQuota(serviceAPI)
+	// if err != nil {
+	// 	fmt.Printf("\n%s", err.Error())
+	// 	os.Exit(1)
+	// }
+
+	// fmt.Printf("\nList Quotas")
+	// err = listQuotas(serviceAPI)
+	// if err != nil {
+	// 	fmt.Printf("\n%s", err.Error())
+	// 	os.Exit(1)
+	// }
+
+	// fmt.Printf("\nUpdate Quota")
+	// err = updateQuota(serviceAPI)
+	// if err != nil {
+	// 	fmt.Printf("\n%s", err.Error())
+	// 	os.Exit(1)
+	// }
+
+	// fmt.Printf("\nGet Quota")
+	// err = getQuota(serviceAPI)
+	// if err != nil {
+	// 	fmt.Printf("\n%s", err.Error())
+	// 	os.Exit(1)
+	// }
+
+	// fmt.Printf("\nDelete Quota")
+	// err = deleteQuota(serviceAPI)
+	// if err != nil {
+	// 	fmt.Printf("\n%s", err.Error())
+	// 	os.Exit(1)
+	// }
+
+	// fmt.Printf("\nList Quotas")
+	// err = listQuotas(serviceAPI)
+	// if err != nil {
+	// 	fmt.Printf("\n%s", err.Error())
+	// 	os.Exit(1)
+	// }
 }
 
 func listTopics(serviceAPI *adminrestv1.AdminrestV1) error {
@@ -343,69 +344,69 @@ func updateTopicDetails(serviceAPI *adminrestv1.AdminrestV1) error {
 	return nil
 } // func.end
 
-func createQuotas(serviceAPI *adminrestv1.AdminrestV1) error {
-	// Construct an instance of the createQuotasOptionsModel
-	createQuotasOptionsModel := new(adminrestv1.CreateQuotasOptions)
-	createQuotasOptionsModel.SetEntityName("iam-ServiceId-12345678-aaaa-bbbb-cccc-1234567890af")
-	createQuotasOptionsModel.SetProducerByteRate(1024)
-	createQuotasOptionsModel.SetConsumerByteRate(1024)
+func createQuota(serviceAPI *adminrestv1.AdminrestV1) error {
+	// Construct an instance of the createQuotaOptionsModel
+	createQuotaOptionsModel := new(adminrestv1.CreateQuotaOptions)
+	createQuotaOptionsModel.SetEntityName("iam-ServiceId-12345678-aaaa-bbbb-cccc-1234567890af")
+	createQuotaOptionsModel.SetProducerByteRate(1024)
+	createQuotaOptionsModel.SetConsumerByteRate(1024)
 
-	// Create Quotas
-	response, operationErr := serviceAPI.CreateQuotas(createQuotasOptionsModel)
+	// Create Quota
+	response, operationErr := serviceAPI.CreateQuota(createQuotaOptionsModel)
 	if operationErr != nil {
-		return fmt.Errorf("error creating quotas: %s", operationErr.Error())
+		return fmt.Errorf("error creating quota: %s", operationErr.Error())
 	}
 
 	// Check the result
 	if response.StatusCode != http.StatusCreated {
-		return fmt.Errorf("error creating quotas: status %d", response.StatusCode)
+		return fmt.Errorf("error creating quota with status %d", response.StatusCode)
 	}
 
-	fmt.Printf("\nquotas for the entity: %s created", *createQuotasOptionsModel.EntityName)
+	fmt.Printf("\n\tquota for the entity '%s' has been created", *createQuotaOptionsModel.EntityName)
 
 	return nil
 } // func.end
 
-func updateQuotas(serviceAPI *adminrestv1.AdminrestV1) error {
-	// Construct an instance of the updateQuotasOptionsModel
-	updateQuotasOptionsModel := new(adminrestv1.UpdateQuotasOptions)
-	updateQuotasOptionsModel.SetEntityName("iam-ServiceId-12345678-aaaa-bbbb-cccc-1234567890af")
-	updateQuotasOptionsModel.SetProducerByteRate(2048)
-	updateQuotasOptionsModel.SetConsumerByteRate(2048)
+func updateQuota(serviceAPI *adminrestv1.AdminrestV1) error {
+	// Construct an instance of the updateQuotaOptionsModel
+	updateQuotaOptionsModel := new(adminrestv1.UpdateQuotaOptions)
+	updateQuotaOptionsModel.SetEntityName("iam-ServiceId-12345678-aaaa-bbbb-cccc-1234567890af")
+	updateQuotaOptionsModel.SetProducerByteRate(2048)
+	updateQuotaOptionsModel.SetConsumerByteRate(2048)
 
-	// Update Quotas
-	response, operationErr := serviceAPI.UpdateQuotas(updateQuotasOptionsModel)
+	// Update Quota
+	response, operationErr := serviceAPI.UpdateQuota(updateQuotaOptionsModel)
 	if operationErr != nil {
-		return fmt.Errorf("error updating quotas: %s", operationErr.Error())
+		return fmt.Errorf("error updating quota: %s", operationErr.Error())
 	}
 
 	// Check the result
 	if response.StatusCode != http.StatusAccepted {
-		return fmt.Errorf("error updating quotas: status %d", response.StatusCode)
+		return fmt.Errorf("error updating quota with status %d", response.StatusCode)
 	}
 
-	fmt.Printf("\nquotas for the entity: %s updated", *updateQuotasOptionsModel.EntityName)
+	fmt.Printf("\n\tquota for the entity '%s' has been updated", *updateQuotaOptionsModel.EntityName)
 
 	return nil
 } // func.end
 
-func getQuotas(serviceAPI *adminrestv1.AdminrestV1) error {
-	// Construct an instance of the GetQuotasOptions model
-	getQuotasOptionsModel := new(adminrestv1.GetQuotasOptions)
-	getQuotasOptionsModel.EntityName = core.StringPtr("iam-ServiceId-12345678-aaaa-bbbb-cccc-1234567890af")
+func getQuota(serviceAPI *adminrestv1.AdminrestV1) error {
+	// Construct an instance of the GetQuotaOptions model
+	getQuotaOptionsModel := new(adminrestv1.GetQuotaOptions)
+	getQuotaOptionsModel.EntityName = core.StringPtr("iam-ServiceId-12345678-aaaa-bbbb-cccc-1234567890af")
 
-	// Call Get Quotas
-	quotas, response, operationErr := serviceAPI.GetQuotas(getQuotasOptionsModel)
+	// Call Get Quota
+	quota, response, operationErr := serviceAPI.GetQuota(getQuotaOptionsModel)
 	if operationErr != nil {
-		return fmt.Errorf("error getting quotas: %s" + operationErr.Error())
+		return fmt.Errorf("error getting quota: %s" + operationErr.Error())
 	}
 
 	// Check the result
 	if response.StatusCode != http.StatusOK {
-		return fmt.Errorf("error getting quotas: status %d", response.StatusCode)
+		return fmt.Errorf("error getting quota with status %d", response.StatusCode)
 	}
 
-	fmt.Printf("\nproducer_byte_rate: %d, consumer_byte_rate: %d", getValueFromPtr(quotas.ProducerByteRate), getValueFromPtr(quotas.ConsumerByteRate))
+	fmt.Print("\n\t" + prepareQuotaDetails(quota.ProducerByteRate, quota.ConsumerByteRate))
 	return nil
 
 } // func.end
@@ -422,33 +423,33 @@ func listQuotas(serviceAPI *adminrestv1.AdminrestV1) error {
 
 	// Check the result
 	if response.StatusCode != http.StatusOK {
-		return fmt.Errorf("error listing quotas: status %d", response.StatusCode)
+		return fmt.Errorf("error listing quotas with status %d", response.StatusCode)
 	}
 
-	// Loop and print quotas
-	for _, quotas := range result.Data {
-		fmt.Printf("\nentity_name: %s, producer_byte_rate: %d, consumer_byte_rate: %d", getValueFromPtr(quotas.EntityName), getValueFromPtr(quotas.ProducerByteRate), getValueFromPtr(quotas.ConsumerByteRate))
+	// Loop and print quota
+	for _, quota := range result.Data {
+		fmt.Printf("\n\tentity_name: %s, %s", *quota.EntityName, prepareQuotaDetails(quota.ProducerByteRate, quota.ConsumerByteRate))
 	}
 	return nil
 } // func.end
 
-func deleteQuotas(serviceAPI *adminrestv1.AdminrestV1) error {
-	// Construct an instance of the DeleteQuotasOptions model
-	deleteQuotasOptionsModel := new(adminrestv1.DeleteQuotasOptions)
-	deleteQuotasOptionsModel.EntityName = core.StringPtr("iam-ServiceId-12345678-aaaa-bbbb-cccc-1234567890af")
+func deleteQuota(serviceAPI *adminrestv1.AdminrestV1) error {
+	// Construct an instance of the DeleteQuotaOptions model
+	deleteQuotaOptionsModel := new(adminrestv1.DeleteQuotaOptions)
+	deleteQuotaOptionsModel.EntityName = core.StringPtr("iam-ServiceId-12345678-aaaa-bbbb-cccc-1234567890af")
 
 	// Delete Quotas
-	response, operationErr := serviceAPI.DeleteQuotas(deleteQuotasOptionsModel)
+	response, operationErr := serviceAPI.DeleteQuota(deleteQuotaOptionsModel)
 	if operationErr != nil {
-		return fmt.Errorf("error deleting quotas: %s", operationErr.Error())
+		return fmt.Errorf("error deleting quota: %s", operationErr.Error())
 	}
 
 	// Check the result
 	if response.StatusCode != http.StatusAccepted {
-		return fmt.Errorf("error deleting quotas: status %d", response.StatusCode)
+		return fmt.Errorf("error deleting quota with status %d", response.StatusCode)
 	}
 
-	fmt.Printf("\nentity_name: %s is deleted", *deleteQuotasOptionsModel.EntityName)
+	fmt.Printf("\n\tquota for the entity '%s' has been deleted", *deleteQuotaOptionsModel.EntityName)
 	return nil
 } // func.end
 
@@ -525,13 +526,17 @@ func getMirroringActiveTopics(serviceAPI *adminrestv1.AdminrestV1) error {
 	return nil
 } // func.end
 
-func getValueFromPtr(ptr interface{}) interface{} {
-	if reflect.ValueOf(ptr).Kind() != reflect.Ptr {
-		fmt.Println("value is not a pointer type")
-		return ""
+func prepareQuotaDetails(producerByteRate, consumerByteRate *int64) string {
+	quotaDetails := ""
+	if producerByteRate != nil {
+		quotaDetails = fmt.Sprintf("producer_byte_rate: %d", *producerByteRate)
 	}
-	if ptr != nil && !reflect.ValueOf(ptr).IsNil() {
-		return reflect.Indirect(reflect.ValueOf(ptr))
+
+	if consumerByteRate != nil {
+		if len(quotaDetails) > 0 {
+			quotaDetails += ", "
+		}
+		quotaDetails += fmt.Sprintf("consumer_byte_rate: %d", *consumerByteRate)
 	}
-	return nil
+	return quotaDetails
 }

@@ -1135,25 +1135,25 @@ func UnmarshalTopicDetail(m map[string]json.RawMessage, result interface{}) (err
 	return
 }
 
-// CreateQuotas : Create a new quota
+// CreateQuota : Create a new quota
 // Create a new quota.
-func (adminrest *AdminrestV1) CreateQuotas(createQuotasOptions *CreateQuotasOptions) (response *core.DetailedResponse, err error) {
-	return adminrest.CreateQuotasWithContext(context.Background(), createQuotasOptions)
+func (adminrest *AdminrestV1) CreateQuota(createQuotaOptions *CreateQuotaOptions) (response *core.DetailedResponse, err error) {
+	return adminrest.CreateQuotaWithContext(context.Background(), createQuotaOptions)
 }
 
-// CreateQuotasWithContext is an alternate form of the CreateQuotas method which supports a Context parameter
-func (adminrest *AdminrestV1) CreateQuotasWithContext(ctx context.Context, createQuotasOptions *CreateQuotasOptions) (response *core.DetailedResponse, err error) {
-	err = core.ValidateNotNil(createQuotasOptions, "createQuotasOptions cannot be nil")
+// CreateQuotaWithContext is an alternate form of the CreateQuota method which supports a Context parameter
+func (adminrest *AdminrestV1) CreateQuotaWithContext(ctx context.Context, createQuotaOptions *CreateQuotaOptions) (response *core.DetailedResponse, err error) {
+	err = core.ValidateNotNil(createQuotaOptions, "createQuotaOptions cannot be nil")
 	if err != nil {
 		return
 	}
-	err = core.ValidateStruct(createQuotasOptions, "createQuotasOptions")
+	err = core.ValidateStruct(createQuotaOptions, "createQuotaOptions")
 	if err != nil {
 		return
 	}
 
 	pathParamsMap := map[string]string{
-		"entity_name": *createQuotasOptions.EntityName,
+		"entity_name": *createQuotaOptions.EntityName,
 	}
 
 	builder := core.NewRequestBuilder(core.POST)
@@ -1164,22 +1164,22 @@ func (adminrest *AdminrestV1) CreateQuotasWithContext(ctx context.Context, creat
 		return
 	}
 
-	for headerName, headerValue := range createQuotasOptions.Headers {
+	for headerName, headerValue := range createQuotaOptions.Headers {
 		builder.AddHeader(headerName, headerValue)
 	}
 
-	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "CreateQuotas")
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "CreateQuota")
 	for headerName, headerValue := range sdkHeaders {
 		builder.AddHeader(headerName, headerValue)
 	}
 	builder.AddHeader("Content-Type", "application/json")
 
 	body := make(map[string]interface{})
-	if createQuotasOptions.ProducerByteRate != nil {
-		body["producer_byte_rate"] = createQuotasOptions.ProducerByteRate
+	if createQuotaOptions.ProducerByteRate != nil {
+		body["producer_byte_rate"] = createQuotaOptions.ProducerByteRate
 	}
-	if createQuotasOptions.ConsumerByteRate != nil {
-		body["consumer_byte_rate"] = createQuotasOptions.ConsumerByteRate
+	if createQuotaOptions.ConsumerByteRate != nil {
+		body["consumer_byte_rate"] = createQuotaOptions.ConsumerByteRate
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
@@ -1196,25 +1196,25 @@ func (adminrest *AdminrestV1) CreateQuotasWithContext(ctx context.Context, creat
 	return
 }
 
-// UpdateQuotas : Update quotas
-// Update entity's quotas.
-func (adminrest *AdminrestV1) UpdateQuotas(updateQuotasOptions *UpdateQuotasOptions) (response *core.DetailedResponse, err error) {
-	return adminrest.UpdateQuotasWithContext(context.Background(), updateQuotasOptions)
+// UpdateQuota : Update a quota
+// Update an entity's quota.
+func (adminrest *AdminrestV1) UpdateQuota(updateQuotaOptions *UpdateQuotaOptions) (response *core.DetailedResponse, err error) {
+	return adminrest.UpdateQuotaWithContext(context.Background(), updateQuotaOptions)
 }
 
-// UpdateQuotasWithContext is an alternate form of the UpdateQuotas method which supports a Context parameter
-func (adminrest *AdminrestV1) UpdateQuotasWithContext(ctx context.Context, updateQuotasOptions *UpdateQuotasOptions) (response *core.DetailedResponse, err error) {
-	err = core.ValidateNotNil(updateQuotasOptions, "updateQuotasOptions cannot be nil")
+// UpdateQuotaWithContext is an alternate form of the UpdateQuota method which supports a Context parameter
+func (adminrest *AdminrestV1) UpdateQuotaWithContext(ctx context.Context, updateQuotaOptions *UpdateQuotaOptions) (response *core.DetailedResponse, err error) {
+	err = core.ValidateNotNil(updateQuotaOptions, "updateQuotaOptions cannot be nil")
 	if err != nil {
 		return
 	}
-	err = core.ValidateStruct(updateQuotasOptions, "updateQuotasOptions")
+	err = core.ValidateStruct(updateQuotaOptions, "updateQuotaOptions")
 	if err != nil {
 		return
 	}
 
 	pathParamsMap := map[string]string{
-		"entity_name": *updateQuotasOptions.EntityName,
+		"entity_name": *updateQuotaOptions.EntityName,
 	}
 
 	builder := core.NewRequestBuilder(core.PATCH)
@@ -1225,22 +1225,22 @@ func (adminrest *AdminrestV1) UpdateQuotasWithContext(ctx context.Context, updat
 		return
 	}
 
-	for headerName, headerValue := range updateQuotasOptions.Headers {
+	for headerName, headerValue := range updateQuotaOptions.Headers {
 		builder.AddHeader(headerName, headerValue)
 	}
 
-	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "UpdateQuotas")
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "UpdateQuota")
 	for headerName, headerValue := range sdkHeaders {
 		builder.AddHeader(headerName, headerValue)
 	}
 	builder.AddHeader("Content-Type", "application/json")
 
 	body := make(map[string]interface{})
-	if updateQuotasOptions.ProducerByteRate != nil {
-		body["producer_byte_rate"] = updateQuotasOptions.ProducerByteRate
+	if updateQuotaOptions.ProducerByteRate != nil {
+		body["producer_byte_rate"] = updateQuotaOptions.ProducerByteRate
 	}
-	if updateQuotasOptions.ConsumerByteRate != nil {
-		body["consumer_byte_rate"] = updateQuotasOptions.ConsumerByteRate
+	if updateQuotaOptions.ConsumerByteRate != nil {
+		body["consumer_byte_rate"] = updateQuotaOptions.ConsumerByteRate
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
@@ -1257,25 +1257,25 @@ func (adminrest *AdminrestV1) UpdateQuotasWithContext(ctx context.Context, updat
 	return
 }
 
-// DeleteQuotas : Delete entity's quotas
-// Delete entity's quotas.
-func (adminrest *AdminrestV1) DeleteQuotas(deleteQuotasOptions *DeleteQuotasOptions) (response *core.DetailedResponse, err error) {
-	return adminrest.DeleteQuotasWithContext(context.Background(), deleteQuotasOptions)
+// DeleteQuota : Delete a quota
+// Delete an entity's quota.
+func (adminrest *AdminrestV1) DeleteQuota(deleteQuotaOptions *DeleteQuotaOptions) (response *core.DetailedResponse, err error) {
+	return adminrest.DeleteQuotaWithContext(context.Background(), deleteQuotaOptions)
 }
 
-// DeleteQuotasWithContext is an alternate form of the DeleteQuotas method which supports a Context parameter
-func (adminrest *AdminrestV1) DeleteQuotasWithContext(ctx context.Context, deleteQuotasOptions *DeleteQuotasOptions) (response *core.DetailedResponse, err error) {
-	err = core.ValidateNotNil(deleteQuotasOptions, "deleteQuotasOptions cannot be nil")
+// DeleteQuotaWithContext is an alternate form of the DeleteQuota method which supports a Context parameter
+func (adminrest *AdminrestV1) DeleteQuotaWithContext(ctx context.Context, deleteQuotaOptions *DeleteQuotaOptions) (response *core.DetailedResponse, err error) {
+	err = core.ValidateNotNil(deleteQuotaOptions, "deleteQuotaOptions cannot be nil")
 	if err != nil {
 		return
 	}
-	err = core.ValidateStruct(deleteQuotasOptions, "deleteQuotasOptions")
+	err = core.ValidateStruct(deleteQuotaOptions, "deleteQuotaOptions")
 	if err != nil {
 		return
 	}
 
 	pathParamsMap := map[string]string{
-		"entity_name": *deleteQuotasOptions.EntityName,
+		"entity_name": *deleteQuotaOptions.EntityName,
 	}
 
 	builder := core.NewRequestBuilder(core.DELETE)
@@ -1286,11 +1286,11 @@ func (adminrest *AdminrestV1) DeleteQuotasWithContext(ctx context.Context, delet
 		return
 	}
 
-	for headerName, headerValue := range deleteQuotasOptions.Headers {
+	for headerName, headerValue := range deleteQuotaOptions.Headers {
 		builder.AddHeader(headerName, headerValue)
 	}
 
-	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "DeleteQuotas")
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "DeleteQuota")
 	for headerName, headerValue := range sdkHeaders {
 		builder.AddHeader(headerName, headerValue)
 	}
@@ -1305,25 +1305,25 @@ func (adminrest *AdminrestV1) DeleteQuotasWithContext(ctx context.Context, delet
 	return
 }
 
-// GetQuotas : Get entity's quota information
-// Get entity's quota information.
-func (adminrest *AdminrestV1) GetQuotas(getQuotasOptions *GetQuotasOptions) (result *QuotasDetail, response *core.DetailedResponse, err error) {
-	return adminrest.GetQuotasWithContext(context.Background(), getQuotasOptions)
+// GetQuota : Get quota information for an entity
+// Get quota information for an entity.
+func (adminrest *AdminrestV1) GetQuota(getQuotaOptions *GetQuotaOptions) (result *QuotaDetail, response *core.DetailedResponse, err error) {
+	return adminrest.GetQuotaWithContext(context.Background(), getQuotaOptions)
 }
 
-// GetQuotasWithContext is an alternate form of the GetQuotas method which supports a Context parameter
-func (adminrest *AdminrestV1) GetQuotasWithContext(ctx context.Context, getQuotasOptions *GetQuotasOptions) (result *QuotasDetail, response *core.DetailedResponse, err error) {
-	err = core.ValidateNotNil(getQuotasOptions, "getQuotasOptions cannot be nil")
+// GetQuotaWithContext is an alternate form of the GetQuota method which supports a Context parameter
+func (adminrest *AdminrestV1) GetQuotaWithContext(ctx context.Context, getQuotaOptions *GetQuotaOptions) (result *QuotaDetail, response *core.DetailedResponse, err error) {
+	err = core.ValidateNotNil(getQuotaOptions, "getQuotaOptions cannot be nil")
 	if err != nil {
 		return
 	}
-	err = core.ValidateStruct(getQuotasOptions, "getQuotasOptions")
+	err = core.ValidateStruct(getQuotaOptions, "getQuotaOptions")
 	if err != nil {
 		return
 	}
 
 	pathParamsMap := map[string]string{
-		"entity_name": *getQuotasOptions.EntityName,
+		"entity_name": *getQuotaOptions.EntityName,
 	}
 
 	builder := core.NewRequestBuilder(core.GET)
@@ -1334,11 +1334,11 @@ func (adminrest *AdminrestV1) GetQuotasWithContext(ctx context.Context, getQuota
 		return
 	}
 
-	for headerName, headerValue := range getQuotasOptions.Headers {
+	for headerName, headerValue := range getQuotaOptions.Headers {
 		builder.AddHeader(headerName, headerValue)
 	}
 
-	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "GetQuotas")
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "GetQuota")
 	for headerName, headerValue := range sdkHeaders {
 		builder.AddHeader(headerName, headerValue)
 	}
@@ -1355,7 +1355,7 @@ func (adminrest *AdminrestV1) GetQuotasWithContext(ctx context.Context, getQuota
 		return
 	}
 	if rawResponse != nil {
-		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalQuotasDetail)
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalQuotaDetail)
 		if err != nil {
 			return
 		}
@@ -1417,9 +1417,9 @@ func (adminrest *AdminrestV1) ListQuotasWithContext(ctx context.Context, listQuo
 	return
 }
 
-// CreateQuotasOptions : The CreateQuotas options.
-type CreateQuotasOptions struct {
-	// The entity name of the quotas can be `default` or `iam-ServiceId`.
+// CreateQuotaOptions : The CreateQuota options.
+type CreateQuotaOptions struct {
+	// The entity name of the quotas can be `default` or an IAM Service ID that starts with an `iam-ServiceId` prefix.
 	EntityName *string `json:"entity_name" validate:"required,ne="`
 
 	// The producer byte rate quota value.
@@ -1432,89 +1432,89 @@ type CreateQuotasOptions struct {
 	Headers map[string]string
 }
 
-// NewCreateQuotasOptions : Instantiate CreateQuotasOptions
-func (*AdminrestV1) NewCreateQuotasOptions(entityName string) *CreateQuotasOptions {
-	return &CreateQuotasOptions{
+// NewCreateQuotaOptions : Instantiate CreateQuotaOptions
+func (*AdminrestV1) NewCreateQuotaOptions(entityName string) *CreateQuotaOptions {
+	return &CreateQuotaOptions{
 		EntityName: core.StringPtr(entityName),
 	}
 }
 
 // SetEntityName : Allow user to set EntityName
-func (_options *CreateQuotasOptions) SetEntityName(entityName string) *CreateQuotasOptions {
+func (_options *CreateQuotaOptions) SetEntityName(entityName string) *CreateQuotaOptions {
 	_options.EntityName = core.StringPtr(entityName)
 	return _options
 }
 
 // SetProducerByteRate : Allow user to set ProducerByteRate
-func (_options *CreateQuotasOptions) SetProducerByteRate(producerByteRate int64) *CreateQuotasOptions {
+func (_options *CreateQuotaOptions) SetProducerByteRate(producerByteRate int64) *CreateQuotaOptions {
 	_options.ProducerByteRate = core.Int64Ptr(producerByteRate)
 	return _options
 }
 
 // SetConsumerByteRate : Allow user to set ConsumerByteRate
-func (_options *CreateQuotasOptions) SetConsumerByteRate(consumerByteRate int64) *CreateQuotasOptions {
+func (_options *CreateQuotaOptions) SetConsumerByteRate(consumerByteRate int64) *CreateQuotaOptions {
 	_options.ConsumerByteRate = core.Int64Ptr(consumerByteRate)
 	return _options
 }
 
 // SetHeaders : Allow user to set Headers
-func (options *CreateQuotasOptions) SetHeaders(param map[string]string) *CreateQuotasOptions {
+func (options *CreateQuotaOptions) SetHeaders(param map[string]string) *CreateQuotaOptions {
 	options.Headers = param
 	return options
 }
 
-// DeleteQuotasOptions : The DeleteQuotas options.
-type DeleteQuotasOptions struct {
-	// The entity name of the quotas can be `default` or `iam-ServiceId`.
+// DeleteQuotaOptions : The DeleteQuota options.
+type DeleteQuotaOptions struct {
+	// The entity name of the quotas can be `default` or an IAM Service ID that starts with an `iam-ServiceId` prefix.
 	EntityName *string `json:"entity_name" validate:"required,ne="`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
 }
 
-// NewDeleteQuotasOptions : Instantiate DeleteQuotasOptions
-func (*AdminrestV1) NewDeleteQuotasOptions(entityName string) *DeleteQuotasOptions {
-	return &DeleteQuotasOptions{
+// NewDeleteQuotaOptions : Instantiate DeleteQuotaOptions
+func (*AdminrestV1) NewDeleteQuotaOptions(entityName string) *DeleteQuotaOptions {
+	return &DeleteQuotaOptions{
 		EntityName: core.StringPtr(entityName),
 	}
 }
 
 // SetEntityName : Allow user to set EntityName
-func (_options *DeleteQuotasOptions) SetEntityName(entityName string) *DeleteQuotasOptions {
+func (_options *DeleteQuotaOptions) SetEntityName(entityName string) *DeleteQuotaOptions {
 	_options.EntityName = core.StringPtr(entityName)
 	return _options
 }
 
 // SetHeaders : Allow user to set Headers
-func (options *DeleteQuotasOptions) SetHeaders(param map[string]string) *DeleteQuotasOptions {
+func (options *DeleteQuotaOptions) SetHeaders(param map[string]string) *DeleteQuotaOptions {
 	options.Headers = param
 	return options
 }
 
-// GetQuotasOptions : The GetQuotas options.
-type GetQuotasOptions struct {
-	// The entity name of the quotas can be `default` or `iam-ServiceId`.
+// GetQuotaOptions : The GetQuota options.
+type GetQuotaOptions struct {
+	// The entity name of the quotas can be `default` or an IAM Service ID that starts with an `iam-ServiceId` prefix.
 	EntityName *string `json:"entity_name" validate:"required,ne="`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
 }
 
-// NewGetQuotasOptions : Instantiate GetQuotasOptions
-func (*AdminrestV1) NewGetQuotasOptions(entityName string) *GetQuotasOptions {
-	return &GetQuotasOptions{
+// NewGetQuotaOptions : Instantiate GetQuotaOptions
+func (*AdminrestV1) NewGetQuotaOptions(entityName string) *GetQuotaOptions {
+	return &GetQuotaOptions{
 		EntityName: core.StringPtr(entityName),
 	}
 }
 
 // SetEntityName : Allow user to set EntityName
-func (_options *GetQuotasOptions) SetEntityName(entityName string) *GetQuotasOptions {
+func (_options *GetQuotaOptions) SetEntityName(entityName string) *GetQuotaOptions {
 	_options.EntityName = core.StringPtr(entityName)
 	return _options
 }
 
 // SetHeaders : Allow user to set Headers
-func (options *GetQuotasOptions) SetHeaders(param map[string]string) *GetQuotasOptions {
+func (options *GetQuotaOptions) SetHeaders(param map[string]string) *GetQuotaOptions {
 	options.Headers = param
 	return options
 }
@@ -1537,9 +1537,9 @@ func (options *ListQuotasOptions) SetHeaders(param map[string]string) *ListQuota
 	return options
 }
 
-// UpdateQuotasOptions : The UpdateQuotas options.
-type UpdateQuotasOptions struct {
-	// The entity name of the quotas can be `default` or `iam-ServiceId`.
+// UpdateQuotaOptions : The UpdateQuota options.
+type UpdateQuotaOptions struct {
+	// The entity name of the quotas can be `default` or an IAM Service ID that starts with an `iam-ServiceId` prefix.
 	EntityName *string `json:"entity_name" validate:"required,ne="`
 
 	// The producer byte rate quota value.
@@ -1552,41 +1552,41 @@ type UpdateQuotasOptions struct {
 	Headers map[string]string
 }
 
-// NewUpdateQuotasOptions : Instantiate UpdateQuotasOptions
-func (*AdminrestV1) NewUpdateQuotasOptions(entityName string) *UpdateQuotasOptions {
-	return &UpdateQuotasOptions{
+// NewUpdateQuotaOptions : Instantiate UpdateQuotaOptions
+func (*AdminrestV1) NewUpdateQuotaOptions(entityName string) *UpdateQuotaOptions {
+	return &UpdateQuotaOptions{
 		EntityName: core.StringPtr(entityName),
 	}
 }
 
 // SetEntityName : Allow user to set EntityName
-func (_options *UpdateQuotasOptions) SetEntityName(entityName string) *UpdateQuotasOptions {
+func (_options *UpdateQuotaOptions) SetEntityName(entityName string) *UpdateQuotaOptions {
 	_options.EntityName = core.StringPtr(entityName)
 	return _options
 }
 
 // SetProducerByteRate : Allow user to set ProducerByteRate
-func (_options *UpdateQuotasOptions) SetProducerByteRate(producerByteRate int64) *UpdateQuotasOptions {
+func (_options *UpdateQuotaOptions) SetProducerByteRate(producerByteRate int64) *UpdateQuotaOptions {
 	_options.ProducerByteRate = core.Int64Ptr(producerByteRate)
 	return _options
 }
 
 // SetConsumerByteRate : Allow user to set ConsumerByteRate
-func (_options *UpdateQuotasOptions) SetConsumerByteRate(consumerByteRate int64) *UpdateQuotasOptions {
+func (_options *UpdateQuotaOptions) SetConsumerByteRate(consumerByteRate int64) *UpdateQuotaOptions {
 	_options.ConsumerByteRate = core.Int64Ptr(consumerByteRate)
 	return _options
 }
 
 // SetHeaders : Allow user to set Headers
-func (options *UpdateQuotasOptions) SetHeaders(param map[string]string) *UpdateQuotasOptions {
+func (options *UpdateQuotaOptions) SetHeaders(param map[string]string) *UpdateQuotaOptions {
 	options.Headers = param
 	return options
 }
 
-// EntityQuotasDetail : EntityQuotasDetail struct
-type EntityQuotasDetail struct {
+// EntityQuotaDetail : EntityQuotaDetail struct
+type EntityQuotaDetail struct {
 	// The name of the entity.
-	EntityName *string `json:"entity_name,omitempty"`
+	EntityName *string `json:"entity_name" validate:"required"`
 
 	// The producer byte rate quota value.
 	ProducerByteRate *int64 `json:"producer_byte_rate,omitempty"`
@@ -1595,9 +1595,9 @@ type EntityQuotasDetail struct {
 	ConsumerByteRate *int64 `json:"consumer_byte_rate,omitempty"`
 }
 
-// UnmarshalEntityQuotasDetail unmarshals an instance of EntityQuotasDetail from the specified map of raw messages.
-func UnmarshalEntityQuotasDetail(m map[string]json.RawMessage, result interface{}) (err error) {
-	obj := new(EntityQuotasDetail)
+// UnmarshalEntityQuotaDetail unmarshals an instance of EntityQuotaDetail from the specified map of raw messages.
+func UnmarshalEntityQuotaDetail(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(EntityQuotaDetail)
 	err = core.UnmarshalPrimitive(m, "entity_name", &obj.EntityName)
 	if err != nil {
 		return
@@ -1614,15 +1614,15 @@ func UnmarshalEntityQuotasDetail(m map[string]json.RawMessage, result interface{
 	return
 }
 
-// EntityQuotasList : A list of 'entity_quotas_detail' is returned.
+// EntityQuotasList : A list of 'entity_quota_detail' is returned.
 type EntityQuotasList struct {
-	Data []EntityQuotasDetail `json:"data,omitempty"`
+	Data []EntityQuotaDetail `json:"data,omitempty"`
 }
 
 // UnmarshalEntityQuotasList unmarshals an instance of EntityQuotasList from the specified map of raw messages.
 func UnmarshalEntityQuotasList(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(EntityQuotasList)
-	err = core.UnmarshalModel(m, "data", &obj.Data, UnmarshalEntityQuotasDetail)
+	err = core.UnmarshalModel(m, "data", &obj.Data, UnmarshalEntityQuotaDetail)
 	if err != nil {
 		return
 	}
@@ -1630,8 +1630,8 @@ func UnmarshalEntityQuotasList(m map[string]json.RawMessage, result interface{})
 	return
 }
 
-// QuotasDetail : QuotasDetail struct
-type QuotasDetail struct {
+// QuotaDetail : QuotaDetail struct
+type QuotaDetail struct {
 	// The producer byte rate quota value.
 	ProducerByteRate *int64 `json:"producer_byte_rate,omitempty"`
 
@@ -1639,9 +1639,9 @@ type QuotasDetail struct {
 	ConsumerByteRate *int64 `json:"consumer_byte_rate,omitempty"`
 }
 
-// UnmarshalQuotasDetail unmarshals an instance of QuotasDetail from the specified map of raw messages.
-func UnmarshalQuotasDetail(m map[string]json.RawMessage, result interface{}) (err error) {
-	obj := new(QuotasDetail)
+// UnmarshalQuotaDetail unmarshals an instance of QuotaDetail from the specified map of raw messages.
+func UnmarshalQuotaDetail(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(QuotaDetail)
 	err = core.UnmarshalPrimitive(m, "producer_byte_rate", &obj.ProducerByteRate)
 	if err != nil {
 		return

@@ -702,12 +702,12 @@ paths:
         - TokenAuth: []
         - BasicAuth:  []
       operationId: create_quotas
-      summary: Create a new quotas.
-      description: Create a new quotas.
+      summary: Create a new quota.
+      description: Create a new quota.
       consumes:
         - application/json
       parameters:
-        - $ref: '#/parameters/quotas_create'
+        - $ref: '#/parameters/quota_create'
         - $ref: '#/parameters/entity_name'
       responses:
         201:
@@ -750,27 +750,27 @@ paths:
       x-sdk-operations:
         request-examples:
           curl:
-            - name: "Example create quotas using Curl."
+            - name: "Example of creating a quota using Curl."
               example: 
                 - type: "code"
                   source: "__CURL_CREATE_QUOTAS_EXAMPLE__"
           go:
-            - name: "Example create quotas using Go."
+            - name: "Example of creating a quota using Go."
               example: 
                 - type: "code"
                   source: "__GOLANG_CREATE_QUOTAS_EXAMPLE__" 
           java:
-            - name: "Example create quotas using Java."
+            - name: "Example of creating a quota using Java."
               example: 
                 - type: "code"
                   source: "__JAVA_CREATE_QUOTAS_EXAMPLE__" 
           python:
-            - name: "Example create quotas using Python."
+            - name: "Example of creating a quota using Python."
               example: 
                 - type: "code"
                   source: "__PYTHON_CREATE_QUOTAS_EXAMPLE__" 
           node:
-            - name: "Example create quotas using Node."
+            - name: "Example of creating a quota using Node."
               example: 
                 - type: "code"
                   source: "__NODE_CREATE_QUOTAS_EXAMPLE__" 
@@ -784,12 +784,12 @@ paths:
         - TokenAuth: []
         - BasicAuth:  []
       operationId: update_quotas
-      summary: Update quotas.
-      description: Update entity's quotas.
+      summary: Update quota.
+      description: Update an entity's quota.
       consumes:
         - application/json
       parameters:
-        - $ref: '#/parameters/quotas_update'
+        - $ref: '#/parameters/quota_update'
         - $ref: '#/parameters/entity_name'
       responses:
         202:
@@ -834,27 +834,27 @@ paths:
       x-sdk-operations:
         request-examples:
           curl:
-            - name: "Example update quotas using Curl."
+            - name: "Example of updating a quota using Curl."
               example: 
                 - type: "code"
                   source: "__CURL_UPDATE_QUOTAS_EXAMPLE__"
           go:
-            - name: "Example update quotas using Go."
+            - name: "Example of updating a quota using Go."
               example: 
                 - type: "code"
                   source: "__GOLANG_UPDATE_QUOTAS_EXAMPLE__" 
           java:
-            - name: "Example update quotas using Java."
+            - name: "Example of updating a quota using Java."
               example: 
                 - type: "code"
                   source: "__JAVA_UPDATE_QUOTAS_EXAMPLE__" 
           python:
-            - name: "Example update quotas using Python."
+            - name: "Example of updating a quota using Python."
               example: 
                 - type: "code"
                   source: "__PYTHON_UPDATE_QUOTAS_EXAMPLE__" 
           node:
-            - name: "Example update quotas using Node."
+            - name: "Example of updating a quota using Node."
               example: 
                 - type: "code"
                   source: "__NODE_UPDATE_QUOTAS_EXAMPLE__" 
@@ -868,8 +868,8 @@ paths:
         - TokenAuth: []
         - BasicAuth:  []
       operationId: delete_quotas
-      summary: Delete entity's quotas.
-      description: Delete entity's quotas.
+      summary: Delete a quota.
+      description: Delete an entity's quota.
       consumes:
         - application/json
       parameters:
@@ -917,27 +917,27 @@ paths:
       x-sdk-operations:
         request-examples:
           curl:
-            - name: "Example delete quotas using Curl."
+            - name: "Example of deleting a quota using Curl."
               example: 
                 - type: "code"
                   source: "__CURL_DELETE_QUOTAS_EXAMPLE__"
           go:
-            - name: "Example delete quotas using Go."
+            - name: "Example of deleting a quota using Go."
               example: 
                 - type: "code"
                   source: "__GOLANG_DELETE_QUOTAS_EXAMPLE__" 
           java:
-            - name: "Example delete quotas using Java."
+            - name: "Example of deleting a quota using Java."
               example: 
                 - type: "code"
                   source: "__JAVA_DELETE_QUOTAS_EXAMPLE__" 
           python:
-            - name: "Example delete quotas using Python."
+            - name: "Example of deleting a quota using Python."
               example: 
                 - type: "code"
                   source: "__PYTHON_DELETE_QUOTAS_EXAMPLE__" 
           node:
-            - name: "Example delete quotas using Node."
+            - name: "Example of deleting a quota using Node."
               example: 
                 - type: "code"
                   source: "__NODE_DELETE_QUOTAS_EXAMPLE__" 
@@ -950,13 +950,13 @@ paths:
         - TokenAuth: []
         - BasicAuth: []
       operationId: get_quotas
-      summary: Get entity's quotas informaton.
-      description: Get entity's quotas informaton.
+      summary: Get quota informaton for an entity.
+      description: Get quota informaton for an entity.
       parameters:
         - $ref: '#/parameters/entity_name'
       responses:
         200:
-          description: Returns entity's quotas information.
+          description: quota informaton for the entity is returned in the body of the response.
           headers:
             X-Global-Transaction-Id:
               type: string
@@ -982,7 +982,7 @@ paths:
                 Forces caches to submit the request to the origin server for validation before releasing a cached copy.
                 Same as 'Cache-Control: no-cache'. It is used for backwards compatibility with HTTP/1.0.
           schema:
-            $ref: '#/definitions/quotas_detail'
+            $ref: '#/definitions/quota_details'
         403: 
           $ref: '#/responses/forbidden'
         422:
@@ -993,27 +993,27 @@ paths:
       x-sdk-operations:
         request-examples:
           curl:
-            - name: "Example get quotas using Curl."
+            - name: "Example of getting information about a quota using Curl."
               example: 
                 - type: "code"
                   source: "__CURL_GET_QUOTAS_EXAMPLE__"
           go:
-            - name: "Example get quotas using Go."
+            - name: "Example of getting information about a quota using Go."
               example: 
                 - type: "code"
                   source: "__GOLANG_GET_QUOTAS_EXAMPLE__" 
           java:
-            - name: "Example get quotas using Java."
+            - name: "Example of getting information about a quota using Java."
               example: 
                 - type: "code"
                   source: "__JAVA_GET_QUOTAS_EXAMPLE__" 
           python:
-            - name: "Example get quotas using Python."
+            - name: "Example of getting information about a quota using Python."
               example: 
                 - type: "code"
                   source: "__PYTHON_GET_QUOTAS_EXAMPLE__" 
           node:
-            - name: "Example get quotas using Node."
+            - name: "Example of getting information about a quota using Node."
               example: 
                 - type: "code"
                   source: "__NODE_GET_QUOTAS_EXAMPLE__" 
@@ -1066,27 +1066,27 @@ paths:
       x-sdk-operations:
         request-examples:
           curl:
-            - name: "Example list quotas using Curl."
+            - name: "Example of listing quotas using Curl."
               example: 
                 - type: "code"
                   source: "__CURL_LIST_QUOTAS_EXAMPLE__"
           go:
-            - name: "Example list quotas using Go."
+            - name: "Example of listing quotas using Go."
               example: 
                 - type: "code"
                   source: "__GOLANG_LIST_QUOTAS_EXAMPLE__" 
           java:
-            - name: "Example list quotas using Java."
+            - name: "Example of listing quotas using Java."
               example: 
                 - type: "code"
                   source: "__JAVA_LIST_QUOTAS_EXAMPLE__" 
           python:
-            - name: "Example list quotas using Python."
+            - name: "Example of listing quotas using Python."
               example: 
                 - type: "code"
                   source: "__PYTHON_LIST_QUOTAS_EXAMPLE__" 
           node:
-            - name: "Example list quotas using Node."
+            - name: "Example of listing quotas using Node."
               example: 
                 - type: "code"
                   source: "__NODE_LIST_QUOTAS_EXAMPLE__" 
@@ -1235,13 +1235,13 @@ definitions:
           $ref: '#/definitions/replica_assignment'
 
   entity_quotas_list:
-    description:  A list of 'entity_quotas_detail' is returned.
+    description:  A list of 'entity_quota_detail' is returned.
     type: object
     properties:
       data:
         type: array
         items:
-          $ref: '#/definitions/entity_quotas_detail'
+          $ref: '#/definitions/entity_quota_detail'
         example:
           - entity_name: default
             producer_byte_rate: 1024
@@ -1254,8 +1254,10 @@ definitions:
             producer_byte_rate: 2048
             consumer_byte_rate: 1024
 
-  entity_quotas_detail:
+  entity_quota_detail:
     type: object
+    required:
+      - entity_name
     properties:
       entity_name:
         type: string
@@ -1269,7 +1271,7 @@ definitions:
         format: int64
         description: The consumer byte rate quota value.
 
-  quotas_detail:
+  quota_details:
     type: object
     properties:
       producer_byte_rate:
@@ -1309,8 +1311,6 @@ definitions:
       segment.ms:
         type: string
         description: The value of config property 'segment.ms'.
-
-  
 
   replica_assignment:
     type: object
@@ -1411,21 +1411,21 @@ parameters:
     in: path
     type: string
     required: true
-    description: The entity name of the quotas can be `default` or `iam-ServiceId`.
+    description: The entity name of the quotas can be `default` or an IAM Service ID that starts with an `iam-ServiceId` prefix.
 
-  quotas_create:
-    name: quotas_create
+  quota_create:
+    name: quota_create
     in: body
     required: true       
-    description: The new quotas to be created. 
+    description: The new quota to be created. 
     schema:
       $ref: '#/definitions/quotas_create_request'
 
-  quotas_update:
-    name: quotas_update
+  quota_update:
+    name: quota_update
     in: body
     required: true       
-    description: Existing quotas to be updated. 
+    description: Existing quota to be updated. 
     schema:
       $ref: '#/definitions/quotas_update_request'
 

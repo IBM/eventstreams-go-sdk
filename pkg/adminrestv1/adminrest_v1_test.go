@@ -1604,39 +1604,39 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(updateTopicOptionsModel.Configs).To(Equal([]ConfigUpdate{*configUpdateModel}))
 				Expect(updateTopicOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
-			It(`Invoke NewCreateQuotasOptions successfully`, func() {
-				// Construct an instance of the CreateQuotasOptions model
+			It(`Invoke NewCreateQuotaOptions successfully`, func() {
+				// Construct an instance of the CreateQuotaOptions model
 				entityName := "testString"
-				createQuotasOptionsModel := adminrestService.NewCreateQuotasOptions(entityName)
-				createQuotasOptionsModel.SetEntityName("testString")
-				createQuotasOptionsModel.SetProducerByteRate(int64(1024))
-				createQuotasOptionsModel.SetConsumerByteRate(int64(1024))
-				createQuotasOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
-				Expect(createQuotasOptionsModel).ToNot(BeNil())
-				Expect(createQuotasOptionsModel.EntityName).To(Equal(core.StringPtr("testString")))
-				Expect(createQuotasOptionsModel.ProducerByteRate).To(Equal(core.Int64Ptr(int64(1024))))
-				Expect(createQuotasOptionsModel.ConsumerByteRate).To(Equal(core.Int64Ptr(int64(1024))))
-				Expect(createQuotasOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
+				createQuotaOptionsModel := adminrestService.NewCreateQuotaOptions(entityName)
+				createQuotaOptionsModel.SetEntityName("testString")
+				createQuotaOptionsModel.SetProducerByteRate(int64(1024))
+				createQuotaOptionsModel.SetConsumerByteRate(int64(1024))
+				createQuotaOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
+				Expect(createQuotaOptionsModel).ToNot(BeNil())
+				Expect(createQuotaOptionsModel.EntityName).To(Equal(core.StringPtr("testString")))
+				Expect(createQuotaOptionsModel.ProducerByteRate).To(Equal(core.Int64Ptr(int64(1024))))
+				Expect(createQuotaOptionsModel.ConsumerByteRate).To(Equal(core.Int64Ptr(int64(1024))))
+				Expect(createQuotaOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
-			It(`Invoke NewDeleteQuotasOptions successfully`, func() {
-				// Construct an instance of the DeleteQuotasOptions model
+			It(`Invoke NewDeleteQuotaOptions successfully`, func() {
+				// Construct an instance of the DeleteQuotaOptions model
 				entityName := "testString"
-				deleteQuotasOptionsModel := adminrestService.NewDeleteQuotasOptions(entityName)
-				deleteQuotasOptionsModel.SetEntityName("testString")
-				deleteQuotasOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
-				Expect(deleteQuotasOptionsModel).ToNot(BeNil())
-				Expect(deleteQuotasOptionsModel.EntityName).To(Equal(core.StringPtr("testString")))
-				Expect(deleteQuotasOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
+				deleteQuotaOptionsModel := adminrestService.NewDeleteQuotaOptions(entityName)
+				deleteQuotaOptionsModel.SetEntityName("testString")
+				deleteQuotaOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
+				Expect(deleteQuotaOptionsModel).ToNot(BeNil())
+				Expect(deleteQuotaOptionsModel.EntityName).To(Equal(core.StringPtr("testString")))
+				Expect(deleteQuotaOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
-			It(`Invoke NewGetQuotasOptions successfully`, func() {
-				// Construct an instance of the GetQuotasOptions model
+			It(`Invoke NewGetQuotaOptions successfully`, func() {
+				// Construct an instance of the GetQuotaOptions model
 				entityName := "testString"
-				getQuotasOptionsModel := adminrestService.NewGetQuotasOptions(entityName)
-				getQuotasOptionsModel.SetEntityName("testString")
-				getQuotasOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
-				Expect(getQuotasOptionsModel).ToNot(BeNil())
-				Expect(getQuotasOptionsModel.EntityName).To(Equal(core.StringPtr("testString")))
-				Expect(getQuotasOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
+				getQuotaOptionsModel := adminrestService.NewGetQuotaOptions(entityName)
+				getQuotaOptionsModel.SetEntityName("testString")
+				getQuotaOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
+				Expect(getQuotaOptionsModel).ToNot(BeNil())
+				Expect(getQuotaOptionsModel.EntityName).To(Equal(core.StringPtr("testString")))
+				Expect(getQuotaOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewListQuotasOptions successfully`, func() {
 				// Construct an instance of the ListQuotasOptions model
@@ -1645,19 +1645,19 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(listQuotasOptionsModel).ToNot(BeNil())
 				Expect(listQuotasOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
-			It(`Invoke NewUpdateQuotasOptions successfully`, func() {
-				// Construct an instance of the UpdateQuotasOptions model
+			It(`Invoke NewUpdateQuotaOptions successfully`, func() {
+				// Construct an instance of the UpdateQuotaOptions model
 				entityName := "testString"
-				updateQuotasOptionsModel := adminrestService.NewUpdateQuotasOptions(entityName)
-				updateQuotasOptionsModel.SetEntityName("testString")
-				updateQuotasOptionsModel.SetProducerByteRate(int64(1024))
-				updateQuotasOptionsModel.SetConsumerByteRate(int64(1024))
-				updateQuotasOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
-				Expect(updateQuotasOptionsModel).ToNot(BeNil())
-				Expect(updateQuotasOptionsModel.EntityName).To(Equal(core.StringPtr("testString")))
-				Expect(updateQuotasOptionsModel.ProducerByteRate).To(Equal(core.Int64Ptr(int64(1024))))
-				Expect(updateQuotasOptionsModel.ConsumerByteRate).To(Equal(core.Int64Ptr(int64(1024))))
-				Expect(updateQuotasOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
+				updateQuotaOptionsModel := adminrestService.NewUpdateQuotaOptions(entityName)
+				updateQuotaOptionsModel.SetEntityName("testString")
+				updateQuotaOptionsModel.SetProducerByteRate(int64(1024))
+				updateQuotaOptionsModel.SetConsumerByteRate(int64(1024))
+				updateQuotaOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
+				Expect(updateQuotaOptionsModel).ToNot(BeNil())
+				Expect(updateQuotaOptionsModel.EntityName).To(Equal(core.StringPtr("testString")))
+				Expect(updateQuotaOptionsModel.ProducerByteRate).To(Equal(core.Int64Ptr(int64(1024))))
+				Expect(updateQuotaOptionsModel.ConsumerByteRate).To(Equal(core.Int64Ptr(int64(1024))))
+				Expect(updateQuotaOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 		})
 	})
@@ -1684,15 +1684,15 @@ var _ = Describe(`AdminrestV1`, func() {
 		})
 	})
 
-	Describe(`CreateQuotas(createQuotasOptions *CreateQuotasOptions)`, func() {
-		createQuotasPath := "/admin/quotas/testString"
+	Describe(`CreateQuota(createQuotaOptions *CreateQuotaOptions)`, func() {
+		createQuotaPath := "/admin/quotas/testString"
 		Context(`Using mock server endpoint`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 					defer GinkgoRecover()
 
 					// Verify the contents of the request
-					Expect(req.URL.EscapedPath()).To(Equal(createQuotasPath))
+					Expect(req.URL.EscapedPath()).To(Equal(createQuotaPath))
 					Expect(req.Method).To(Equal("POST"))
 
 					// For gzip-disabled operation, verify Content-Encoding is not set.
@@ -1714,7 +1714,7 @@ var _ = Describe(`AdminrestV1`, func() {
 					res.WriteHeader(201)
 				}))
 			})
-			It(`Invoke CreateQuotas successfully`, func() {
+			It(`Invoke CreateQuota successfully`, func() {
 				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
 					URL:           testServer.URL,
 					Authenticator: &core.NoAuthAuthenticator{},
@@ -1723,23 +1723,23 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(adminrestService).ToNot(BeNil())
 
 				// Invoke operation with nil options model (negative test)
-				response, operationErr := adminrestService.CreateQuotas(nil)
+				response, operationErr := adminrestService.CreateQuota(nil)
 				Expect(operationErr).NotTo(BeNil())
 				Expect(response).To(BeNil())
 
-				// Construct an instance of the CreateQuotasOptions model
-				createQuotasOptionsModel := new(CreateQuotasOptions)
-				createQuotasOptionsModel.EntityName = core.StringPtr("testString")
-				createQuotasOptionsModel.ProducerByteRate = core.Int64Ptr(int64(1024))
-				createQuotasOptionsModel.ConsumerByteRate = core.Int64Ptr(int64(1024))
-				createQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Construct an instance of the CreateQuotaOptions model
+				createQuotaOptionsModel := new(CreateQuotaOptions)
+				createQuotaOptionsModel.EntityName = core.StringPtr("testString")
+				createQuotaOptionsModel.ProducerByteRate = core.Int64Ptr(int64(1024))
+				createQuotaOptionsModel.ConsumerByteRate = core.Int64Ptr(int64(1024))
+				createQuotaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
-				response, operationErr = adminrestService.CreateQuotas(createQuotasOptionsModel)
+				response, operationErr = adminrestService.CreateQuota(createQuotaOptionsModel)
 				Expect(operationErr).To(BeNil())
 				Expect(response).ToNot(BeNil())
 			})
-			It(`Invoke CreateQuotas with error: Operation validation and request error`, func() {
+			It(`Invoke CreateQuota with error: Operation validation and request error`, func() {
 				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
 					URL:           testServer.URL,
 					Authenticator: &core.NoAuthAuthenticator{},
@@ -1747,23 +1747,23 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(serviceErr).To(BeNil())
 				Expect(adminrestService).ToNot(BeNil())
 
-				// Construct an instance of the CreateQuotasOptions model
-				createQuotasOptionsModel := new(CreateQuotasOptions)
-				createQuotasOptionsModel.EntityName = core.StringPtr("testString")
-				createQuotasOptionsModel.ProducerByteRate = core.Int64Ptr(int64(1024))
-				createQuotasOptionsModel.ConsumerByteRate = core.Int64Ptr(int64(1024))
-				createQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Construct an instance of the CreateQuotaOptions model
+				createQuotaOptionsModel := new(CreateQuotaOptions)
+				createQuotaOptionsModel.EntityName = core.StringPtr("testString")
+				createQuotaOptionsModel.ProducerByteRate = core.Int64Ptr(int64(1024))
+				createQuotaOptionsModel.ConsumerByteRate = core.Int64Ptr(int64(1024))
+				createQuotaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := adminrestService.SetServiceURL("")
 				Expect(err).To(BeNil())
-				response, operationErr := adminrestService.CreateQuotas(createQuotasOptionsModel)
+				response, operationErr := adminrestService.CreateQuota(createQuotaOptionsModel)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
 				Expect(response).To(BeNil())
-				// Construct a second instance of the CreateQuotasOptions model with no property values
-				createQuotasOptionsModelNew := new(CreateQuotasOptions)
+				// Construct a second instance of the CreateQuotaOptions model with no property values
+				createQuotaOptionsModelNew := new(CreateQuotaOptions)
 				// Invoke operation with invalid model (negative test)
-				response, operationErr = adminrestService.CreateQuotas(createQuotasOptionsModelNew)
+				response, operationErr = adminrestService.CreateQuota(createQuotaOptionsModelNew)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(response).To(BeNil())
 			})
@@ -1772,15 +1772,15 @@ var _ = Describe(`AdminrestV1`, func() {
 			})
 		})
 	})
-	Describe(`UpdateQuotas(updateQuotasOptions *UpdateQuotasOptions)`, func() {
-		updateQuotasPath := "/admin/quotas/testString"
+	Describe(`UpdateQuota(updateQuotaOptions *UpdateQuotaOptions)`, func() {
+		updateQuotaPath := "/admin/quotas/testString"
 		Context(`Using mock server endpoint`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 					defer GinkgoRecover()
 
 					// Verify the contents of the request
-					Expect(req.URL.EscapedPath()).To(Equal(updateQuotasPath))
+					Expect(req.URL.EscapedPath()).To(Equal(updateQuotaPath))
 					Expect(req.Method).To(Equal("PATCH"))
 
 					// For gzip-disabled operation, verify Content-Encoding is not set.
@@ -1802,7 +1802,7 @@ var _ = Describe(`AdminrestV1`, func() {
 					res.WriteHeader(202)
 				}))
 			})
-			It(`Invoke UpdateQuotas successfully`, func() {
+			It(`Invoke UpdateQuota successfully`, func() {
 				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
 					URL:           testServer.URL,
 					Authenticator: &core.NoAuthAuthenticator{},
@@ -1811,23 +1811,23 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(adminrestService).ToNot(BeNil())
 
 				// Invoke operation with nil options model (negative test)
-				response, operationErr := adminrestService.UpdateQuotas(nil)
+				response, operationErr := adminrestService.UpdateQuota(nil)
 				Expect(operationErr).NotTo(BeNil())
 				Expect(response).To(BeNil())
 
-				// Construct an instance of the UpdateQuotasOptions model
-				updateQuotasOptionsModel := new(UpdateQuotasOptions)
-				updateQuotasOptionsModel.EntityName = core.StringPtr("testString")
-				updateQuotasOptionsModel.ProducerByteRate = core.Int64Ptr(int64(1024))
-				updateQuotasOptionsModel.ConsumerByteRate = core.Int64Ptr(int64(1024))
-				updateQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Construct an instance of the UpdateQuotaOptions model
+				updateQuotaOptionsModel := new(UpdateQuotaOptions)
+				updateQuotaOptionsModel.EntityName = core.StringPtr("testString")
+				updateQuotaOptionsModel.ProducerByteRate = core.Int64Ptr(int64(1024))
+				updateQuotaOptionsModel.ConsumerByteRate = core.Int64Ptr(int64(1024))
+				updateQuotaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
-				response, operationErr = adminrestService.UpdateQuotas(updateQuotasOptionsModel)
+				response, operationErr = adminrestService.UpdateQuota(updateQuotaOptionsModel)
 				Expect(operationErr).To(BeNil())
 				Expect(response).ToNot(BeNil())
 			})
-			It(`Invoke UpdateQuotas with error: Operation validation and request error`, func() {
+			It(`Invoke UpdateQuota with error: Operation validation and request error`, func() {
 				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
 					URL:           testServer.URL,
 					Authenticator: &core.NoAuthAuthenticator{},
@@ -1835,23 +1835,23 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(serviceErr).To(BeNil())
 				Expect(adminrestService).ToNot(BeNil())
 
-				// Construct an instance of the UpdateQuotasOptions model
-				updateQuotasOptionsModel := new(UpdateQuotasOptions)
-				updateQuotasOptionsModel.EntityName = core.StringPtr("testString")
-				updateQuotasOptionsModel.ProducerByteRate = core.Int64Ptr(int64(1024))
-				updateQuotasOptionsModel.ConsumerByteRate = core.Int64Ptr(int64(1024))
-				updateQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Construct an instance of the UpdateQuotaOptions model
+				updateQuotaOptionsModel := new(UpdateQuotaOptions)
+				updateQuotaOptionsModel.EntityName = core.StringPtr("testString")
+				updateQuotaOptionsModel.ProducerByteRate = core.Int64Ptr(int64(1024))
+				updateQuotaOptionsModel.ConsumerByteRate = core.Int64Ptr(int64(1024))
+				updateQuotaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := adminrestService.SetServiceURL("")
 				Expect(err).To(BeNil())
-				response, operationErr := adminrestService.UpdateQuotas(updateQuotasOptionsModel)
+				response, operationErr := adminrestService.UpdateQuota(updateQuotaOptionsModel)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
 				Expect(response).To(BeNil())
-				// Construct a second instance of the UpdateQuotasOptions model with no property values
-				updateQuotasOptionsModelNew := new(UpdateQuotasOptions)
+				// Construct a second instance of the UpdateQuotaOptions model with no property values
+				updateQuotaOptionsModelNew := new(UpdateQuotaOptions)
 				// Invoke operation with invalid model (negative test)
-				response, operationErr = adminrestService.UpdateQuotas(updateQuotasOptionsModelNew)
+				response, operationErr = adminrestService.UpdateQuota(updateQuotaOptionsModelNew)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(response).To(BeNil())
 			})
@@ -1860,21 +1860,21 @@ var _ = Describe(`AdminrestV1`, func() {
 			})
 		})
 	})
-	Describe(`DeleteQuotas(deleteQuotasOptions *DeleteQuotasOptions)`, func() {
-		deleteQuotasPath := "/admin/quotas/testString"
+	Describe(`DeleteQuota(deleteQuotaOptions *DeleteQuotaOptions)`, func() {
+		deleteQuotaPath := "/admin/quotas/testString"
 		Context(`Using mock server endpoint`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 					defer GinkgoRecover()
 
 					// Verify the contents of the request
-					Expect(req.URL.EscapedPath()).To(Equal(deleteQuotasPath))
+					Expect(req.URL.EscapedPath()).To(Equal(deleteQuotaPath))
 					Expect(req.Method).To(Equal("DELETE"))
 
 					res.WriteHeader(202)
 				}))
 			})
-			It(`Invoke DeleteQuotas successfully`, func() {
+			It(`Invoke DeleteQuota successfully`, func() {
 				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
 					URL:           testServer.URL,
 					Authenticator: &core.NoAuthAuthenticator{},
@@ -1883,21 +1883,21 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(adminrestService).ToNot(BeNil())
 
 				// Invoke operation with nil options model (negative test)
-				response, operationErr := adminrestService.DeleteQuotas(nil)
+				response, operationErr := adminrestService.DeleteQuota(nil)
 				Expect(operationErr).NotTo(BeNil())
 				Expect(response).To(BeNil())
 
-				// Construct an instance of the DeleteQuotasOptions model
-				deleteQuotasOptionsModel := new(DeleteQuotasOptions)
-				deleteQuotasOptionsModel.EntityName = core.StringPtr("testString")
-				deleteQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Construct an instance of the DeleteQuotaOptions model
+				deleteQuotaOptionsModel := new(DeleteQuotaOptions)
+				deleteQuotaOptionsModel.EntityName = core.StringPtr("testString")
+				deleteQuotaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
-				response, operationErr = adminrestService.DeleteQuotas(deleteQuotasOptionsModel)
+				response, operationErr = adminrestService.DeleteQuota(deleteQuotaOptionsModel)
 				Expect(operationErr).To(BeNil())
 				Expect(response).ToNot(BeNil())
 			})
-			It(`Invoke DeleteQuotas with error: Operation validation and request error`, func() {
+			It(`Invoke DeleteQuota with error: Operation validation and request error`, func() {
 				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
 					URL:           testServer.URL,
 					Authenticator: &core.NoAuthAuthenticator{},
@@ -1905,21 +1905,21 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(serviceErr).To(BeNil())
 				Expect(adminrestService).ToNot(BeNil())
 
-				// Construct an instance of the DeleteQuotasOptions model
-				deleteQuotasOptionsModel := new(DeleteQuotasOptions)
-				deleteQuotasOptionsModel.EntityName = core.StringPtr("testString")
-				deleteQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Construct an instance of the DeleteQuotaOptions model
+				deleteQuotaOptionsModel := new(DeleteQuotaOptions)
+				deleteQuotaOptionsModel.EntityName = core.StringPtr("testString")
+				deleteQuotaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := adminrestService.SetServiceURL("")
 				Expect(err).To(BeNil())
-				response, operationErr := adminrestService.DeleteQuotas(deleteQuotasOptionsModel)
+				response, operationErr := adminrestService.DeleteQuota(deleteQuotaOptionsModel)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
 				Expect(response).To(BeNil())
-				// Construct a second instance of the DeleteQuotasOptions model with no property values
-				deleteQuotasOptionsModelNew := new(DeleteQuotasOptions)
+				// Construct a second instance of the DeleteQuotaOptions model with no property values
+				deleteQuotaOptionsModelNew := new(DeleteQuotaOptions)
 				// Invoke operation with invalid model (negative test)
-				response, operationErr = adminrestService.DeleteQuotas(deleteQuotasOptionsModelNew)
+				response, operationErr = adminrestService.DeleteQuota(deleteQuotaOptionsModelNew)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(response).To(BeNil())
 			})
@@ -1928,22 +1928,22 @@ var _ = Describe(`AdminrestV1`, func() {
 			})
 		})
 	})
-	Describe(`GetQuotas(getQuotasOptions *GetQuotasOptions) - Operation response error`, func() {
-		getQuotasPath := "/admin/quotas/testString"
+	Describe(`GetQuota(getQuotaOptions *GetQuotaOptions) - Operation response error`, func() {
+		getQuotaPath := "/admin/quotas/testString"
 		Context(`Using mock server endpoint with invalid JSON response`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 					defer GinkgoRecover()
 
 					// Verify the contents of the request
-					Expect(req.URL.EscapedPath()).To(Equal(getQuotasPath))
+					Expect(req.URL.EscapedPath()).To(Equal(getQuotaPath))
 					Expect(req.Method).To(Equal("GET"))
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
 					fmt.Fprint(res, `} this is not valid json {`)
 				}))
 			})
-			It(`Invoke GetQuotas with error: Operation response processing error`, func() {
+			It(`Invoke GetQuota with error: Operation response processing error`, func() {
 				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
 					URL:           testServer.URL,
 					Authenticator: &core.NoAuthAuthenticator{},
@@ -1951,19 +1951,19 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(serviceErr).To(BeNil())
 				Expect(adminrestService).ToNot(BeNil())
 
-				// Construct an instance of the GetQuotasOptions model
-				getQuotasOptionsModel := new(GetQuotasOptions)
-				getQuotasOptionsModel.EntityName = core.StringPtr("testString")
-				getQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Construct an instance of the GetQuotaOptions model
+				getQuotaOptionsModel := new(GetQuotaOptions)
+				getQuotaOptionsModel.EntityName = core.StringPtr("testString")
+				getQuotaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Expect response parsing to fail since we are receiving a text/plain response
-				result, response, operationErr := adminrestService.GetQuotas(getQuotasOptionsModel)
+				result, response, operationErr := adminrestService.GetQuota(getQuotaOptionsModel)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(response).ToNot(BeNil())
 				Expect(result).To(BeNil())
 
 				// Enable retries and test again
 				adminrestService.EnableRetries(0, 0)
-				result, response, operationErr = adminrestService.GetQuotas(getQuotasOptionsModel)
+				result, response, operationErr = adminrestService.GetQuota(getQuotaOptionsModel)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(response).ToNot(BeNil())
 				Expect(result).To(BeNil())
@@ -1973,15 +1973,15 @@ var _ = Describe(`AdminrestV1`, func() {
 			})
 		})
 	})
-	Describe(`GetQuotas(getQuotasOptions *GetQuotasOptions)`, func() {
-		getQuotasPath := "/admin/quotas/testString"
+	Describe(`GetQuota(getQuotaOptions *GetQuotaOptions)`, func() {
+		getQuotaPath := "/admin/quotas/testString"
 		Context(`Using mock server endpoint with timeout`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 					defer GinkgoRecover()
 
 					// Verify the contents of the request
-					Expect(req.URL.EscapedPath()).To(Equal(getQuotasPath))
+					Expect(req.URL.EscapedPath()).To(Equal(getQuotaPath))
 					Expect(req.Method).To(Equal("GET"))
 
 					// Sleep a short time to support a timeout test
@@ -1993,7 +1993,7 @@ var _ = Describe(`AdminrestV1`, func() {
 					fmt.Fprintf(res, "%s", `{"producer_byte_rate": 1024, "consumer_byte_rate": 1024}`)
 				}))
 			})
-			It(`Invoke GetQuotas successfully with retries`, func() {
+			It(`Invoke GetQuota successfully with retries`, func() {
 				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
 					URL:           testServer.URL,
 					Authenticator: &core.NoAuthAuthenticator{},
@@ -2002,21 +2002,21 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(adminrestService).ToNot(BeNil())
 				adminrestService.EnableRetries(0, 0)
 
-				// Construct an instance of the GetQuotasOptions model
-				getQuotasOptionsModel := new(GetQuotasOptions)
-				getQuotasOptionsModel.EntityName = core.StringPtr("testString")
-				getQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Construct an instance of the GetQuotaOptions model
+				getQuotaOptionsModel := new(GetQuotaOptions)
+				getQuotaOptionsModel.EntityName = core.StringPtr("testString")
+				getQuotaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with a Context to test a timeout error
 				ctx, cancelFunc := context.WithTimeout(context.Background(), 80*time.Millisecond)
 				defer cancelFunc()
-				_, _, operationErr := adminrestService.GetQuotasWithContext(ctx, getQuotasOptionsModel)
+				_, _, operationErr := adminrestService.GetQuotaWithContext(ctx, getQuotaOptionsModel)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
 
 				// Disable retries and test again
 				adminrestService.DisableRetries()
-				result, response, operationErr := adminrestService.GetQuotas(getQuotasOptionsModel)
+				result, response, operationErr := adminrestService.GetQuota(getQuotaOptionsModel)
 				Expect(operationErr).To(BeNil())
 				Expect(response).ToNot(BeNil())
 				Expect(result).ToNot(BeNil())
@@ -2024,7 +2024,7 @@ var _ = Describe(`AdminrestV1`, func() {
 				// Re-test the timeout error with retries disabled
 				ctx, cancelFunc2 := context.WithTimeout(context.Background(), 80*time.Millisecond)
 				defer cancelFunc2()
-				_, _, operationErr = adminrestService.GetQuotasWithContext(ctx, getQuotasOptionsModel)
+				_, _, operationErr = adminrestService.GetQuotaWithContext(ctx, getQuotaOptionsModel)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
 			})
@@ -2038,7 +2038,7 @@ var _ = Describe(`AdminrestV1`, func() {
 					defer GinkgoRecover()
 
 					// Verify the contents of the request
-					Expect(req.URL.EscapedPath()).To(Equal(getQuotasPath))
+					Expect(req.URL.EscapedPath()).To(Equal(getQuotaPath))
 					Expect(req.Method).To(Equal("GET"))
 
 					// Set mock response
@@ -2047,7 +2047,7 @@ var _ = Describe(`AdminrestV1`, func() {
 					fmt.Fprintf(res, "%s", `{"producer_byte_rate": 1024, "consumer_byte_rate": 1024}`)
 				}))
 			})
-			It(`Invoke GetQuotas successfully`, func() {
+			It(`Invoke GetQuota successfully`, func() {
 				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
 					URL:           testServer.URL,
 					Authenticator: &core.NoAuthAuthenticator{},
@@ -2056,24 +2056,24 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(adminrestService).ToNot(BeNil())
 
 				// Invoke operation with nil options model (negative test)
-				result, response, operationErr := adminrestService.GetQuotas(nil)
+				result, response, operationErr := adminrestService.GetQuota(nil)
 				Expect(operationErr).NotTo(BeNil())
 				Expect(response).To(BeNil())
 				Expect(result).To(BeNil())
 
-				// Construct an instance of the GetQuotasOptions model
-				getQuotasOptionsModel := new(GetQuotasOptions)
-				getQuotasOptionsModel.EntityName = core.StringPtr("testString")
-				getQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Construct an instance of the GetQuotaOptions model
+				getQuotaOptionsModel := new(GetQuotaOptions)
+				getQuotaOptionsModel.EntityName = core.StringPtr("testString")
+				getQuotaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
-				result, response, operationErr = adminrestService.GetQuotas(getQuotasOptionsModel)
+				result, response, operationErr = adminrestService.GetQuota(getQuotaOptionsModel)
 				Expect(operationErr).To(BeNil())
 				Expect(response).ToNot(BeNil())
 				Expect(result).ToNot(BeNil())
 
 			})
-			It(`Invoke GetQuotas with error: Operation validation and request error`, func() {
+			It(`Invoke GetQuota with error: Operation validation and request error`, func() {
 				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
 					URL:           testServer.URL,
 					Authenticator: &core.NoAuthAuthenticator{},
@@ -2081,22 +2081,22 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(serviceErr).To(BeNil())
 				Expect(adminrestService).ToNot(BeNil())
 
-				// Construct an instance of the GetQuotasOptions model
-				getQuotasOptionsModel := new(GetQuotasOptions)
-				getQuotasOptionsModel.EntityName = core.StringPtr("testString")
-				getQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Construct an instance of the GetQuotaOptions model
+				getQuotaOptionsModel := new(GetQuotaOptions)
+				getQuotaOptionsModel.EntityName = core.StringPtr("testString")
+				getQuotaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := adminrestService.SetServiceURL("")
 				Expect(err).To(BeNil())
-				result, response, operationErr := adminrestService.GetQuotas(getQuotasOptionsModel)
+				result, response, operationErr := adminrestService.GetQuota(getQuotaOptionsModel)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
 				Expect(response).To(BeNil())
 				Expect(result).To(BeNil())
-				// Construct a second instance of the GetQuotasOptions model with no property values
-				getQuotasOptionsModelNew := new(GetQuotasOptions)
+				// Construct a second instance of the GetQuotaOptions model with no property values
+				getQuotaOptionsModelNew := new(GetQuotaOptions)
 				// Invoke operation with invalid model (negative test)
-				result, response, operationErr = adminrestService.GetQuotas(getQuotasOptionsModelNew)
+				result, response, operationErr = adminrestService.GetQuota(getQuotaOptionsModelNew)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(response).To(BeNil())
 				Expect(result).To(BeNil())
@@ -2114,7 +2114,7 @@ var _ = Describe(`AdminrestV1`, func() {
 					res.WriteHeader(200)
 				}))
 			})
-			It(`Invoke GetQuotas successfully`, func() {
+			It(`Invoke GetQuota successfully`, func() {
 				adminrestService, serviceErr := NewAdminrestV1(&AdminrestV1Options{
 					URL:           testServer.URL,
 					Authenticator: &core.NoAuthAuthenticator{},
@@ -2122,13 +2122,13 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(serviceErr).To(BeNil())
 				Expect(adminrestService).ToNot(BeNil())
 
-				// Construct an instance of the GetQuotasOptions model
-				getQuotasOptionsModel := new(GetQuotasOptions)
-				getQuotasOptionsModel.EntityName = core.StringPtr("testString")
-				getQuotasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Construct an instance of the GetQuotaOptions model
+				getQuotaOptionsModel := new(GetQuotaOptions)
+				getQuotaOptionsModel.EntityName = core.StringPtr("testString")
+				getQuotaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation
-				result, response, operationErr := adminrestService.GetQuotas(getQuotasOptionsModel)
+				result, response, operationErr := adminrestService.GetQuota(getQuotaOptionsModel)
 				Expect(operationErr).To(BeNil())
 				Expect(response).ToNot(BeNil())
 
