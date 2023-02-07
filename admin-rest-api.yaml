@@ -688,10 +688,9 @@ paths:
               example: 
                 - type: "code"
                   source: "__NODE_GET_MIRRORING_ACTIVE_TOPICS_EXAMPLE__" 
-
-#====================================================================================#
-# Quotas related paths
-#====================================================================================#
+  #====================================================================================#
+  # Quotas related paths
+  #====================================================================================#
   /admin/quotas/{entity_name}:
     #==============================
     # POST /admin/quotas/{entity_name}
@@ -701,7 +700,7 @@ paths:
         - APIKeyAuth: []
         - TokenAuth: []
         - BasicAuth:  []
-      operationId: create_quotas
+      operationId: create_quota
       summary: Create a new quota.
       description: Create a new quota.
       consumes:
@@ -717,20 +716,20 @@ paths:
               type: string
               description: >
                 The transaction ID of the request for debugging purpose.
-                If the header is set on the request, it will be honored. If not, it will be generated. 
+                If the header is set on the request, it will be honored. If not, it will be generated.
                 In the event of a non-200 error return code, the transaction ID is also returned in the JSON error response as 'incident_id'.
             Strict-Transport-Security:
               type: string
               default: max-age=31536000; includeSubDomains
-              description: > 
+              description: >
                 Specifies a period of time during which the user agent should only access the server using secure HTTPS connections.
             Cache-Control:
-              type: string 
+              type: string
               default: no-cache, no-store
               description: >
                 Forces caches to submit the request to the origin server for validation before releasing a cached copy.
                 And the cache should not store anything about the client request or server response.
-            Pragma: 
+            Pragma:
               type: string
               default: no-cache
               description: >
@@ -740,40 +739,40 @@ paths:
           $ref: '#/responses/bad_request'
         401:
           $ref: '#/responses/unauthorized'
-        403: 
+        403:
           $ref: '#/responses/forbidden'
         422:
           $ref: '#/responses/unprocessable_entity'
         503:
           $ref: '#/responses/service_unavailable'
-          
+
       x-sdk-operations:
         request-examples:
           curl:
             - name: "Example of creating a quota using Curl."
-              example: 
+              example:
                 - type: "code"
                   source: "__CURL_CREATE_QUOTAS_EXAMPLE__"
           go:
             - name: "Example of creating a quota using Go."
-              example: 
+              example:
                 - type: "code"
-                  source: "__GOLANG_CREATE_QUOTAS_EXAMPLE__" 
+                  source: "__GOLANG_CREATE_QUOTAS_EXAMPLE__"
           java:
             - name: "Example of creating a quota using Java."
-              example: 
+              example:
                 - type: "code"
-                  source: "__JAVA_CREATE_QUOTAS_EXAMPLE__" 
+                  source: "__JAVA_CREATE_QUOTAS_EXAMPLE__"
           python:
             - name: "Example of creating a quota using Python."
-              example: 
+              example:
                 - type: "code"
-                  source: "__PYTHON_CREATE_QUOTAS_EXAMPLE__" 
+                  source: "__PYTHON_CREATE_QUOTAS_EXAMPLE__"
           node:
             - name: "Example of creating a quota using Node."
-              example: 
+              example:
                 - type: "code"
-                  source: "__NODE_CREATE_QUOTAS_EXAMPLE__" 
+                  source: "__NODE_CREATE_QUOTAS_EXAMPLE__"
 
     #==============================
     # PATCH /admin/quotas/{entity_name}
@@ -783,7 +782,7 @@ paths:
         - APIKeyAuth: []
         - TokenAuth: []
         - BasicAuth:  []
-      operationId: update_quotas
+      operationId: update_quota
       summary: Update quota.
       description: Update an entity's quota.
       consumes:
@@ -799,20 +798,20 @@ paths:
               type: string
               description: >
                 The transaction ID of the request for debugging purpose.
-                If the header is set on the request, it will be honored. If not, it will be generated. 
+                If the header is set on the request, it will be honored. If not, it will be generated.
                 In the event of a non-200 error return code, the transaction ID is also returned in the JSON error response as 'incident_id'.
             Strict-Transport-Security:
               type: string
               default: max-age=31536000; includeSubDomains
-              description: > 
+              description: >
                 Specifies a period of time during which the user agent should only access the server using secure HTTPS connections.
             Cache-Control:
-              type: string 
+              type: string
               default: no-cache, no-store
               description: >
                 Forces caches to submit the request to the origin server for validation before releasing a cached copy.
                 And the cache should not store anything about the client request or server response.
-            Pragma: 
+            Pragma:
               type: string
               default: no-cache
               description: >
@@ -822,7 +821,7 @@ paths:
           $ref: '#/responses/bad_request'
         401:
           $ref: '#/responses/unauthorized'
-        403: 
+        403:
           $ref: '#/responses/forbidden'
         404:
           $ref: '#/responses/not_found'
@@ -830,34 +829,34 @@ paths:
           $ref: '#/responses/unprocessable_entity'
         503:
           $ref: '#/responses/service_unavailable'
-          
+
       x-sdk-operations:
         request-examples:
           curl:
             - name: "Example of updating a quota using Curl."
-              example: 
+              example:
                 - type: "code"
                   source: "__CURL_UPDATE_QUOTAS_EXAMPLE__"
           go:
             - name: "Example of updating a quota using Go."
-              example: 
+              example:
                 - type: "code"
-                  source: "__GOLANG_UPDATE_QUOTAS_EXAMPLE__" 
+                  source: "__GOLANG_UPDATE_QUOTAS_EXAMPLE__"
           java:
             - name: "Example of updating a quota using Java."
-              example: 
+              example:
                 - type: "code"
-                  source: "__JAVA_UPDATE_QUOTAS_EXAMPLE__" 
+                  source: "__JAVA_UPDATE_QUOTAS_EXAMPLE__"
           python:
             - name: "Example of updating a quota using Python."
-              example: 
+              example:
                 - type: "code"
-                  source: "__PYTHON_UPDATE_QUOTAS_EXAMPLE__" 
+                  source: "__PYTHON_UPDATE_QUOTAS_EXAMPLE__"
           node:
             - name: "Example of updating a quota using Node."
-              example: 
+              example:
                 - type: "code"
-                  source: "__NODE_UPDATE_QUOTAS_EXAMPLE__" 
+                  source: "__NODE_UPDATE_QUOTAS_EXAMPLE__"
 
     #==============================
     # DELETE /admin/quotas/{entity_name}
@@ -867,7 +866,7 @@ paths:
         - APIKeyAuth: []
         - TokenAuth: []
         - BasicAuth:  []
-      operationId: delete_quotas
+      operationId: delete_quota
       summary: Delete a quota.
       description: Delete an entity's quota.
       consumes:
@@ -882,20 +881,20 @@ paths:
               type: string
               description: >
                 The transaction ID of the request for debugging purpose.
-                If the header is set on the request, it will be honored. If not, it will be generated. 
+                If the header is set on the request, it will be honored. If not, it will be generated.
                 In the event of a non-200 error return code, the transaction ID is also returned in the JSON error response as 'incident_id'.
             Strict-Transport-Security:
               type: string
               default: max-age=31536000; includeSubDomains
-              description: > 
+              description: >
                 Specifies a period of time during which the user agent should only access the server using secure HTTPS connections.
             Cache-Control:
-              type: string 
+              type: string
               default: no-cache, no-store
               description: >
                 Forces caches to submit the request to the origin server for validation before releasing a cached copy.
                 And the cache should not store anything about the client request or server response.
-            Pragma: 
+            Pragma:
               type: string
               default: no-cache
               description: >
@@ -905,7 +904,7 @@ paths:
           $ref: '#/responses/bad_request'
         401:
           $ref: '#/responses/unauthorized'
-        403: 
+        403:
           $ref: '#/responses/forbidden'
         404:
           $ref: '#/responses/not_found'
@@ -913,34 +912,34 @@ paths:
           $ref: '#/responses/unprocessable_entity'
         503:
           $ref: '#/responses/service_unavailable'
-          
+
       x-sdk-operations:
         request-examples:
           curl:
             - name: "Example of deleting a quota using Curl."
-              example: 
+              example:
                 - type: "code"
                   source: "__CURL_DELETE_QUOTAS_EXAMPLE__"
           go:
             - name: "Example of deleting a quota using Go."
-              example: 
+              example:
                 - type: "code"
-                  source: "__GOLANG_DELETE_QUOTAS_EXAMPLE__" 
+                  source: "__GOLANG_DELETE_QUOTAS_EXAMPLE__"
           java:
             - name: "Example of deleting a quota using Java."
-              example: 
+              example:
                 - type: "code"
-                  source: "__JAVA_DELETE_QUOTAS_EXAMPLE__" 
+                  source: "__JAVA_DELETE_QUOTAS_EXAMPLE__"
           python:
             - name: "Example of deleting a quota using Python."
-              example: 
+              example:
                 - type: "code"
-                  source: "__PYTHON_DELETE_QUOTAS_EXAMPLE__" 
+                  source: "__PYTHON_DELETE_QUOTAS_EXAMPLE__"
           node:
             - name: "Example of deleting a quota using Node."
-              example: 
+              example:
                 - type: "code"
-                  source: "__NODE_DELETE_QUOTAS_EXAMPLE__" 
+                  source: "__NODE_DELETE_QUOTAS_EXAMPLE__"
     #==================================
     # GET /admin/quotas/{entity_name}
     #==================================
@@ -949,7 +948,7 @@ paths:
         - APIKeyAuth: []
         - TokenAuth: []
         - BasicAuth: []
-      operationId: get_quotas
+      operationId: get_quota
       summary: Get quota informaton for an entity.
       description: Get quota informaton for an entity.
       parameters:
@@ -962,20 +961,20 @@ paths:
               type: string
               description: >
                 The transaction ID of the request for debugging purpose.
-                If the header is set on the request, it will be honored. If not, it will be generated. 
-                In the event of a non-200 error return code, the transaction ID is also returned in the JSON error response as 'incident_id'. 
+                If the header is set on the request, it will be honored. If not, it will be generated.
+                In the event of a non-200 error return code, the transaction ID is also returned in the JSON error response as 'incident_id'.
             Strict-Transport-Security:
               type: string
               default: max-age=31536000; includeSubDomains
-              description: > 
+              description: >
                 Specifies a period of time during which the user agent should only access the server using secure HTTPS connections.
             Cache-Control:
-              type: string 
+              type: string
               default: no-cache, no-store
               description: >
                 Forces caches to submit the request to the origin server for validation before releasing a cached copy.
                 And the cache should not store anything about the client request or server response.
-            Pragma: 
+            Pragma:
               type: string
               default: no-cache
               description: >
@@ -983,40 +982,40 @@ paths:
                 Same as 'Cache-Control: no-cache'. It is used for backwards compatibility with HTTP/1.0.
           schema:
             $ref: '#/definitions/quota_details'
-        403: 
+        403:
           $ref: '#/responses/forbidden'
         422:
           $ref: '#/responses/unprocessable_entity'
         503:
           $ref: '#/responses/service_unavailable'
-          
+
       x-sdk-operations:
         request-examples:
           curl:
             - name: "Example of getting information about a quota using Curl."
-              example: 
+              example:
                 - type: "code"
                   source: "__CURL_GET_QUOTAS_EXAMPLE__"
           go:
             - name: "Example of getting information about a quota using Go."
-              example: 
+              example:
                 - type: "code"
-                  source: "__GOLANG_GET_QUOTAS_EXAMPLE__" 
+                  source: "__GOLANG_GET_QUOTAS_EXAMPLE__"
           java:
             - name: "Example of getting information about a quota using Java."
-              example: 
+              example:
                 - type: "code"
-                  source: "__JAVA_GET_QUOTAS_EXAMPLE__" 
+                  source: "__JAVA_GET_QUOTAS_EXAMPLE__"
           python:
             - name: "Example of getting information about a quota using Python."
-              example: 
+              example:
                 - type: "code"
-                  source: "__PYTHON_GET_QUOTAS_EXAMPLE__" 
+                  source: "__PYTHON_GET_QUOTAS_EXAMPLE__"
           node:
             - name: "Example of getting information about a quota using Node."
-              example: 
+              example:
                 - type: "code"
-                  source: "__NODE_GET_QUOTAS_EXAMPLE__" 
+                  source: "__NODE_GET_QUOTAS_EXAMPLE__"
     #==================================
     # GET /admin/quotas
     #==================================
@@ -1037,20 +1036,20 @@ paths:
               type: string
               description: >
                 The transaction ID of the request for debugging purpose.
-                If the header is set on the request, it will be honored. If not, it will be generated. 
-                In the event of a non-200 error return code, the transaction ID is also returned in the JSON error response as 'incident_id'. 
+                If the header is set on the request, it will be honored. If not, it will be generated.
+                In the event of a non-200 error return code, the transaction ID is also returned in the JSON error response as 'incident_id'.
             Strict-Transport-Security:
               type: string
               default: max-age=31536000; includeSubDomains
-              description: > 
+              description: >
                 Specifies a period of time during which the user agent should only access the server using secure HTTPS connections.
             Cache-Control:
-              type: string 
+              type: string
               default: no-cache, no-store
               description: >
                 Forces caches to submit the request to the origin server for validation before releasing a cached copy.
                 And the cache should not store anything about the client request or server response.
-            Pragma: 
+            Pragma:
               type: string
               default: no-cache
               description: >
@@ -1058,38 +1057,38 @@ paths:
                 Same as 'Cache-Control: no-cache'. It is used for backwards compatibility with HTTP/1.0.
           schema:
             $ref: '#/definitions/entity_quotas_list'
-        403: 
+        403:
           $ref: '#/responses/forbidden'
         503:
           $ref: '#/responses/service_unavailable'
-          
+
       x-sdk-operations:
         request-examples:
           curl:
             - name: "Example of listing quotas using Curl."
-              example: 
+              example:
                 - type: "code"
                   source: "__CURL_LIST_QUOTAS_EXAMPLE__"
           go:
             - name: "Example of listing quotas using Go."
-              example: 
+              example:
                 - type: "code"
-                  source: "__GOLANG_LIST_QUOTAS_EXAMPLE__" 
+                  source: "__GOLANG_LIST_QUOTAS_EXAMPLE__"
           java:
             - name: "Example of listing quotas using Java."
-              example: 
+              example:
                 - type: "code"
-                  source: "__JAVA_LIST_QUOTAS_EXAMPLE__" 
+                  source: "__JAVA_LIST_QUOTAS_EXAMPLE__"
           python:
             - name: "Example of listing quotas using Python."
-              example: 
+              example:
                 - type: "code"
-                  source: "__PYTHON_LIST_QUOTAS_EXAMPLE__" 
+                  source: "__PYTHON_LIST_QUOTAS_EXAMPLE__"
           node:
             - name: "Example of listing quotas using Node."
-              example: 
+              example:
                 - type: "code"
-                  source: "__NODE_LIST_QUOTAS_EXAMPLE__" 
+                  source: "__NODE_LIST_QUOTAS_EXAMPLE__"
 
 definitions:
   empty:
@@ -1132,7 +1131,7 @@ definitions:
         items:
           $ref: '#/definitions/config_create'
 
-  quotas_create_request:
+  quota_create_request:
     type: object
     properties:
       producer_byte_rate:
@@ -1148,7 +1147,7 @@ definitions:
         example:
           1024
 
-  quotas_update_request:
+  quota_update_request:
     type: object
     properties:
       producer_byte_rate:
@@ -1405,29 +1404,29 @@ parameters:
     description: The new partition number or the configurations to be updated for the topic.
     schema:
       $ref: '#/definitions/topic_update_request'
-  
+
   entity_name:
     name: entity_name
     in: path
     type: string
     required: true
-    description: The entity name of the quotas can be `default` or an IAM Service ID that starts with an `iam-ServiceId` prefix.
+    description: The entity name of the quota can be `default` or an IAM Service ID that starts with an `iam-ServiceId` prefix.
 
   quota_create:
     name: quota_create
     in: body
-    required: true       
-    description: The new quota to be created. 
+    required: true
+    description: The new quota to be created.
     schema:
-      $ref: '#/definitions/quotas_create_request'
+      $ref: '#/definitions/quota_create_request'
 
   quota_update:
     name: quota_update
     in: body
-    required: true       
-    description: Existing quota to be updated. 
+    required: true
+    description: Existing quota to be updated.
     schema:
-      $ref: '#/definitions/quotas_update_request'
+      $ref: '#/definitions/quota_update_request'
 
   mirroring_topic_selection_replacement:
     name: mirroring_topic_selection_replacement
