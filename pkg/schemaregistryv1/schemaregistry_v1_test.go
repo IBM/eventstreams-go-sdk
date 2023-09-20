@@ -1,5 +1,5 @@
 /**
- * (C) Copyright IBM Corp. 2021.
+ * (C) Copyright IBM Corp. 2023.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 		Context(`Using external config, construct service client instances`, func() {
 			// Map containing environment variables used in testing.
 			var testEnvironment = map[string]string{
-				"SCHEMAREGISTRY_URL":       "https://schemaregistryv1/api",
+				"SCHEMAREGISTRY_URL": "https://schemaregistryv1/api",
 				"SCHEMAREGISTRY_AUTH_TYPE": "noauth",
 			}
 
@@ -120,7 +120,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 		Context(`Using external config, construct service client instances with error: Invalid Auth`, func() {
 			// Map containing environment variables used in testing.
 			var testEnvironment = map[string]string{
-				"SCHEMAREGISTRY_URL":       "https://schemaregistryv1/api",
+				"SCHEMAREGISTRY_URL": "https://schemaregistryv1/api",
 				"SCHEMAREGISTRY_AUTH_TYPE": "someOtherAuth",
 			}
 
@@ -136,7 +136,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 		Context(`Using external config, construct service client instances with error: Invalid URL`, func() {
 			// Map containing environment variables used in testing.
 			var testEnvironment = map[string]string{
-				"SCHEMAREGISTRY_AUTH_TYPE": "NOAuth",
+				"SCHEMAREGISTRY_AUTH_TYPE":   "NOAuth",
 			}
 
 			SetTestEnvironment(testEnvironment)
@@ -173,7 +173,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					Expect(req.Method).To(Equal("GET"))
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, `} this is not valid json {`)
+					fmt.Fprint(res, `} this is not valid json {`)
 				}))
 			})
 			It(`Invoke GetGlobalRule with error: Operation response processing error`, func() {
@@ -385,7 +385,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					Expect(req.Method).To(Equal("PUT"))
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, `} this is not valid json {`)
+					fmt.Fprint(res, `} this is not valid json {`)
 				}))
 			})
 			It(`Invoke UpdateGlobalRule with error: Operation response processing error`, func() {
@@ -639,7 +639,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					Expect(req.Method).To(Equal("POST"))
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, `} this is not valid json {`)
+					fmt.Fprint(res, `} this is not valid json {`)
 				}))
 			})
 			It(`Invoke CreateSchemaRule with error: Operation response processing error`, func() {
@@ -893,7 +893,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					Expect(req.Method).To(Equal("GET"))
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, `} this is not valid json {`)
+					fmt.Fprint(res, `} this is not valid json {`)
 				}))
 			})
 			It(`Invoke GetSchemaRule with error: Operation response processing error`, func() {
@@ -1110,7 +1110,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					Expect(req.Method).To(Equal("PUT"))
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, `} this is not valid json {`)
+					fmt.Fprint(res, `} this is not valid json {`)
 				}))
 			})
 			It(`Invoke UpdateSchemaRule with error: Operation response processing error`, func() {
@@ -1427,6 +1427,180 @@ var _ = Describe(`SchemaregistryV1`, func() {
 			})
 		})
 	})
+	Describe(`SetSchemaState(setSchemaStateOptions *SetSchemaStateOptions)`, func() {
+		setSchemaStatePath := "/artifacts/testString/state"
+		Context(`Using mock server endpoint`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(setSchemaStatePath))
+					Expect(req.Method).To(Equal("PUT"))
+
+					// For gzip-disabled operation, verify Content-Encoding is not set.
+					Expect(req.Header.Get("Content-Encoding")).To(BeEmpty())
+
+					// If there is a body, then make sure we can read it
+					bodyBuf := new(bytes.Buffer)
+					if req.Header.Get("Content-Encoding") == "gzip" {
+						body, err := core.NewGzipDecompressionReader(req.Body)
+						Expect(err).To(BeNil())
+						_, err = bodyBuf.ReadFrom(body)
+						Expect(err).To(BeNil())
+					} else {
+						_, err := bodyBuf.ReadFrom(req.Body)
+						Expect(err).To(BeNil())
+					}
+					fmt.Fprintf(GinkgoWriter, "  Request body: %s", bodyBuf.String())
+
+					res.WriteHeader(204)
+				}))
+			})
+			It(`Invoke SetSchemaState successfully`, func() {
+				schemaregistryService, serviceErr := schemaregistryv1.NewSchemaregistryV1(&schemaregistryv1.SchemaregistryV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(schemaregistryService).ToNot(BeNil())
+
+				// Invoke operation with nil options model (negative test)
+				response, operationErr := schemaregistryService.SetSchemaState(nil)
+				Expect(operationErr).NotTo(BeNil())
+				Expect(response).To(BeNil())
+
+				// Construct an instance of the SetSchemaStateOptions model
+				setSchemaStateOptionsModel := new(schemaregistryv1.SetSchemaStateOptions)
+				setSchemaStateOptionsModel.ID = core.StringPtr("testString")
+				setSchemaStateOptionsModel.State = core.StringPtr("ENABLED")
+				setSchemaStateOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with valid options model (positive test)
+				response, operationErr = schemaregistryService.SetSchemaState(setSchemaStateOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+			})
+			It(`Invoke SetSchemaState with error: Operation validation and request error`, func() {
+				schemaregistryService, serviceErr := schemaregistryv1.NewSchemaregistryV1(&schemaregistryv1.SchemaregistryV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(schemaregistryService).ToNot(BeNil())
+
+				// Construct an instance of the SetSchemaStateOptions model
+				setSchemaStateOptionsModel := new(schemaregistryv1.SetSchemaStateOptions)
+				setSchemaStateOptionsModel.ID = core.StringPtr("testString")
+				setSchemaStateOptionsModel.State = core.StringPtr("ENABLED")
+				setSchemaStateOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Invoke operation with empty URL (negative test)
+				err := schemaregistryService.SetServiceURL("")
+				Expect(err).To(BeNil())
+				response, operationErr := schemaregistryService.SetSchemaState(setSchemaStateOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
+				Expect(response).To(BeNil())
+				// Construct a second instance of the SetSchemaStateOptions model with no property values
+				setSchemaStateOptionsModelNew := new(schemaregistryv1.SetSchemaStateOptions)
+				// Invoke operation with invalid model (negative test)
+				response, operationErr = schemaregistryService.SetSchemaState(setSchemaStateOptionsModelNew)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
+	Describe(`SetSchemaVersionState(setSchemaVersionStateOptions *SetSchemaVersionStateOptions)`, func() {
+		setSchemaVersionStatePath := "/artifacts/testString/versions/38/state"
+		Context(`Using mock server endpoint`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(setSchemaVersionStatePath))
+					Expect(req.Method).To(Equal("PUT"))
+
+					// For gzip-disabled operation, verify Content-Encoding is not set.
+					Expect(req.Header.Get("Content-Encoding")).To(BeEmpty())
+
+					// If there is a body, then make sure we can read it
+					bodyBuf := new(bytes.Buffer)
+					if req.Header.Get("Content-Encoding") == "gzip" {
+						body, err := core.NewGzipDecompressionReader(req.Body)
+						Expect(err).To(BeNil())
+						_, err = bodyBuf.ReadFrom(body)
+						Expect(err).To(BeNil())
+					} else {
+						_, err := bodyBuf.ReadFrom(req.Body)
+						Expect(err).To(BeNil())
+					}
+					fmt.Fprintf(GinkgoWriter, "  Request body: %s", bodyBuf.String())
+
+					res.WriteHeader(204)
+				}))
+			})
+			It(`Invoke SetSchemaVersionState successfully`, func() {
+				schemaregistryService, serviceErr := schemaregistryv1.NewSchemaregistryV1(&schemaregistryv1.SchemaregistryV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(schemaregistryService).ToNot(BeNil())
+
+				// Invoke operation with nil options model (negative test)
+				response, operationErr := schemaregistryService.SetSchemaVersionState(nil)
+				Expect(operationErr).NotTo(BeNil())
+				Expect(response).To(BeNil())
+
+				// Construct an instance of the SetSchemaVersionStateOptions model
+				setSchemaVersionStateOptionsModel := new(schemaregistryv1.SetSchemaVersionStateOptions)
+				setSchemaVersionStateOptionsModel.ID = core.StringPtr("testString")
+				setSchemaVersionStateOptionsModel.Version = core.Int64Ptr(int64(38))
+				setSchemaVersionStateOptionsModel.State = core.StringPtr("ENABLED")
+				setSchemaVersionStateOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with valid options model (positive test)
+				response, operationErr = schemaregistryService.SetSchemaVersionState(setSchemaVersionStateOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+			})
+			It(`Invoke SetSchemaVersionState with error: Operation validation and request error`, func() {
+				schemaregistryService, serviceErr := schemaregistryv1.NewSchemaregistryV1(&schemaregistryv1.SchemaregistryV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(schemaregistryService).ToNot(BeNil())
+
+				// Construct an instance of the SetSchemaVersionStateOptions model
+				setSchemaVersionStateOptionsModel := new(schemaregistryv1.SetSchemaVersionStateOptions)
+				setSchemaVersionStateOptionsModel.ID = core.StringPtr("testString")
+				setSchemaVersionStateOptionsModel.Version = core.Int64Ptr(int64(38))
+				setSchemaVersionStateOptionsModel.State = core.StringPtr("ENABLED")
+				setSchemaVersionStateOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Invoke operation with empty URL (negative test)
+				err := schemaregistryService.SetServiceURL("")
+				Expect(err).To(BeNil())
+				response, operationErr := schemaregistryService.SetSchemaVersionState(setSchemaVersionStateOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
+				Expect(response).To(BeNil())
+				// Construct a second instance of the SetSchemaVersionStateOptions model with no property values
+				setSchemaVersionStateOptionsModelNew := new(schemaregistryv1.SetSchemaVersionStateOptions)
+				// Invoke operation with invalid model (negative test)
+				response, operationErr = schemaregistryService.SetSchemaVersionState(setSchemaVersionStateOptionsModelNew)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
 	Describe(`ListVersions(listVersionsOptions *ListVersionsOptions)`, func() {
 		listVersionsPath := "/artifacts/testString/versions"
 		Context(`Using mock server endpoint with timeout`, func() {
@@ -1438,6 +1612,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					Expect(req.URL.EscapedPath()).To(Equal(listVersionsPath))
 					Expect(req.Method).To(Equal("GET"))
 
+					Expect(req.URL.Query()["jsonformat"]).To(Equal([]string{"testString"}))
 					// Sleep a short time to support a timeout test
 					time.Sleep(100 * time.Millisecond)
 
@@ -1459,6 +1634,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the ListVersionsOptions model
 				listVersionsOptionsModel := new(schemaregistryv1.ListVersionsOptions)
 				listVersionsOptionsModel.ID = core.StringPtr("testString")
+				listVersionsOptionsModel.Jsonformat = core.StringPtr("testString")
 				listVersionsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with a Context to test a timeout error
@@ -1495,6 +1671,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					Expect(req.URL.EscapedPath()).To(Equal(listVersionsPath))
 					Expect(req.Method).To(Equal("GET"))
 
+					Expect(req.URL.Query()["jsonformat"]).To(Equal([]string{"testString"}))
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
@@ -1518,6 +1695,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the ListVersionsOptions model
 				listVersionsOptionsModel := new(schemaregistryv1.ListVersionsOptions)
 				listVersionsOptionsModel.ID = core.StringPtr("testString")
+				listVersionsOptionsModel.Jsonformat = core.StringPtr("testString")
 				listVersionsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
@@ -1538,6 +1716,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the ListVersionsOptions model
 				listVersionsOptionsModel := new(schemaregistryv1.ListVersionsOptions)
 				listVersionsOptionsModel.ID = core.StringPtr("testString")
+				listVersionsOptionsModel.Jsonformat = core.StringPtr("testString")
 				listVersionsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := schemaregistryService.SetServiceURL("")
@@ -1579,6 +1758,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the ListVersionsOptions model
 				listVersionsOptionsModel := new(schemaregistryv1.ListVersionsOptions)
 				listVersionsOptionsModel.ID = core.StringPtr("testString")
+				listVersionsOptionsModel.Jsonformat = core.StringPtr("testString")
 				listVersionsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation
@@ -1606,7 +1786,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					Expect(req.Method).To(Equal("POST"))
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, `} this is not valid json {`)
+					fmt.Fprint(res, `} this is not valid json {`)
 				}))
 			})
 			It(`Invoke CreateVersion with error: Operation response processing error`, func() {
@@ -1855,7 +2035,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					Expect(req.Method).To(Equal("GET"))
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, `} this is not valid json {`)
+					fmt.Fprint(res, `} this is not valid json {`)
 				}))
 			})
 			It(`Invoke GetVersion with error: Operation response processing error`, func() {
@@ -2141,6 +2321,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					Expect(req.URL.EscapedPath()).To(Equal(listSchemasPath))
 					Expect(req.Method).To(Equal("GET"))
 
+					Expect(req.URL.Query()["jsonformat"]).To(Equal([]string{"testString"}))
 					// Sleep a short time to support a timeout test
 					time.Sleep(100 * time.Millisecond)
 
@@ -2161,6 +2342,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 
 				// Construct an instance of the ListSchemasOptions model
 				listSchemasOptionsModel := new(schemaregistryv1.ListSchemasOptions)
+				listSchemasOptionsModel.Jsonformat = core.StringPtr("testString")
 				listSchemasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with a Context to test a timeout error
@@ -2197,6 +2379,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					Expect(req.URL.EscapedPath()).To(Equal(listSchemasPath))
 					Expect(req.Method).To(Equal("GET"))
 
+					Expect(req.URL.Query()["jsonformat"]).To(Equal([]string{"testString"}))
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
@@ -2219,6 +2402,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 
 				// Construct an instance of the ListSchemasOptions model
 				listSchemasOptionsModel := new(schemaregistryv1.ListSchemasOptions)
+				listSchemasOptionsModel.Jsonformat = core.StringPtr("testString")
 				listSchemasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
@@ -2238,6 +2422,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 
 				// Construct an instance of the ListSchemasOptions model
 				listSchemasOptionsModel := new(schemaregistryv1.ListSchemasOptions)
+				listSchemasOptionsModel.Jsonformat = core.StringPtr("testString")
 				listSchemasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := schemaregistryService.SetServiceURL("")
@@ -2271,6 +2456,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 
 				// Construct an instance of the ListSchemasOptions model
 				listSchemasOptionsModel := new(schemaregistryv1.ListSchemasOptions)
+				listSchemasOptionsModel.Jsonformat = core.StringPtr("testString")
 				listSchemasOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation
@@ -2300,7 +2486,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					Expect(req.Header["X-Registry-Artifactid"][0]).To(Equal(fmt.Sprintf("%v", "testString")))
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, `} this is not valid json {`)
+					fmt.Fprint(res, `} this is not valid json {`)
 				}))
 			})
 			It(`Invoke CreateSchema with error: Operation response processing error`, func() {
@@ -2546,7 +2732,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					Expect(req.Method).To(Equal("GET"))
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, `} this is not valid json {`)
+					fmt.Fprint(res, `} this is not valid json {`)
 				}))
 			})
 			It(`Invoke GetLatestSchema with error: Operation response processing error`, func() {
@@ -2826,7 +3012,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 					Expect(req.Method).To(Equal("PUT"))
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, `} this is not valid json {`)
+					fmt.Fprint(res, `} this is not valid json {`)
 				}))
 			})
 			It(`Invoke UpdateSchema with error: Operation response processing error`, func() {
@@ -3193,8 +3379,10 @@ var _ = Describe(`SchemaregistryV1`, func() {
 			It(`Invoke NewListSchemasOptions successfully`, func() {
 				// Construct an instance of the ListSchemasOptions model
 				listSchemasOptionsModel := schemaregistryService.NewListSchemasOptions()
+				listSchemasOptionsModel.SetJsonformat("testString")
 				listSchemasOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(listSchemasOptionsModel).ToNot(BeNil())
+				Expect(listSchemasOptionsModel.Jsonformat).To(Equal(core.StringPtr("testString")))
 				Expect(listSchemasOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewListVersionsOptions successfully`, func() {
@@ -3202,10 +3390,39 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				id := "testString"
 				listVersionsOptionsModel := schemaregistryService.NewListVersionsOptions(id)
 				listVersionsOptionsModel.SetID("testString")
+				listVersionsOptionsModel.SetJsonformat("testString")
 				listVersionsOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(listVersionsOptionsModel).ToNot(BeNil())
 				Expect(listVersionsOptionsModel.ID).To(Equal(core.StringPtr("testString")))
+				Expect(listVersionsOptionsModel.Jsonformat).To(Equal(core.StringPtr("testString")))
 				Expect(listVersionsOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
+			})
+			It(`Invoke NewSetSchemaStateOptions successfully`, func() {
+				// Construct an instance of the SetSchemaStateOptions model
+				id := "testString"
+				setSchemaStateOptionsModel := schemaregistryService.NewSetSchemaStateOptions(id)
+				setSchemaStateOptionsModel.SetID("testString")
+				setSchemaStateOptionsModel.SetState("ENABLED")
+				setSchemaStateOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
+				Expect(setSchemaStateOptionsModel).ToNot(BeNil())
+				Expect(setSchemaStateOptionsModel.ID).To(Equal(core.StringPtr("testString")))
+				Expect(setSchemaStateOptionsModel.State).To(Equal(core.StringPtr("ENABLED")))
+				Expect(setSchemaStateOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
+			})
+			It(`Invoke NewSetSchemaVersionStateOptions successfully`, func() {
+				// Construct an instance of the SetSchemaVersionStateOptions model
+				id := "testString"
+				version := int64(38)
+				setSchemaVersionStateOptionsModel := schemaregistryService.NewSetSchemaVersionStateOptions(id, version)
+				setSchemaVersionStateOptionsModel.SetID("testString")
+				setSchemaVersionStateOptionsModel.SetVersion(int64(38))
+				setSchemaVersionStateOptionsModel.SetState("ENABLED")
+				setSchemaVersionStateOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
+				Expect(setSchemaVersionStateOptionsModel).ToNot(BeNil())
+				Expect(setSchemaVersionStateOptionsModel.ID).To(Equal(core.StringPtr("testString")))
+				Expect(setSchemaVersionStateOptionsModel.Version).To(Equal(core.Int64Ptr(int64(38))))
+				Expect(setSchemaVersionStateOptionsModel.State).To(Equal(core.StringPtr("ENABLED")))
+				Expect(setSchemaVersionStateOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewUpdateGlobalRuleOptions successfully`, func() {
 				// Construct an instance of the UpdateGlobalRuleOptions model
