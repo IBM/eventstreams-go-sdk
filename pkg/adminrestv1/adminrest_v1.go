@@ -15,7 +15,7 @@
  */
 
 /*
- * IBM OpenAPI SDK Code Generator Version: 3.64.1-cee95189-20230124-211647
+ * IBM OpenAPI SDK Code Generator Version: 3.76.0-ad3e6f96-20230724-172814
  */
 
 // Package adminrestv1 : Operations and models for the AdminrestV1 service
@@ -29,19 +29,16 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/IBM/eventstreams-go-sdk/pkg/common"
+	common "github.com/IBM/eventstreams-go-sdk/pkg/common"
 	"github.com/IBM/go-sdk-core/v5/core"
 )
 
 // AdminrestV1 : The administration REST API for IBM Event Streams on Cloud.
 //
-// Version: 1.1.1
+// API Version: 1.3.0
 type AdminrestV1 struct {
 	Service *core.BaseService
 }
-
-// DefaultServiceURL is the default URL to make service requests to.
-const DefaultServiceURL = "https://adminrest.cloud.ibm.com"
 
 // DefaultServiceName is the default key used to find external configuration information.
 const DefaultServiceName = "adminrest"
@@ -85,7 +82,6 @@ func NewAdminrestV1UsingExternalConfig(options *AdminrestV1Options) (adminrest *
 // NewAdminrestV1 : constructs an instance of AdminrestV1 with passed in options.
 func NewAdminrestV1(options *AdminrestV1Options) (service *AdminrestV1, err error) {
 	serviceOptions := &core.ServiceOptions{
-		URL:           DefaultServiceURL,
 		Authenticator: options.Authenticator,
 	}
 
@@ -192,7 +188,6 @@ func (adminrest *AdminrestV1) CreateTopicWithContext(ctx context.Context, create
 	for headerName, headerValue := range sdkHeaders {
 		builder.AddHeader(headerName, headerValue)
 	}
-	builder.AddHeader("Accept", "application/json")
 	builder.AddHeader("Content-Type", "application/json")
 
 	body := make(map[string]interface{})
@@ -211,6 +206,45 @@ func (adminrest *AdminrestV1) CreateTopicWithContext(ctx context.Context, create
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
 		return
+	}
+
+	request, err := builder.Build()
+	if err != nil {
+		return
+	}
+
+	response, err = adminrest.Service.Request(request, nil)
+
+	return
+}
+
+// Alive : Basic health check for Admin REST API
+func (adminrest *AdminrestV1) Alive(aliveOptions *AliveOptions) (response *core.DetailedResponse, err error) {
+	return adminrest.AliveWithContext(context.Background(), aliveOptions)
+}
+
+// AliveWithContext is an alternate form of the Alive method which supports a Context parameter
+func (adminrest *AdminrestV1) AliveWithContext(ctx context.Context, aliveOptions *AliveOptions) (response *core.DetailedResponse, err error) {
+	err = core.ValidateStruct(aliveOptions, "aliveOptions")
+	if err != nil {
+		return
+	}
+
+	builder := core.NewRequestBuilder(core.GET)
+	builder = builder.WithContext(ctx)
+	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
+	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/alive`, nil)
+	if err != nil {
+		return
+	}
+
+	for headerName, headerValue := range aliveOptions.Headers {
+		builder.AddHeader(headerName, headerValue)
+	}
+
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "Alive")
+	for headerName, headerValue := range sdkHeaders {
+		builder.AddHeader(headerName, headerValue)
 	}
 
 	request, err := builder.Build()
@@ -273,7 +307,6 @@ func (adminrest *AdminrestV1) ListTopicsWithContext(ctx context.Context, listTop
 	var rawResponse []json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
-		err = fmt.Errorf("error: %v, %v", err.Error(), response)
 		return
 	}
 	if rawResponse != nil {
@@ -384,7 +417,6 @@ func (adminrest *AdminrestV1) DeleteTopicWithContext(ctx context.Context, delete
 	for headerName, headerValue := range sdkHeaders {
 		builder.AddHeader(headerName, headerValue)
 	}
-	builder.AddHeader("Accept", "application/json")
 
 	request, err := builder.Build()
 	if err != nil {
@@ -433,7 +465,6 @@ func (adminrest *AdminrestV1) UpdateTopicWithContext(ctx context.Context, update
 	for headerName, headerValue := range sdkHeaders {
 		builder.AddHeader(headerName, headerValue)
 	}
-	builder.AddHeader("Accept", "application/json")
 	builder.AddHeader("Content-Type", "application/json")
 
 	body := make(map[string]interface{})
@@ -458,97 +489,48 @@ func (adminrest *AdminrestV1) UpdateTopicWithContext(ctx context.Context, update
 	return
 }
 
-// GetMirroringTopicSelection : Get current topic selection for mirroring
-// Get current topic selection for mirroring.
-func (adminrest *AdminrestV1) GetMirroringTopicSelection(getMirroringTopicSelectionOptions *GetMirroringTopicSelectionOptions) (result *MirroringTopicSelection, response *core.DetailedResponse, err error) {
-	return adminrest.GetMirroringTopicSelectionWithContext(context.Background(), getMirroringTopicSelectionOptions)
+// DeleteTopicRecords : Delete records before the given offset on a topic
+// Delete records before the given offset on a topic.
+func (adminrest *AdminrestV1) DeleteTopicRecords(deleteTopicRecordsOptions *DeleteTopicRecordsOptions) (response *core.DetailedResponse, err error) {
+	return adminrest.DeleteTopicRecordsWithContext(context.Background(), deleteTopicRecordsOptions)
 }
 
-// GetMirroringTopicSelectionWithContext is an alternate form of the GetMirroringTopicSelection method which supports a Context parameter
-func (adminrest *AdminrestV1) GetMirroringTopicSelectionWithContext(ctx context.Context, getMirroringTopicSelectionOptions *GetMirroringTopicSelectionOptions) (result *MirroringTopicSelection, response *core.DetailedResponse, err error) {
-	err = core.ValidateStruct(getMirroringTopicSelectionOptions, "getMirroringTopicSelectionOptions")
+// DeleteTopicRecordsWithContext is an alternate form of the DeleteTopicRecords method which supports a Context parameter
+func (adminrest *AdminrestV1) DeleteTopicRecordsWithContext(ctx context.Context, deleteTopicRecordsOptions *DeleteTopicRecordsOptions) (response *core.DetailedResponse, err error) {
+	err = core.ValidateNotNil(deleteTopicRecordsOptions, "deleteTopicRecordsOptions cannot be nil")
+	if err != nil {
+		return
+	}
+	err = core.ValidateStruct(deleteTopicRecordsOptions, "deleteTopicRecordsOptions")
 	if err != nil {
 		return
 	}
 
-	builder := core.NewRequestBuilder(core.GET)
+	pathParamsMap := map[string]string{
+		"topic_name": *deleteTopicRecordsOptions.TopicName,
+	}
+
+	builder := core.NewRequestBuilder(core.DELETE)
 	builder = builder.WithContext(ctx)
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
-	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/mirroring/topic-selection`, nil)
+	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/topics/{topic_name}/records`, pathParamsMap)
 	if err != nil {
 		return
 	}
 
-	for headerName, headerValue := range getMirroringTopicSelectionOptions.Headers {
+	for headerName, headerValue := range deleteTopicRecordsOptions.Headers {
 		builder.AddHeader(headerName, headerValue)
 	}
 
-	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "GetMirroringTopicSelection")
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "DeleteTopicRecords")
 	for headerName, headerValue := range sdkHeaders {
 		builder.AddHeader(headerName, headerValue)
 	}
-	builder.AddHeader("Accept", "application/json")
-
-	request, err := builder.Build()
-	if err != nil {
-		return
-	}
-
-	var rawResponse map[string]json.RawMessage
-	response, err = adminrest.Service.Request(request, &rawResponse)
-	if err != nil {
-		return
-	}
-	if rawResponse != nil {
-		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringTopicSelection)
-		if err != nil {
-			return
-		}
-		response.Result = result
-	}
-
-	return
-}
-
-// ReplaceMirroringTopicSelection : Replace topic selection for mirroring
-// Replace topic selection for mirroring. This operation replaces the complete set of mirroring topic selections.
-func (adminrest *AdminrestV1) ReplaceMirroringTopicSelection(replaceMirroringTopicSelectionOptions *ReplaceMirroringTopicSelectionOptions) (result *MirroringTopicSelection, response *core.DetailedResponse, err error) {
-	return adminrest.ReplaceMirroringTopicSelectionWithContext(context.Background(), replaceMirroringTopicSelectionOptions)
-}
-
-// ReplaceMirroringTopicSelectionWithContext is an alternate form of the ReplaceMirroringTopicSelection method which supports a Context parameter
-func (adminrest *AdminrestV1) ReplaceMirroringTopicSelectionWithContext(ctx context.Context, replaceMirroringTopicSelectionOptions *ReplaceMirroringTopicSelectionOptions) (result *MirroringTopicSelection, response *core.DetailedResponse, err error) {
-	err = core.ValidateNotNil(replaceMirroringTopicSelectionOptions, "replaceMirroringTopicSelectionOptions cannot be nil")
-	if err != nil {
-		return
-	}
-	err = core.ValidateStruct(replaceMirroringTopicSelectionOptions, "replaceMirroringTopicSelectionOptions")
-	if err != nil {
-		return
-	}
-
-	builder := core.NewRequestBuilder(core.POST)
-	builder = builder.WithContext(ctx)
-	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
-	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/mirroring/topic-selection`, nil)
-	if err != nil {
-		return
-	}
-
-	for headerName, headerValue := range replaceMirroringTopicSelectionOptions.Headers {
-		builder.AddHeader(headerName, headerValue)
-	}
-
-	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "ReplaceMirroringTopicSelection")
-	for headerName, headerValue := range sdkHeaders {
-		builder.AddHeader(headerName, headerValue)
-	}
-	builder.AddHeader("Accept", "application/json")
 	builder.AddHeader("Content-Type", "application/json")
 
 	body := make(map[string]interface{})
-	if replaceMirroringTopicSelectionOptions.Includes != nil {
-		body["includes"] = replaceMirroringTopicSelectionOptions.Includes
+	if deleteTopicRecordsOptions.RecordsToDelete != nil {
+		body["records_to_delete"] = deleteTopicRecordsOptions.RecordsToDelete
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
@@ -560,578 +542,8 @@ func (adminrest *AdminrestV1) ReplaceMirroringTopicSelectionWithContext(ctx cont
 		return
 	}
 
-	var rawResponse map[string]json.RawMessage
-	response, err = adminrest.Service.Request(request, &rawResponse)
-	if err != nil {
-		return
-	}
-	if rawResponse != nil {
-		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringTopicSelection)
-		if err != nil {
-			return
-		}
-		response.Result = result
-	}
+	response, err = adminrest.Service.Request(request, nil)
 
-	return
-}
-
-// GetMirroringActiveTopics : Get topics that are being actively mirrored
-// Get topics that are being actively mirrored.
-func (adminrest *AdminrestV1) GetMirroringActiveTopics(getMirroringActiveTopicsOptions *GetMirroringActiveTopicsOptions) (result *MirroringActiveTopics, response *core.DetailedResponse, err error) {
-	return adminrest.GetMirroringActiveTopicsWithContext(context.Background(), getMirroringActiveTopicsOptions)
-}
-
-// GetMirroringActiveTopicsWithContext is an alternate form of the GetMirroringActiveTopics method which supports a Context parameter
-func (adminrest *AdminrestV1) GetMirroringActiveTopicsWithContext(ctx context.Context, getMirroringActiveTopicsOptions *GetMirroringActiveTopicsOptions) (result *MirroringActiveTopics, response *core.DetailedResponse, err error) {
-	err = core.ValidateStruct(getMirroringActiveTopicsOptions, "getMirroringActiveTopicsOptions")
-	if err != nil {
-		return
-	}
-
-	builder := core.NewRequestBuilder(core.GET)
-	builder = builder.WithContext(ctx)
-	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
-	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/mirroring/active-topics`, nil)
-	if err != nil {
-		return
-	}
-
-	for headerName, headerValue := range getMirroringActiveTopicsOptions.Headers {
-		builder.AddHeader(headerName, headerValue)
-	}
-
-	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "GetMirroringActiveTopics")
-	for headerName, headerValue := range sdkHeaders {
-		builder.AddHeader(headerName, headerValue)
-	}
-	builder.AddHeader("Accept", "application/json")
-
-	request, err := builder.Build()
-	if err != nil {
-		return
-	}
-
-	var rawResponse map[string]json.RawMessage
-	response, err = adminrest.Service.Request(request, &rawResponse)
-	if err != nil {
-		return
-	}
-	if rawResponse != nil {
-		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringActiveTopics)
-		if err != nil {
-			return
-		}
-		response.Result = result
-	}
-
-	return
-}
-
-// CreateTopicOptions : The CreateTopic options.
-type CreateTopicOptions struct {
-	// The name of topic to be created.
-	Name *string `json:"name,omitempty"`
-
-	// The number of partitions.
-	Partitions *int64 `json:"partitions,omitempty"`
-
-	// The number of partitions, this field takes precedence over 'partitions'. Default value is 1 if not specified.
-	PartitionCount *int64 `json:"partition_count,omitempty"`
-
-	// The config properties to be set for the new topic.
-	Configs []ConfigCreate `json:"configs,omitempty"`
-
-	// Allows users to set headers on API requests
-	Headers map[string]string
-}
-
-// NewCreateTopicOptions : Instantiate CreateTopicOptions
-func (*AdminrestV1) NewCreateTopicOptions() *CreateTopicOptions {
-	return &CreateTopicOptions{}
-}
-
-// SetName : Allow user to set Name
-func (_options *CreateTopicOptions) SetName(name string) *CreateTopicOptions {
-	_options.Name = core.StringPtr(name)
-	return _options
-}
-
-// SetPartitions : Allow user to set Partitions
-func (_options *CreateTopicOptions) SetPartitions(partitions int64) *CreateTopicOptions {
-	_options.Partitions = core.Int64Ptr(partitions)
-	return _options
-}
-
-// SetPartitionCount : Allow user to set PartitionCount
-func (_options *CreateTopicOptions) SetPartitionCount(partitionCount int64) *CreateTopicOptions {
-	_options.PartitionCount = core.Int64Ptr(partitionCount)
-	return _options
-}
-
-// SetConfigs : Allow user to set Configs
-func (_options *CreateTopicOptions) SetConfigs(configs []ConfigCreate) *CreateTopicOptions {
-	_options.Configs = configs
-	return _options
-}
-
-// SetHeaders : Allow user to set Headers
-func (options *CreateTopicOptions) SetHeaders(param map[string]string) *CreateTopicOptions {
-	options.Headers = param
-	return options
-}
-
-// DeleteTopicOptions : The DeleteTopic options.
-type DeleteTopicOptions struct {
-	// The topic name for the topic to be listed.
-	TopicName *string `json:"-" validate:"required,ne="`
-
-	// Allows users to set headers on API requests
-	Headers map[string]string
-}
-
-// NewDeleteTopicOptions : Instantiate DeleteTopicOptions
-func (*AdminrestV1) NewDeleteTopicOptions(topicName string) *DeleteTopicOptions {
-	return &DeleteTopicOptions{
-		TopicName: core.StringPtr(topicName),
-	}
-}
-
-// SetTopicName : Allow user to set TopicName
-func (_options *DeleteTopicOptions) SetTopicName(topicName string) *DeleteTopicOptions {
-	_options.TopicName = core.StringPtr(topicName)
-	return _options
-}
-
-// SetHeaders : Allow user to set Headers
-func (options *DeleteTopicOptions) SetHeaders(param map[string]string) *DeleteTopicOptions {
-	options.Headers = param
-	return options
-}
-
-// GetMirroringActiveTopicsOptions : The GetMirroringActiveTopics options.
-type GetMirroringActiveTopicsOptions struct {
-
-	// Allows users to set headers on API requests
-	Headers map[string]string
-}
-
-// NewGetMirroringActiveTopicsOptions : Instantiate GetMirroringActiveTopicsOptions
-func (*AdminrestV1) NewGetMirroringActiveTopicsOptions() *GetMirroringActiveTopicsOptions {
-	return &GetMirroringActiveTopicsOptions{}
-}
-
-// SetHeaders : Allow user to set Headers
-func (options *GetMirroringActiveTopicsOptions) SetHeaders(param map[string]string) *GetMirroringActiveTopicsOptions {
-	options.Headers = param
-	return options
-}
-
-// GetMirroringTopicSelectionOptions : The GetMirroringTopicSelection options.
-type GetMirroringTopicSelectionOptions struct {
-
-	// Allows users to set headers on API requests
-	Headers map[string]string
-}
-
-// NewGetMirroringTopicSelectionOptions : Instantiate GetMirroringTopicSelectionOptions
-func (*AdminrestV1) NewGetMirroringTopicSelectionOptions() *GetMirroringTopicSelectionOptions {
-	return &GetMirroringTopicSelectionOptions{}
-}
-
-// SetHeaders : Allow user to set Headers
-func (options *GetMirroringTopicSelectionOptions) SetHeaders(param map[string]string) *GetMirroringTopicSelectionOptions {
-	options.Headers = param
-	return options
-}
-
-// GetTopicOptions : The GetTopic options.
-type GetTopicOptions struct {
-	// The topic name for the topic to be listed.
-	TopicName *string `json:"-" validate:"required,ne="`
-
-	// Allows users to set headers on API requests
-	Headers map[string]string
-}
-
-// NewGetTopicOptions : Instantiate GetTopicOptions
-func (*AdminrestV1) NewGetTopicOptions(topicName string) *GetTopicOptions {
-	return &GetTopicOptions{
-		TopicName: core.StringPtr(topicName),
-	}
-}
-
-// SetTopicName : Allow user to set TopicName
-func (_options *GetTopicOptions) SetTopicName(topicName string) *GetTopicOptions {
-	_options.TopicName = core.StringPtr(topicName)
-	return _options
-}
-
-// SetHeaders : Allow user to set Headers
-func (options *GetTopicOptions) SetHeaders(param map[string]string) *GetTopicOptions {
-	options.Headers = param
-	return options
-}
-
-// ListTopicsOptions : The ListTopics options.
-type ListTopicsOptions struct {
-	// A filter to be applied to the topic names. A simple filter can be specified as a string with asterisk (`*`)
-	// wildcards representing 0 or more characters, e.g. `topic-name*` will filter all topic names that begin with the
-	// string `topic-name` followed by any character sequence. A more complex filter pattern can be used by surrounding a
-	// regular expression in forward slash (`/`) delimiters, e.g. `/topic-name.* /`.
-	TopicFilter *string `json:"-"`
-
-	// The number of topic names to be returns.
-	PerPage *int64 `json:"-"`
-
-	// The page number to be returned. The number 1 represents the first page. The default value is 1.
-	Page *int64 `json:"-"`
-
-	// Allows users to set headers on API requests
-	Headers map[string]string
-}
-
-// NewListTopicsOptions : Instantiate ListTopicsOptions
-func (*AdminrestV1) NewListTopicsOptions() *ListTopicsOptions {
-	return &ListTopicsOptions{}
-}
-
-// SetTopicFilter : Allow user to set TopicFilter
-func (_options *ListTopicsOptions) SetTopicFilter(topicFilter string) *ListTopicsOptions {
-	_options.TopicFilter = core.StringPtr(topicFilter)
-	return _options
-}
-
-// SetPerPage : Allow user to set PerPage
-func (_options *ListTopicsOptions) SetPerPage(perPage int64) *ListTopicsOptions {
-	_options.PerPage = core.Int64Ptr(perPage)
-	return _options
-}
-
-// SetPage : Allow user to set Page
-func (_options *ListTopicsOptions) SetPage(page int64) *ListTopicsOptions {
-	_options.Page = core.Int64Ptr(page)
-	return _options
-}
-
-// SetHeaders : Allow user to set Headers
-func (options *ListTopicsOptions) SetHeaders(param map[string]string) *ListTopicsOptions {
-	options.Headers = param
-	return options
-}
-
-// ReplaceMirroringTopicSelectionOptions : The ReplaceMirroringTopicSelection options.
-type ReplaceMirroringTopicSelectionOptions struct {
-	Includes []string `json:"includes,omitempty"`
-
-	// Allows users to set headers on API requests
-	Headers map[string]string
-}
-
-// NewReplaceMirroringTopicSelectionOptions : Instantiate ReplaceMirroringTopicSelectionOptions
-func (*AdminrestV1) NewReplaceMirroringTopicSelectionOptions() *ReplaceMirroringTopicSelectionOptions {
-	return &ReplaceMirroringTopicSelectionOptions{}
-}
-
-// SetIncludes : Allow user to set Includes
-func (_options *ReplaceMirroringTopicSelectionOptions) SetIncludes(includes []string) *ReplaceMirroringTopicSelectionOptions {
-	_options.Includes = includes
-	return _options
-}
-
-// SetHeaders : Allow user to set Headers
-func (options *ReplaceMirroringTopicSelectionOptions) SetHeaders(param map[string]string) *ReplaceMirroringTopicSelectionOptions {
-	options.Headers = param
-	return options
-}
-
-// ReplicaAssignmentBrokers : ReplicaAssignmentBrokers struct
-type ReplicaAssignmentBrokers struct {
-	Replicas []int64 `json:"replicas,omitempty"`
-}
-
-// UnmarshalReplicaAssignmentBrokers unmarshals an instance of ReplicaAssignmentBrokers from the specified map of raw messages.
-func UnmarshalReplicaAssignmentBrokers(m map[string]json.RawMessage, result interface{}) (err error) {
-	obj := new(ReplicaAssignmentBrokers)
-	err = core.UnmarshalPrimitive(m, "replicas", &obj.Replicas)
-	if err != nil {
-		return
-	}
-	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
-	return
-}
-
-// UpdateTopicOptions : The UpdateTopic options.
-type UpdateTopicOptions struct {
-	// The topic name for the topic to be listed.
-	TopicName *string `json:"-" validate:"required,ne="`
-
-	// The new partition number to be increased.
-	NewTotalPartitionCount *int64 `json:"new_total_partition_count,omitempty"`
-
-	// The config properties to be updated for the topic. Valid config keys are 'cleanup.policy', 'retention.ms',
-	// 'retention.bytes', 'segment.bytes', 'segment.ms', 'segment.index.bytes'.
-	Configs []ConfigUpdate `json:"configs,omitempty"`
-
-	// Allows users to set headers on API requests
-	Headers map[string]string
-}
-
-// NewUpdateTopicOptions : Instantiate UpdateTopicOptions
-func (*AdminrestV1) NewUpdateTopicOptions(topicName string) *UpdateTopicOptions {
-	return &UpdateTopicOptions{
-		TopicName: core.StringPtr(topicName),
-	}
-}
-
-// SetTopicName : Allow user to set TopicName
-func (_options *UpdateTopicOptions) SetTopicName(topicName string) *UpdateTopicOptions {
-	_options.TopicName = core.StringPtr(topicName)
-	return _options
-}
-
-// SetNewTotalPartitionCount : Allow user to set NewTotalPartitionCount
-func (_options *UpdateTopicOptions) SetNewTotalPartitionCount(newTotalPartitionCount int64) *UpdateTopicOptions {
-	_options.NewTotalPartitionCount = core.Int64Ptr(newTotalPartitionCount)
-	return _options
-}
-
-// SetConfigs : Allow user to set Configs
-func (_options *UpdateTopicOptions) SetConfigs(configs []ConfigUpdate) *UpdateTopicOptions {
-	_options.Configs = configs
-	return _options
-}
-
-// SetHeaders : Allow user to set Headers
-func (options *UpdateTopicOptions) SetHeaders(param map[string]string) *UpdateTopicOptions {
-	options.Headers = param
-	return options
-}
-
-// ConfigCreate : ConfigCreate struct
-type ConfigCreate struct {
-	// The name of the config property.
-	Name *string `json:"name,omitempty"`
-
-	// The value for a config property.
-	Value *string `json:"value,omitempty"`
-}
-
-// UnmarshalConfigCreate unmarshals an instance of ConfigCreate from the specified map of raw messages.
-func UnmarshalConfigCreate(m map[string]json.RawMessage, result interface{}) (err error) {
-	obj := new(ConfigCreate)
-	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "value", &obj.Value)
-	if err != nil {
-		return
-	}
-	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
-	return
-}
-
-// ConfigUpdate : ConfigUpdate struct
-type ConfigUpdate struct {
-	// The name of the config property.
-	Name *string `json:"name,omitempty"`
-
-	// The value for a config property.
-	Value *string `json:"value,omitempty"`
-
-	// When true, the value of the config property is reset to its default value.
-	ResetToDefault *bool `json:"reset_to_default,omitempty"`
-}
-
-// UnmarshalConfigUpdate unmarshals an instance of ConfigUpdate from the specified map of raw messages.
-func UnmarshalConfigUpdate(m map[string]json.RawMessage, result interface{}) (err error) {
-	obj := new(ConfigUpdate)
-	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "value", &obj.Value)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "reset_to_default", &obj.ResetToDefault)
-	if err != nil {
-		return
-	}
-	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
-	return
-}
-
-// MirroringActiveTopics : Topics that are being actively mirrored.
-type MirroringActiveTopics struct {
-	ActiveTopics []string `json:"active_topics,omitempty"`
-}
-
-// UnmarshalMirroringActiveTopics unmarshals an instance of MirroringActiveTopics from the specified map of raw messages.
-func UnmarshalMirroringActiveTopics(m map[string]json.RawMessage, result interface{}) (err error) {
-	obj := new(MirroringActiveTopics)
-	err = core.UnmarshalPrimitive(m, "active_topics", &obj.ActiveTopics)
-	if err != nil {
-		return
-	}
-	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
-	return
-}
-
-// MirroringTopicSelection : Mirroring topic selection payload.
-type MirroringTopicSelection struct {
-	Includes []string `json:"includes,omitempty"`
-}
-
-// UnmarshalMirroringTopicSelection unmarshals an instance of MirroringTopicSelection from the specified map of raw messages.
-func UnmarshalMirroringTopicSelection(m map[string]json.RawMessage, result interface{}) (err error) {
-	obj := new(MirroringTopicSelection)
-	err = core.UnmarshalPrimitive(m, "includes", &obj.Includes)
-	if err != nil {
-		return
-	}
-	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
-	return
-}
-
-// ReplicaAssignment : ReplicaAssignment struct
-type ReplicaAssignment struct {
-	// The ID of the partition.
-	ID *int64 `json:"id,omitempty"`
-
-	Brokers *ReplicaAssignmentBrokers `json:"brokers,omitempty"`
-}
-
-// UnmarshalReplicaAssignment unmarshals an instance of ReplicaAssignment from the specified map of raw messages.
-func UnmarshalReplicaAssignment(m map[string]json.RawMessage, result interface{}) (err error) {
-	obj := new(ReplicaAssignment)
-	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalModel(m, "brokers", &obj.Brokers, UnmarshalReplicaAssignmentBrokers)
-	if err != nil {
-		return
-	}
-	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
-	return
-}
-
-// TopicConfigs : TopicConfigs struct
-type TopicConfigs struct {
-	// The value of config property 'cleanup.policy'.
-	CleanupPolicy *string `json:"cleanup.policy,omitempty"`
-
-	// The value of config property 'min.insync.replicas'.
-	MinInsyncReplicas *string `json:"min.insync.replicas,omitempty"`
-
-	// The value of config property 'retention.bytes'.
-	RetentionBytes *string `json:"retention.bytes,omitempty"`
-
-	// The value of config property 'retention.ms'.
-	RetentionMs *string `json:"retention.ms,omitempty"`
-
-	// The value of config property 'segment.bytes'.
-	SegmentBytes *string `json:"segment.bytes,omitempty"`
-
-	// The value of config property 'segment.index.bytes'.
-	SegmentIndexBytes *string `json:"segment.index.bytes,omitempty"`
-
-	// The value of config property 'segment.ms'.
-	SegmentMs *string `json:"segment.ms,omitempty"`
-}
-
-// UnmarshalTopicConfigs unmarshals an instance of TopicConfigs from the specified map of raw messages.
-func UnmarshalTopicConfigs(m map[string]json.RawMessage, result interface{}) (err error) {
-	obj := new(TopicConfigs)
-	err = core.UnmarshalPrimitive(m, "cleanup.policy", &obj.CleanupPolicy)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "min.insync.replicas", &obj.MinInsyncReplicas)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "retention.bytes", &obj.RetentionBytes)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "retention.ms", &obj.RetentionMs)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "segment.bytes", &obj.SegmentBytes)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "segment.index.bytes", &obj.SegmentIndexBytes)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "segment.ms", &obj.SegmentMs)
-	if err != nil {
-		return
-	}
-	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
-	return
-}
-
-// TopicDetail : TopicDetail struct
-type TopicDetail struct {
-	// The name of the topic.
-	Name *string `json:"name,omitempty"`
-
-	// The number of partitions.
-	Partitions *int64 `json:"partitions,omitempty"`
-
-	// The number of replication factor.
-	ReplicationFactor *int64 `json:"replicationFactor,omitempty"`
-
-	// The value of config property 'retention.ms'.
-	RetentionMs *int64 `json:"retentionMs,omitempty"`
-
-	// The value of config property 'cleanup.policy'.
-	CleanupPolicy *string `json:"cleanupPolicy,omitempty"`
-
-	Configs *TopicConfigs `json:"configs,omitempty"`
-
-	// The replia assignment of the topic.
-	ReplicaAssignments []ReplicaAssignment `json:"replicaAssignments,omitempty"`
-}
-
-// UnmarshalTopicDetail unmarshals an instance of TopicDetail from the specified map of raw messages.
-func UnmarshalTopicDetail(m map[string]json.RawMessage, result interface{}) (err error) {
-	obj := new(TopicDetail)
-	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "partitions", &obj.Partitions)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "replicationFactor", &obj.ReplicationFactor)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "retentionMs", &obj.RetentionMs)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "cleanupPolicy", &obj.CleanupPolicy)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalModel(m, "configs", &obj.Configs, UnmarshalTopicConfigs)
-	if err != nil {
-		return
-	}
-	err = core.UnmarshalModel(m, "replicaAssignments", &obj.ReplicaAssignments, UnmarshalReplicaAssignment)
-	if err != nil {
-		return
-	}
-	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
 	return
 }
 
@@ -1367,12 +779,12 @@ func (adminrest *AdminrestV1) GetQuotaWithContext(ctx context.Context, getQuotaO
 
 // ListQuotas : List each entity's quota information
 // List each entity's quota information.
-func (adminrest *AdminrestV1) ListQuotas(listQuotasOptions *ListQuotasOptions) (result *EntityQuotasList, response *core.DetailedResponse, err error) {
+func (adminrest *AdminrestV1) ListQuotas(listQuotasOptions *ListQuotasOptions) (result *QuotaList, response *core.DetailedResponse, err error) {
 	return adminrest.ListQuotasWithContext(context.Background(), listQuotasOptions)
 }
 
 // ListQuotasWithContext is an alternate form of the ListQuotas method which supports a Context parameter
-func (adminrest *AdminrestV1) ListQuotasWithContext(ctx context.Context, listQuotasOptions *ListQuotasOptions) (result *EntityQuotasList, response *core.DetailedResponse, err error) {
+func (adminrest *AdminrestV1) ListQuotasWithContext(ctx context.Context, listQuotasOptions *ListQuotasOptions) (result *QuotaList, response *core.DetailedResponse, err error) {
 	err = core.ValidateStruct(listQuotasOptions, "listQuotasOptions")
 	if err != nil {
 		return
@@ -1407,13 +819,701 @@ func (adminrest *AdminrestV1) ListQuotasWithContext(ctx context.Context, listQuo
 		return
 	}
 	if rawResponse != nil {
-		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalEntityQuotasList)
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalQuotaList)
 		if err != nil {
 			return
 		}
 		response.Result = result
 	}
 
+	return
+}
+
+// ListBrokers : Get a list of brokers in the cluster
+// Get a list of brokers in the cluster.
+func (adminrest *AdminrestV1) ListBrokers(listBrokersOptions *ListBrokersOptions) (result []BrokerSummary, response *core.DetailedResponse, err error) {
+	return adminrest.ListBrokersWithContext(context.Background(), listBrokersOptions)
+}
+
+// ListBrokersWithContext is an alternate form of the ListBrokers method which supports a Context parameter
+func (adminrest *AdminrestV1) ListBrokersWithContext(ctx context.Context, listBrokersOptions *ListBrokersOptions) (result []BrokerSummary, response *core.DetailedResponse, err error) {
+	err = core.ValidateStruct(listBrokersOptions, "listBrokersOptions")
+	if err != nil {
+		return
+	}
+
+	builder := core.NewRequestBuilder(core.GET)
+	builder = builder.WithContext(ctx)
+	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
+	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/brokers`, nil)
+	if err != nil {
+		return
+	}
+
+	for headerName, headerValue := range listBrokersOptions.Headers {
+		builder.AddHeader(headerName, headerValue)
+	}
+
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "ListBrokers")
+	for headerName, headerValue := range sdkHeaders {
+		builder.AddHeader(headerName, headerValue)
+	}
+	builder.AddHeader("Accept", "application/json")
+
+	request, err := builder.Build()
+	if err != nil {
+		return
+	}
+
+	var rawResponse []json.RawMessage
+	response, err = adminrest.Service.Request(request, &rawResponse)
+	if err != nil {
+		return
+	}
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalBrokerSummary)
+		if err != nil {
+			return
+		}
+		response.Result = result
+	}
+
+	return
+}
+
+// GetBroker : Get detailed information for a single broker
+// Get detailed information for a single broker.
+func (adminrest *AdminrestV1) GetBroker(getBrokerOptions *GetBrokerOptions) (result *BrokerDetail, response *core.DetailedResponse, err error) {
+	return adminrest.GetBrokerWithContext(context.Background(), getBrokerOptions)
+}
+
+// GetBrokerWithContext is an alternate form of the GetBroker method which supports a Context parameter
+func (adminrest *AdminrestV1) GetBrokerWithContext(ctx context.Context, getBrokerOptions *GetBrokerOptions) (result *BrokerDetail, response *core.DetailedResponse, err error) {
+	err = core.ValidateNotNil(getBrokerOptions, "getBrokerOptions cannot be nil")
+	if err != nil {
+		return
+	}
+	err = core.ValidateStruct(getBrokerOptions, "getBrokerOptions")
+	if err != nil {
+		return
+	}
+
+	pathParamsMap := map[string]string{
+		"broker_id": fmt.Sprint(*getBrokerOptions.BrokerID),
+	}
+
+	builder := core.NewRequestBuilder(core.GET)
+	builder = builder.WithContext(ctx)
+	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
+	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/brokers/{broker_id}`, pathParamsMap)
+	if err != nil {
+		return
+	}
+
+	for headerName, headerValue := range getBrokerOptions.Headers {
+		builder.AddHeader(headerName, headerValue)
+	}
+
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "GetBroker")
+	for headerName, headerValue := range sdkHeaders {
+		builder.AddHeader(headerName, headerValue)
+	}
+	builder.AddHeader("Accept", "application/json")
+
+	request, err := builder.Build()
+	if err != nil {
+		return
+	}
+
+	var rawResponse map[string]json.RawMessage
+	response, err = adminrest.Service.Request(request, &rawResponse)
+	if err != nil {
+		return
+	}
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalBrokerDetail)
+		if err != nil {
+			return
+		}
+		response.Result = result
+	}
+
+	return
+}
+
+// GetBrokerConfig : Get all configuration parameters for a single broker
+// Get all configuration parameters for a single broker.
+func (adminrest *AdminrestV1) GetBrokerConfig(getBrokerConfigOptions *GetBrokerConfigOptions) (result *BrokerDetail, response *core.DetailedResponse, err error) {
+	return adminrest.GetBrokerConfigWithContext(context.Background(), getBrokerConfigOptions)
+}
+
+// GetBrokerConfigWithContext is an alternate form of the GetBrokerConfig method which supports a Context parameter
+func (adminrest *AdminrestV1) GetBrokerConfigWithContext(ctx context.Context, getBrokerConfigOptions *GetBrokerConfigOptions) (result *BrokerDetail, response *core.DetailedResponse, err error) {
+	err = core.ValidateNotNil(getBrokerConfigOptions, "getBrokerConfigOptions cannot be nil")
+	if err != nil {
+		return
+	}
+	err = core.ValidateStruct(getBrokerConfigOptions, "getBrokerConfigOptions")
+	if err != nil {
+		return
+	}
+
+	pathParamsMap := map[string]string{
+		"broker_id": fmt.Sprint(*getBrokerConfigOptions.BrokerID),
+	}
+
+	builder := core.NewRequestBuilder(core.GET)
+	builder = builder.WithContext(ctx)
+	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
+	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/brokers/{broker_id}/configs`, pathParamsMap)
+	if err != nil {
+		return
+	}
+
+	for headerName, headerValue := range getBrokerConfigOptions.Headers {
+		builder.AddHeader(headerName, headerValue)
+	}
+
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "GetBrokerConfig")
+	for headerName, headerValue := range sdkHeaders {
+		builder.AddHeader(headerName, headerValue)
+	}
+	builder.AddHeader("Accept", "application/json")
+
+	if getBrokerConfigOptions.ConfigFilter != nil {
+		builder.AddQuery("config_filter", fmt.Sprint(*getBrokerConfigOptions.ConfigFilter))
+	}
+	if getBrokerConfigOptions.Verbose != nil {
+		builder.AddQuery("verbose", fmt.Sprint(*getBrokerConfigOptions.Verbose))
+	}
+
+	request, err := builder.Build()
+	if err != nil {
+		return
+	}
+
+	var rawResponse map[string]json.RawMessage
+	response, err = adminrest.Service.Request(request, &rawResponse)
+	if err != nil {
+		return
+	}
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalBrokerDetail)
+		if err != nil {
+			return
+		}
+		response.Result = result
+	}
+
+	return
+}
+
+// GetCluster : Get information about the cluster
+// Get information about the cluster.
+func (adminrest *AdminrestV1) GetCluster(getClusterOptions *GetClusterOptions) (result *Cluster, response *core.DetailedResponse, err error) {
+	return adminrest.GetClusterWithContext(context.Background(), getClusterOptions)
+}
+
+// GetClusterWithContext is an alternate form of the GetCluster method which supports a Context parameter
+func (adminrest *AdminrestV1) GetClusterWithContext(ctx context.Context, getClusterOptions *GetClusterOptions) (result *Cluster, response *core.DetailedResponse, err error) {
+	err = core.ValidateStruct(getClusterOptions, "getClusterOptions")
+	if err != nil {
+		return
+	}
+
+	builder := core.NewRequestBuilder(core.GET)
+	builder = builder.WithContext(ctx)
+	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
+	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/cluster`, nil)
+	if err != nil {
+		return
+	}
+
+	for headerName, headerValue := range getClusterOptions.Headers {
+		builder.AddHeader(headerName, headerValue)
+	}
+
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "GetCluster")
+	for headerName, headerValue := range sdkHeaders {
+		builder.AddHeader(headerName, headerValue)
+	}
+	builder.AddHeader("Accept", "application/json")
+
+	request, err := builder.Build()
+	if err != nil {
+		return
+	}
+
+	var rawResponse map[string]json.RawMessage
+	response, err = adminrest.Service.Request(request, &rawResponse)
+	if err != nil {
+		return
+	}
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalCluster)
+		if err != nil {
+			return
+		}
+		response.Result = result
+	}
+
+	return
+}
+
+// ListConsumerGroups : Get a list of consumer group IDs
+// Get a list of consumer group IDs.
+func (adminrest *AdminrestV1) ListConsumerGroups(listConsumerGroupsOptions *ListConsumerGroupsOptions) (result []string, response *core.DetailedResponse, err error) {
+	return adminrest.ListConsumerGroupsWithContext(context.Background(), listConsumerGroupsOptions)
+}
+
+// ListConsumerGroupsWithContext is an alternate form of the ListConsumerGroups method which supports a Context parameter
+func (adminrest *AdminrestV1) ListConsumerGroupsWithContext(ctx context.Context, listConsumerGroupsOptions *ListConsumerGroupsOptions) (result []string, response *core.DetailedResponse, err error) {
+	err = core.ValidateStruct(listConsumerGroupsOptions, "listConsumerGroupsOptions")
+	if err != nil {
+		return
+	}
+
+	builder := core.NewRequestBuilder(core.GET)
+	builder = builder.WithContext(ctx)
+	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
+	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/consumergroups`, nil)
+	if err != nil {
+		return
+	}
+
+	for headerName, headerValue := range listConsumerGroupsOptions.Headers {
+		builder.AddHeader(headerName, headerValue)
+	}
+
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "ListConsumerGroups")
+	for headerName, headerValue := range sdkHeaders {
+		builder.AddHeader(headerName, headerValue)
+	}
+	builder.AddHeader("Accept", "application/json")
+
+	if listConsumerGroupsOptions.GroupFilter != nil {
+		builder.AddQuery("group_filter", fmt.Sprint(*listConsumerGroupsOptions.GroupFilter))
+	}
+	if listConsumerGroupsOptions.PerPage != nil {
+		builder.AddQuery("per_page", fmt.Sprint(*listConsumerGroupsOptions.PerPage))
+	}
+	if listConsumerGroupsOptions.Page != nil {
+		builder.AddQuery("page", fmt.Sprint(*listConsumerGroupsOptions.Page))
+	}
+
+	request, err := builder.Build()
+	if err != nil {
+		return
+	}
+
+	response, err = adminrest.Service.Request(request, &result)
+
+	return
+}
+
+// GetConsumerGroup : Get detailed information on a consumer group
+// Get detailed information on a consumer group.
+func (adminrest *AdminrestV1) GetConsumerGroup(getConsumerGroupOptions *GetConsumerGroupOptions) (result *GroupDetail, response *core.DetailedResponse, err error) {
+	return adminrest.GetConsumerGroupWithContext(context.Background(), getConsumerGroupOptions)
+}
+
+// GetConsumerGroupWithContext is an alternate form of the GetConsumerGroup method which supports a Context parameter
+func (adminrest *AdminrestV1) GetConsumerGroupWithContext(ctx context.Context, getConsumerGroupOptions *GetConsumerGroupOptions) (result *GroupDetail, response *core.DetailedResponse, err error) {
+	err = core.ValidateNotNil(getConsumerGroupOptions, "getConsumerGroupOptions cannot be nil")
+	if err != nil {
+		return
+	}
+	err = core.ValidateStruct(getConsumerGroupOptions, "getConsumerGroupOptions")
+	if err != nil {
+		return
+	}
+
+	pathParamsMap := map[string]string{
+		"group_id": *getConsumerGroupOptions.GroupID,
+	}
+
+	builder := core.NewRequestBuilder(core.GET)
+	builder = builder.WithContext(ctx)
+	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
+	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/consumergroups/{group_id}`, pathParamsMap)
+	if err != nil {
+		return
+	}
+
+	for headerName, headerValue := range getConsumerGroupOptions.Headers {
+		builder.AddHeader(headerName, headerValue)
+	}
+
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "GetConsumerGroup")
+	for headerName, headerValue := range sdkHeaders {
+		builder.AddHeader(headerName, headerValue)
+	}
+	builder.AddHeader("Accept", "application/json")
+
+	request, err := builder.Build()
+	if err != nil {
+		return
+	}
+
+	var rawResponse map[string]json.RawMessage
+	response, err = adminrest.Service.Request(request, &rawResponse)
+	if err != nil {
+		return
+	}
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalGroupDetail)
+		if err != nil {
+			return
+		}
+		response.Result = result
+	}
+
+	return
+}
+
+// DeleteConsumerGroup : Delete a consumer group
+// Delete a consumer group.
+func (adminrest *AdminrestV1) DeleteConsumerGroup(deleteConsumerGroupOptions *DeleteConsumerGroupOptions) (response *core.DetailedResponse, err error) {
+	return adminrest.DeleteConsumerGroupWithContext(context.Background(), deleteConsumerGroupOptions)
+}
+
+// DeleteConsumerGroupWithContext is an alternate form of the DeleteConsumerGroup method which supports a Context parameter
+func (adminrest *AdminrestV1) DeleteConsumerGroupWithContext(ctx context.Context, deleteConsumerGroupOptions *DeleteConsumerGroupOptions) (response *core.DetailedResponse, err error) {
+	err = core.ValidateNotNil(deleteConsumerGroupOptions, "deleteConsumerGroupOptions cannot be nil")
+	if err != nil {
+		return
+	}
+	err = core.ValidateStruct(deleteConsumerGroupOptions, "deleteConsumerGroupOptions")
+	if err != nil {
+		return
+	}
+
+	pathParamsMap := map[string]string{
+		"group_id": *deleteConsumerGroupOptions.GroupID,
+	}
+
+	builder := core.NewRequestBuilder(core.DELETE)
+	builder = builder.WithContext(ctx)
+	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
+	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/consumergroups/{group_id}`, pathParamsMap)
+	if err != nil {
+		return
+	}
+
+	for headerName, headerValue := range deleteConsumerGroupOptions.Headers {
+		builder.AddHeader(headerName, headerValue)
+	}
+
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "DeleteConsumerGroup")
+	for headerName, headerValue := range sdkHeaders {
+		builder.AddHeader(headerName, headerValue)
+	}
+
+	request, err := builder.Build()
+	if err != nil {
+		return
+	}
+
+	response, err = adminrest.Service.Request(request, nil)
+
+	return
+}
+
+// UpdateConsumerGroup : Update the offsets of a consumer group
+// Update the offsets of a consumer group using various modes, eg. latest, earliest, datetime,etc.
+func (adminrest *AdminrestV1) UpdateConsumerGroup(updateConsumerGroupOptions *UpdateConsumerGroupOptions) (result []GroupResetResultsItem, response *core.DetailedResponse, err error) {
+	return adminrest.UpdateConsumerGroupWithContext(context.Background(), updateConsumerGroupOptions)
+}
+
+// UpdateConsumerGroupWithContext is an alternate form of the UpdateConsumerGroup method which supports a Context parameter
+func (adminrest *AdminrestV1) UpdateConsumerGroupWithContext(ctx context.Context, updateConsumerGroupOptions *UpdateConsumerGroupOptions) (result []GroupResetResultsItem, response *core.DetailedResponse, err error) {
+	err = core.ValidateNotNil(updateConsumerGroupOptions, "updateConsumerGroupOptions cannot be nil")
+	if err != nil {
+		return
+	}
+	err = core.ValidateStruct(updateConsumerGroupOptions, "updateConsumerGroupOptions")
+	if err != nil {
+		return
+	}
+
+	pathParamsMap := map[string]string{
+		"group_id": *updateConsumerGroupOptions.GroupID,
+	}
+
+	builder := core.NewRequestBuilder(core.PATCH)
+	builder = builder.WithContext(ctx)
+	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
+	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/consumergroups/{group_id}`, pathParamsMap)
+	if err != nil {
+		return
+	}
+
+	for headerName, headerValue := range updateConsumerGroupOptions.Headers {
+		builder.AddHeader(headerName, headerValue)
+	}
+
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "UpdateConsumerGroup")
+	for headerName, headerValue := range sdkHeaders {
+		builder.AddHeader(headerName, headerValue)
+	}
+	builder.AddHeader("Accept", "application/json")
+	builder.AddHeader("Content-Type", "application/json")
+
+	body := make(map[string]interface{})
+	if updateConsumerGroupOptions.Topic != nil {
+		body["topic"] = updateConsumerGroupOptions.Topic
+	}
+	if updateConsumerGroupOptions.Mode != nil {
+		body["mode"] = updateConsumerGroupOptions.Mode
+	}
+	if updateConsumerGroupOptions.Value != nil {
+		body["value"] = updateConsumerGroupOptions.Value
+	}
+	if updateConsumerGroupOptions.Execute != nil {
+		body["execute"] = updateConsumerGroupOptions.Execute
+	}
+	_, err = builder.SetBodyContentJSON(body)
+	if err != nil {
+		return
+	}
+
+	request, err := builder.Build()
+	if err != nil {
+		return
+	}
+
+	var rawResponse []json.RawMessage
+	response, err = adminrest.Service.Request(request, &rawResponse)
+	if err != nil {
+		return
+	}
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalGroupResetResultsItem)
+		if err != nil {
+			return
+		}
+		response.Result = result
+	}
+
+	return
+}
+
+// GetMirroringTopicSelection : Get current topic selection for mirroring
+// Get current topic selection for mirroring.
+func (adminrest *AdminrestV1) GetMirroringTopicSelection(getMirroringTopicSelectionOptions *GetMirroringTopicSelectionOptions) (result *MirroringTopicSelection, response *core.DetailedResponse, err error) {
+	return adminrest.GetMirroringTopicSelectionWithContext(context.Background(), getMirroringTopicSelectionOptions)
+}
+
+// GetMirroringTopicSelectionWithContext is an alternate form of the GetMirroringTopicSelection method which supports a Context parameter
+func (adminrest *AdminrestV1) GetMirroringTopicSelectionWithContext(ctx context.Context, getMirroringTopicSelectionOptions *GetMirroringTopicSelectionOptions) (result *MirroringTopicSelection, response *core.DetailedResponse, err error) {
+	err = core.ValidateStruct(getMirroringTopicSelectionOptions, "getMirroringTopicSelectionOptions")
+	if err != nil {
+		return
+	}
+
+	builder := core.NewRequestBuilder(core.GET)
+	builder = builder.WithContext(ctx)
+	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
+	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/mirroring/topic-selection`, nil)
+	if err != nil {
+		return
+	}
+
+	for headerName, headerValue := range getMirroringTopicSelectionOptions.Headers {
+		builder.AddHeader(headerName, headerValue)
+	}
+
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "GetMirroringTopicSelection")
+	for headerName, headerValue := range sdkHeaders {
+		builder.AddHeader(headerName, headerValue)
+	}
+	builder.AddHeader("Accept", "application/json")
+
+	request, err := builder.Build()
+	if err != nil {
+		return
+	}
+
+	var rawResponse map[string]json.RawMessage
+	response, err = adminrest.Service.Request(request, &rawResponse)
+	if err != nil {
+		return
+	}
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringTopicSelection)
+		if err != nil {
+			return
+		}
+		response.Result = result
+	}
+
+	return
+}
+
+// ReplaceMirroringTopicSelection : Replace topic selection for mirroring
+// Replace topic selection for mirroring. This operation replaces the complete set of mirroring topic selections.
+func (adminrest *AdminrestV1) ReplaceMirroringTopicSelection(replaceMirroringTopicSelectionOptions *ReplaceMirroringTopicSelectionOptions) (result *MirroringTopicSelection, response *core.DetailedResponse, err error) {
+	return adminrest.ReplaceMirroringTopicSelectionWithContext(context.Background(), replaceMirroringTopicSelectionOptions)
+}
+
+// ReplaceMirroringTopicSelectionWithContext is an alternate form of the ReplaceMirroringTopicSelection method which supports a Context parameter
+func (adminrest *AdminrestV1) ReplaceMirroringTopicSelectionWithContext(ctx context.Context, replaceMirroringTopicSelectionOptions *ReplaceMirroringTopicSelectionOptions) (result *MirroringTopicSelection, response *core.DetailedResponse, err error) {
+	err = core.ValidateNotNil(replaceMirroringTopicSelectionOptions, "replaceMirroringTopicSelectionOptions cannot be nil")
+	if err != nil {
+		return
+	}
+	err = core.ValidateStruct(replaceMirroringTopicSelectionOptions, "replaceMirroringTopicSelectionOptions")
+	if err != nil {
+		return
+	}
+
+	builder := core.NewRequestBuilder(core.POST)
+	builder = builder.WithContext(ctx)
+	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
+	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/mirroring/topic-selection`, nil)
+	if err != nil {
+		return
+	}
+
+	for headerName, headerValue := range replaceMirroringTopicSelectionOptions.Headers {
+		builder.AddHeader(headerName, headerValue)
+	}
+
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "ReplaceMirroringTopicSelection")
+	for headerName, headerValue := range sdkHeaders {
+		builder.AddHeader(headerName, headerValue)
+	}
+	builder.AddHeader("Accept", "application/json")
+	builder.AddHeader("Content-Type", "application/json")
+
+	body := make(map[string]interface{})
+	if replaceMirroringTopicSelectionOptions.Includes != nil {
+		body["includes"] = replaceMirroringTopicSelectionOptions.Includes
+	}
+	_, err = builder.SetBodyContentJSON(body)
+	if err != nil {
+		return
+	}
+
+	request, err := builder.Build()
+	if err != nil {
+		return
+	}
+
+	var rawResponse map[string]json.RawMessage
+	response, err = adminrest.Service.Request(request, &rawResponse)
+	if err != nil {
+		return
+	}
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringTopicSelection)
+		if err != nil {
+			return
+		}
+		response.Result = result
+	}
+
+	return
+}
+
+// GetMirroringActiveTopics : Get topics that are being actively mirrored
+// Get topics that are being actively mirrored.
+func (adminrest *AdminrestV1) GetMirroringActiveTopics(getMirroringActiveTopicsOptions *GetMirroringActiveTopicsOptions) (result *MirroringActiveTopics, response *core.DetailedResponse, err error) {
+	return adminrest.GetMirroringActiveTopicsWithContext(context.Background(), getMirroringActiveTopicsOptions)
+}
+
+// GetMirroringActiveTopicsWithContext is an alternate form of the GetMirroringActiveTopics method which supports a Context parameter
+func (adminrest *AdminrestV1) GetMirroringActiveTopicsWithContext(ctx context.Context, getMirroringActiveTopicsOptions *GetMirroringActiveTopicsOptions) (result *MirroringActiveTopics, response *core.DetailedResponse, err error) {
+	err = core.ValidateStruct(getMirroringActiveTopicsOptions, "getMirroringActiveTopicsOptions")
+	if err != nil {
+		return
+	}
+
+	builder := core.NewRequestBuilder(core.GET)
+	builder = builder.WithContext(ctx)
+	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
+	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/mirroring/active-topics`, nil)
+	if err != nil {
+		return
+	}
+
+	for headerName, headerValue := range getMirroringActiveTopicsOptions.Headers {
+		builder.AddHeader(headerName, headerValue)
+	}
+
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "GetMirroringActiveTopics")
+	for headerName, headerValue := range sdkHeaders {
+		builder.AddHeader(headerName, headerValue)
+	}
+	builder.AddHeader("Accept", "application/json")
+
+	request, err := builder.Build()
+	if err != nil {
+		return
+	}
+
+	var rawResponse map[string]json.RawMessage
+	response, err = adminrest.Service.Request(request, &rawResponse)
+	if err != nil {
+		return
+	}
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringActiveTopics)
+		if err != nil {
+			return
+		}
+		response.Result = result
+	}
+
+	return
+}
+
+// AliveOptions : The Alive options.
+type AliveOptions struct {
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewAliveOptions : Instantiate AliveOptions
+func (*AdminrestV1) NewAliveOptions() *AliveOptions {
+	return &AliveOptions{}
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *AliveOptions) SetHeaders(param map[string]string) *AliveOptions {
+	options.Headers = param
+	return options
+}
+
+// BrokerDetailConfigsItem : BrokerDetailConfigsItem struct
+type BrokerDetailConfigsItem struct {
+	// The name of the config property.
+	Name *string `json:"name,omitempty"`
+
+	// The value for a config property.
+	Value *string `json:"value,omitempty"`
+
+	// When true, the value cannot be displayed and will be returned with a null value.
+	IsSensitive *bool `json:"is_sensitive,omitempty"`
+}
+
+// UnmarshalBrokerDetailConfigsItem unmarshals an instance of BrokerDetailConfigsItem from the specified map of raw messages.
+func UnmarshalBrokerDetailConfigsItem(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(BrokerDetailConfigsItem)
+	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "value", &obj.Value)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "is_sensitive", &obj.IsSensitive)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
 	return
 }
 
@@ -1463,6 +1563,87 @@ func (options *CreateQuotaOptions) SetHeaders(param map[string]string) *CreateQu
 	return options
 }
 
+// CreateTopicOptions : The CreateTopic options.
+type CreateTopicOptions struct {
+	// The name of topic to be created.
+	Name *string `json:"name,omitempty"`
+
+	// The number of partitions.
+	Partitions *int64 `json:"partitions,omitempty"`
+
+	// The number of partitions, this field takes precedence over 'partitions'. Default value is 1 if not specified.
+	PartitionCount *int64 `json:"partition_count,omitempty"`
+
+	// The config properties to be set for the new topic.
+	Configs []TopicCreateRequestConfigsItem `json:"configs,omitempty"`
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewCreateTopicOptions : Instantiate CreateTopicOptions
+func (*AdminrestV1) NewCreateTopicOptions() *CreateTopicOptions {
+	return &CreateTopicOptions{}
+}
+
+// SetName : Allow user to set Name
+func (_options *CreateTopicOptions) SetName(name string) *CreateTopicOptions {
+	_options.Name = core.StringPtr(name)
+	return _options
+}
+
+// SetPartitions : Allow user to set Partitions
+func (_options *CreateTopicOptions) SetPartitions(partitions int64) *CreateTopicOptions {
+	_options.Partitions = core.Int64Ptr(partitions)
+	return _options
+}
+
+// SetPartitionCount : Allow user to set PartitionCount
+func (_options *CreateTopicOptions) SetPartitionCount(partitionCount int64) *CreateTopicOptions {
+	_options.PartitionCount = core.Int64Ptr(partitionCount)
+	return _options
+}
+
+// SetConfigs : Allow user to set Configs
+func (_options *CreateTopicOptions) SetConfigs(configs []TopicCreateRequestConfigsItem) *CreateTopicOptions {
+	_options.Configs = configs
+	return _options
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *CreateTopicOptions) SetHeaders(param map[string]string) *CreateTopicOptions {
+	options.Headers = param
+	return options
+}
+
+// DeleteConsumerGroupOptions : The DeleteConsumerGroup options.
+type DeleteConsumerGroupOptions struct {
+	// The group ID for the consumer group to be deleted.
+	GroupID *string `json:"group_id" validate:"required,ne="`
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewDeleteConsumerGroupOptions : Instantiate DeleteConsumerGroupOptions
+func (*AdminrestV1) NewDeleteConsumerGroupOptions(groupID string) *DeleteConsumerGroupOptions {
+	return &DeleteConsumerGroupOptions{
+		GroupID: core.StringPtr(groupID),
+	}
+}
+
+// SetGroupID : Allow user to set GroupID
+func (_options *DeleteConsumerGroupOptions) SetGroupID(groupID string) *DeleteConsumerGroupOptions {
+	_options.GroupID = core.StringPtr(groupID)
+	return _options
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *DeleteConsumerGroupOptions) SetHeaders(param map[string]string) *DeleteConsumerGroupOptions {
+	options.Headers = param
+	return options
+}
+
 // DeleteQuotaOptions : The DeleteQuota options.
 type DeleteQuotaOptions struct {
 	// The entity name of the quotas can be `default` or an IAM Service ID that starts with an `iam-ServiceId` prefix.
@@ -1487,6 +1668,230 @@ func (_options *DeleteQuotaOptions) SetEntityName(entityName string) *DeleteQuot
 
 // SetHeaders : Allow user to set Headers
 func (options *DeleteQuotaOptions) SetHeaders(param map[string]string) *DeleteQuotaOptions {
+	options.Headers = param
+	return options
+}
+
+// DeleteTopicOptions : The DeleteTopic options.
+type DeleteTopicOptions struct {
+	// The topic name for the topic to be deleted.
+	TopicName *string `json:"topic_name" validate:"required,ne="`
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewDeleteTopicOptions : Instantiate DeleteTopicOptions
+func (*AdminrestV1) NewDeleteTopicOptions(topicName string) *DeleteTopicOptions {
+	return &DeleteTopicOptions{
+		TopicName: core.StringPtr(topicName),
+	}
+}
+
+// SetTopicName : Allow user to set TopicName
+func (_options *DeleteTopicOptions) SetTopicName(topicName string) *DeleteTopicOptions {
+	_options.TopicName = core.StringPtr(topicName)
+	return _options
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *DeleteTopicOptions) SetHeaders(param map[string]string) *DeleteTopicOptions {
+	options.Headers = param
+	return options
+}
+
+// DeleteTopicRecordsOptions : The DeleteTopicRecords options.
+type DeleteTopicRecordsOptions struct {
+	// The topic name of the records to be deleted.
+	TopicName *string `json:"topic_name" validate:"required,ne="`
+
+	RecordsToDelete []RecordDeleteRequestRecordsToDeleteItem `json:"records_to_delete,omitempty"`
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewDeleteTopicRecordsOptions : Instantiate DeleteTopicRecordsOptions
+func (*AdminrestV1) NewDeleteTopicRecordsOptions(topicName string) *DeleteTopicRecordsOptions {
+	return &DeleteTopicRecordsOptions{
+		TopicName: core.StringPtr(topicName),
+	}
+}
+
+// SetTopicName : Allow user to set TopicName
+func (_options *DeleteTopicRecordsOptions) SetTopicName(topicName string) *DeleteTopicRecordsOptions {
+	_options.TopicName = core.StringPtr(topicName)
+	return _options
+}
+
+// SetRecordsToDelete : Allow user to set RecordsToDelete
+func (_options *DeleteTopicRecordsOptions) SetRecordsToDelete(recordsToDelete []RecordDeleteRequestRecordsToDeleteItem) *DeleteTopicRecordsOptions {
+	_options.RecordsToDelete = recordsToDelete
+	return _options
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *DeleteTopicRecordsOptions) SetHeaders(param map[string]string) *DeleteTopicRecordsOptions {
+	options.Headers = param
+	return options
+}
+
+// GetBrokerConfigOptions : The GetBrokerConfig options.
+type GetBrokerConfigOptions struct {
+	// The broker ID of the broker to be described.
+	BrokerID *int64 `json:"broker_id" validate:"required"`
+
+	// A filter to be applied to the config names. A simple filter can be specified as a string with asterisk (`*`)
+	// wildcards representing 0 or more characters, e.g. `file*` will filter all config names that begin with the string
+	// `file` followed by any character sequence. A more complex filter pattern can be used by surrounding a regular
+	// expression in forward slash (`/`) delimiters, e.g. `/file.* /`.
+	ConfigFilter *string `json:"config_filter,omitempty"`
+
+	// When true, all information about the config properties is returned including the source of the configuration
+	// indicating its scope and whether it's dynamic.
+	Verbose *bool `json:"verbose,omitempty"`
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewGetBrokerConfigOptions : Instantiate GetBrokerConfigOptions
+func (*AdminrestV1) NewGetBrokerConfigOptions(brokerID int64) *GetBrokerConfigOptions {
+	return &GetBrokerConfigOptions{
+		BrokerID: core.Int64Ptr(brokerID),
+	}
+}
+
+// SetBrokerID : Allow user to set BrokerID
+func (_options *GetBrokerConfigOptions) SetBrokerID(brokerID int64) *GetBrokerConfigOptions {
+	_options.BrokerID = core.Int64Ptr(brokerID)
+	return _options
+}
+
+// SetConfigFilter : Allow user to set ConfigFilter
+func (_options *GetBrokerConfigOptions) SetConfigFilter(configFilter string) *GetBrokerConfigOptions {
+	_options.ConfigFilter = core.StringPtr(configFilter)
+	return _options
+}
+
+// SetVerbose : Allow user to set Verbose
+func (_options *GetBrokerConfigOptions) SetVerbose(verbose bool) *GetBrokerConfigOptions {
+	_options.Verbose = core.BoolPtr(verbose)
+	return _options
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *GetBrokerConfigOptions) SetHeaders(param map[string]string) *GetBrokerConfigOptions {
+	options.Headers = param
+	return options
+}
+
+// GetBrokerOptions : The GetBroker options.
+type GetBrokerOptions struct {
+	// The broker ID of the broker to be described.
+	BrokerID *int64 `json:"broker_id" validate:"required"`
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewGetBrokerOptions : Instantiate GetBrokerOptions
+func (*AdminrestV1) NewGetBrokerOptions(brokerID int64) *GetBrokerOptions {
+	return &GetBrokerOptions{
+		BrokerID: core.Int64Ptr(brokerID),
+	}
+}
+
+// SetBrokerID : Allow user to set BrokerID
+func (_options *GetBrokerOptions) SetBrokerID(brokerID int64) *GetBrokerOptions {
+	_options.BrokerID = core.Int64Ptr(brokerID)
+	return _options
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *GetBrokerOptions) SetHeaders(param map[string]string) *GetBrokerOptions {
+	options.Headers = param
+	return options
+}
+
+// GetClusterOptions : The GetCluster options.
+type GetClusterOptions struct {
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewGetClusterOptions : Instantiate GetClusterOptions
+func (*AdminrestV1) NewGetClusterOptions() *GetClusterOptions {
+	return &GetClusterOptions{}
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *GetClusterOptions) SetHeaders(param map[string]string) *GetClusterOptions {
+	options.Headers = param
+	return options
+}
+
+// GetConsumerGroupOptions : The GetConsumerGroup options.
+type GetConsumerGroupOptions struct {
+	// The group ID for the consumer group to be described.
+	GroupID *string `json:"group_id" validate:"required,ne="`
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewGetConsumerGroupOptions : Instantiate GetConsumerGroupOptions
+func (*AdminrestV1) NewGetConsumerGroupOptions(groupID string) *GetConsumerGroupOptions {
+	return &GetConsumerGroupOptions{
+		GroupID: core.StringPtr(groupID),
+	}
+}
+
+// SetGroupID : Allow user to set GroupID
+func (_options *GetConsumerGroupOptions) SetGroupID(groupID string) *GetConsumerGroupOptions {
+	_options.GroupID = core.StringPtr(groupID)
+	return _options
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *GetConsumerGroupOptions) SetHeaders(param map[string]string) *GetConsumerGroupOptions {
+	options.Headers = param
+	return options
+}
+
+// GetMirroringActiveTopicsOptions : The GetMirroringActiveTopics options.
+type GetMirroringActiveTopicsOptions struct {
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewGetMirroringActiveTopicsOptions : Instantiate GetMirroringActiveTopicsOptions
+func (*AdminrestV1) NewGetMirroringActiveTopicsOptions() *GetMirroringActiveTopicsOptions {
+	return &GetMirroringActiveTopicsOptions{}
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *GetMirroringActiveTopicsOptions) SetHeaders(param map[string]string) *GetMirroringActiveTopicsOptions {
+	options.Headers = param
+	return options
+}
+
+// GetMirroringTopicSelectionOptions : The GetMirroringTopicSelection options.
+type GetMirroringTopicSelectionOptions struct {
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewGetMirroringTopicSelectionOptions : Instantiate GetMirroringTopicSelectionOptions
+func (*AdminrestV1) NewGetMirroringTopicSelectionOptions() *GetMirroringTopicSelectionOptions {
+	return &GetMirroringTopicSelectionOptions{}
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *GetMirroringTopicSelectionOptions) SetHeaders(param map[string]string) *GetMirroringTopicSelectionOptions {
 	options.Headers = param
 	return options
 }
@@ -1519,6 +1924,127 @@ func (options *GetQuotaOptions) SetHeaders(param map[string]string) *GetQuotaOpt
 	return options
 }
 
+// GetTopicOptions : The GetTopic options.
+type GetTopicOptions struct {
+	// The topic name for the topic to be described.
+	TopicName *string `json:"topic_name" validate:"required,ne="`
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewGetTopicOptions : Instantiate GetTopicOptions
+func (*AdminrestV1) NewGetTopicOptions(topicName string) *GetTopicOptions {
+	return &GetTopicOptions{
+		TopicName: core.StringPtr(topicName),
+	}
+}
+
+// SetTopicName : Allow user to set TopicName
+func (_options *GetTopicOptions) SetTopicName(topicName string) *GetTopicOptions {
+	_options.TopicName = core.StringPtr(topicName)
+	return _options
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *GetTopicOptions) SetHeaders(param map[string]string) *GetTopicOptions {
+	options.Headers = param
+	return options
+}
+
+// GroupResetResultsItem : The new offset for one partition of one topic after resetting consumer group's offset.
+type GroupResetResultsItem struct {
+	Topic *string `json:"topic,omitempty"`
+
+	Partition *int64 `json:"partition,omitempty"`
+
+	Offset *int64 `json:"offset,omitempty"`
+}
+
+// UnmarshalGroupResetResultsItem unmarshals an instance of GroupResetResultsItem from the specified map of raw messages.
+func UnmarshalGroupResetResultsItem(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(GroupResetResultsItem)
+	err = core.UnmarshalPrimitive(m, "topic", &obj.Topic)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "partition", &obj.Partition)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "offset", &obj.Offset)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// ListBrokersOptions : The ListBrokers options.
+type ListBrokersOptions struct {
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewListBrokersOptions : Instantiate ListBrokersOptions
+func (*AdminrestV1) NewListBrokersOptions() *ListBrokersOptions {
+	return &ListBrokersOptions{}
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *ListBrokersOptions) SetHeaders(param map[string]string) *ListBrokersOptions {
+	options.Headers = param
+	return options
+}
+
+// ListConsumerGroupsOptions : The ListConsumerGroups options.
+type ListConsumerGroupsOptions struct {
+	// A filter to be applied to the consumer group IDs. A simple filter can be specified as a string with asterisk (`*`)
+	// wildcards representing 0 or more characters, e.g. `group_id*` will filter all group IDs that begin with the string
+	// `group_id` followed by any character sequence. A more complex filter pattern can be used by surrounding a regular
+	// expression in forward slash (`/`) delimiters, e.g. `/group_id.* /`.
+	GroupFilter *string `json:"group_filter,omitempty"`
+
+	// The number of consumer groups to be returned.
+	PerPage *int64 `json:"per_page,omitempty"`
+
+	// The page number to be returned. The number 1 represents the first page. The default value is 1.
+	Page *int64 `json:"page,omitempty"`
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewListConsumerGroupsOptions : Instantiate ListConsumerGroupsOptions
+func (*AdminrestV1) NewListConsumerGroupsOptions() *ListConsumerGroupsOptions {
+	return &ListConsumerGroupsOptions{}
+}
+
+// SetGroupFilter : Allow user to set GroupFilter
+func (_options *ListConsumerGroupsOptions) SetGroupFilter(groupFilter string) *ListConsumerGroupsOptions {
+	_options.GroupFilter = core.StringPtr(groupFilter)
+	return _options
+}
+
+// SetPerPage : Allow user to set PerPage
+func (_options *ListConsumerGroupsOptions) SetPerPage(perPage int64) *ListConsumerGroupsOptions {
+	_options.PerPage = core.Int64Ptr(perPage)
+	return _options
+}
+
+// SetPage : Allow user to set Page
+func (_options *ListConsumerGroupsOptions) SetPage(page int64) *ListConsumerGroupsOptions {
+	_options.Page = core.Int64Ptr(page)
+	return _options
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *ListConsumerGroupsOptions) SetHeaders(param map[string]string) *ListConsumerGroupsOptions {
+	options.Headers = param
+	return options
+}
+
 // ListQuotasOptions : The ListQuotas options.
 type ListQuotasOptions struct {
 
@@ -1533,6 +2059,285 @@ func (*AdminrestV1) NewListQuotasOptions() *ListQuotasOptions {
 
 // SetHeaders : Allow user to set Headers
 func (options *ListQuotasOptions) SetHeaders(param map[string]string) *ListQuotasOptions {
+	options.Headers = param
+	return options
+}
+
+// ListTopicsOptions : The ListTopics options.
+type ListTopicsOptions struct {
+	// A filter to be applied to the topic names. A simple filter can be specified as a string with asterisk (`*`)
+	// wildcards representing 0 or more characters, e.g. `topic-name*` will filter all topic names that begin with the
+	// string `topic-name` followed by any character sequence. A more complex filter pattern can be used by surrounding a
+	// regular expression in forward slash (`/`) delimiters, e.g. `/topic-name.* /`.
+	TopicFilter *string `json:"topic_filter,omitempty"`
+
+	// The number of topic names to be returned.
+	PerPage *int64 `json:"per_page,omitempty"`
+
+	// The page number to be returned. The number 1 represents the first page. The default value is 1.
+	Page *int64 `json:"page,omitempty"`
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewListTopicsOptions : Instantiate ListTopicsOptions
+func (*AdminrestV1) NewListTopicsOptions() *ListTopicsOptions {
+	return &ListTopicsOptions{}
+}
+
+// SetTopicFilter : Allow user to set TopicFilter
+func (_options *ListTopicsOptions) SetTopicFilter(topicFilter string) *ListTopicsOptions {
+	_options.TopicFilter = core.StringPtr(topicFilter)
+	return _options
+}
+
+// SetPerPage : Allow user to set PerPage
+func (_options *ListTopicsOptions) SetPerPage(perPage int64) *ListTopicsOptions {
+	_options.PerPage = core.Int64Ptr(perPage)
+	return _options
+}
+
+// SetPage : Allow user to set Page
+func (_options *ListTopicsOptions) SetPage(page int64) *ListTopicsOptions {
+	_options.Page = core.Int64Ptr(page)
+	return _options
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *ListTopicsOptions) SetHeaders(param map[string]string) *ListTopicsOptions {
+	options.Headers = param
+	return options
+}
+
+// MemberAssignmentsItem : The topic partitions assigned for the consumer group member.
+type MemberAssignmentsItem struct {
+	// The name of the topic.
+	Topic *string `json:"topic,omitempty"`
+
+	// The ID of the partition.
+	Partition *int64 `json:"partition,omitempty"`
+}
+
+// UnmarshalMemberAssignmentsItem unmarshals an instance of MemberAssignmentsItem from the specified map of raw messages.
+func UnmarshalMemberAssignmentsItem(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(MemberAssignmentsItem)
+	err = core.UnmarshalPrimitive(m, "topic", &obj.Topic)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "partition", &obj.Partition)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// RecordDeleteRequestRecordsToDeleteItem : RecordDeleteRequestRecordsToDeleteItem struct
+type RecordDeleteRequestRecordsToDeleteItem struct {
+	// The number of partitions.
+	Partition *int64 `json:"partition,omitempty"`
+
+	// The offset number before which records to be deleted.
+	BeforeOffset *int64 `json:"before_offset,omitempty"`
+}
+
+// UnmarshalRecordDeleteRequestRecordsToDeleteItem unmarshals an instance of RecordDeleteRequestRecordsToDeleteItem from the specified map of raw messages.
+func UnmarshalRecordDeleteRequestRecordsToDeleteItem(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(RecordDeleteRequestRecordsToDeleteItem)
+	err = core.UnmarshalPrimitive(m, "partition", &obj.Partition)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "before_offset", &obj.BeforeOffset)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// ReplaceMirroringTopicSelectionOptions : The ReplaceMirroringTopicSelection options.
+type ReplaceMirroringTopicSelectionOptions struct {
+	Includes []string `json:"includes,omitempty"`
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewReplaceMirroringTopicSelectionOptions : Instantiate ReplaceMirroringTopicSelectionOptions
+func (*AdminrestV1) NewReplaceMirroringTopicSelectionOptions() *ReplaceMirroringTopicSelectionOptions {
+	return &ReplaceMirroringTopicSelectionOptions{}
+}
+
+// SetIncludes : Allow user to set Includes
+func (_options *ReplaceMirroringTopicSelectionOptions) SetIncludes(includes []string) *ReplaceMirroringTopicSelectionOptions {
+	_options.Includes = includes
+	return _options
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *ReplaceMirroringTopicSelectionOptions) SetHeaders(param map[string]string) *ReplaceMirroringTopicSelectionOptions {
+	options.Headers = param
+	return options
+}
+
+// TopicCreateRequestConfigsItem : TopicCreateRequestConfigsItem struct
+type TopicCreateRequestConfigsItem struct {
+	// The name of the config property.
+	Name *string `json:"name,omitempty"`
+
+	// The value for a config property.
+	Value *string `json:"value,omitempty"`
+}
+
+// UnmarshalTopicCreateRequestConfigsItem unmarshals an instance of TopicCreateRequestConfigsItem from the specified map of raw messages.
+func UnmarshalTopicCreateRequestConfigsItem(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(TopicCreateRequestConfigsItem)
+	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "value", &obj.Value)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// TopicDetailReplicaAssignmentsItem : TopicDetailReplicaAssignmentsItem struct
+type TopicDetailReplicaAssignmentsItem struct {
+	// The ID of the partition.
+	ID *int64 `json:"id,omitempty"`
+
+	Brokers *TopicDetailReplicaAssignmentsItemBrokers `json:"brokers,omitempty"`
+}
+
+// UnmarshalTopicDetailReplicaAssignmentsItem unmarshals an instance of TopicDetailReplicaAssignmentsItem from the specified map of raw messages.
+func UnmarshalTopicDetailReplicaAssignmentsItem(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(TopicDetailReplicaAssignmentsItem)
+	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalModel(m, "brokers", &obj.Brokers, UnmarshalTopicDetailReplicaAssignmentsItemBrokers)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// TopicDetailReplicaAssignmentsItemBrokers : TopicDetailReplicaAssignmentsItemBrokers struct
+type TopicDetailReplicaAssignmentsItemBrokers struct {
+	Replicas []int64 `json:"replicas,omitempty"`
+}
+
+// UnmarshalTopicDetailReplicaAssignmentsItemBrokers unmarshals an instance of TopicDetailReplicaAssignmentsItemBrokers from the specified map of raw messages.
+func UnmarshalTopicDetailReplicaAssignmentsItemBrokers(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(TopicDetailReplicaAssignmentsItemBrokers)
+	err = core.UnmarshalPrimitive(m, "replicas", &obj.Replicas)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// TopicUpdateRequestConfigsItem : TopicUpdateRequestConfigsItem struct
+type TopicUpdateRequestConfigsItem struct {
+	// The name of the config property.
+	Name *string `json:"name,omitempty"`
+
+	// The value of a config property.
+	Value *string `json:"value,omitempty"`
+
+	// When true, the value of the config property is reset to its default value.
+	ResetToDefault *bool `json:"reset_to_default,omitempty"`
+}
+
+// UnmarshalTopicUpdateRequestConfigsItem unmarshals an instance of TopicUpdateRequestConfigsItem from the specified map of raw messages.
+func UnmarshalTopicUpdateRequestConfigsItem(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(TopicUpdateRequestConfigsItem)
+	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "value", &obj.Value)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "reset_to_default", &obj.ResetToDefault)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// UpdateConsumerGroupOptions : The UpdateConsumerGroup options.
+type UpdateConsumerGroupOptions struct {
+	// The group ID for the consumer group to be updated.
+	GroupID *string `json:"group_id" validate:"required,ne="`
+
+	// The name of the topic to be reset.  If missing or blank, the operation applies to all topics read by the consumer
+	// group.
+	Topic *string `json:"topic,omitempty"`
+
+	// Mode of shift operation.  Valid values are 'earliest', 'latest', 'datetime'.
+	Mode *string `json:"mode,omitempty"`
+
+	// Value for resetting offsets, based on 'mode=datetime', omit for 'earliest' and 'latest'.
+	Value *string `json:"value,omitempty"`
+
+	// Whether to execute the operation of resetting the offsets.
+	Execute *bool `json:"execute,omitempty"`
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewUpdateConsumerGroupOptions : Instantiate UpdateConsumerGroupOptions
+func (*AdminrestV1) NewUpdateConsumerGroupOptions(groupID string) *UpdateConsumerGroupOptions {
+	return &UpdateConsumerGroupOptions{
+		GroupID: core.StringPtr(groupID),
+	}
+}
+
+// SetGroupID : Allow user to set GroupID
+func (_options *UpdateConsumerGroupOptions) SetGroupID(groupID string) *UpdateConsumerGroupOptions {
+	_options.GroupID = core.StringPtr(groupID)
+	return _options
+}
+
+// SetTopic : Allow user to set Topic
+func (_options *UpdateConsumerGroupOptions) SetTopic(topic string) *UpdateConsumerGroupOptions {
+	_options.Topic = core.StringPtr(topic)
+	return _options
+}
+
+// SetMode : Allow user to set Mode
+func (_options *UpdateConsumerGroupOptions) SetMode(mode string) *UpdateConsumerGroupOptions {
+	_options.Mode = core.StringPtr(mode)
+	return _options
+}
+
+// SetValue : Allow user to set Value
+func (_options *UpdateConsumerGroupOptions) SetValue(value string) *UpdateConsumerGroupOptions {
+	_options.Value = core.StringPtr(value)
+	return _options
+}
+
+// SetExecute : Allow user to set Execute
+func (_options *UpdateConsumerGroupOptions) SetExecute(execute bool) *UpdateConsumerGroupOptions {
+	_options.Execute = core.BoolPtr(execute)
+	return _options
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *UpdateConsumerGroupOptions) SetHeaders(param map[string]string) *UpdateConsumerGroupOptions {
 	options.Headers = param
 	return options
 }
@@ -1583,6 +2388,171 @@ func (options *UpdateQuotaOptions) SetHeaders(param map[string]string) *UpdateQu
 	return options
 }
 
+// UpdateTopicOptions : The UpdateTopic options.
+type UpdateTopicOptions struct {
+	// The topic name for the topic to be updated.
+	TopicName *string `json:"topic_name" validate:"required,ne="`
+
+	// The new partition number to be increased to.
+	NewTotalPartitionCount *int64 `json:"new_total_partition_count,omitempty"`
+
+	// The config properties to be updated for the topic. Valid config names are 'cleanup.policy', 'retention.ms',
+	// 'retention.bytes', 'segment.bytes', 'segment.ms', 'segment.index.bytes'.
+	Configs []TopicUpdateRequestConfigsItem `json:"configs,omitempty"`
+
+	// Allows users to set headers on API requests
+	Headers map[string]string
+}
+
+// NewUpdateTopicOptions : Instantiate UpdateTopicOptions
+func (*AdminrestV1) NewUpdateTopicOptions(topicName string) *UpdateTopicOptions {
+	return &UpdateTopicOptions{
+		TopicName: core.StringPtr(topicName),
+	}
+}
+
+// SetTopicName : Allow user to set TopicName
+func (_options *UpdateTopicOptions) SetTopicName(topicName string) *UpdateTopicOptions {
+	_options.TopicName = core.StringPtr(topicName)
+	return _options
+}
+
+// SetNewTotalPartitionCount : Allow user to set NewTotalPartitionCount
+func (_options *UpdateTopicOptions) SetNewTotalPartitionCount(newTotalPartitionCount int64) *UpdateTopicOptions {
+	_options.NewTotalPartitionCount = core.Int64Ptr(newTotalPartitionCount)
+	return _options
+}
+
+// SetConfigs : Allow user to set Configs
+func (_options *UpdateTopicOptions) SetConfigs(configs []TopicUpdateRequestConfigsItem) *UpdateTopicOptions {
+	_options.Configs = configs
+	return _options
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *UpdateTopicOptions) SetHeaders(param map[string]string) *UpdateTopicOptions {
+	options.Headers = param
+	return options
+}
+
+// BrokerDetail : BrokerDetail struct
+type BrokerDetail struct {
+	// The ID of the broker configured in the 'broker.id' broker config property.
+	ID *int64 `json:"id,omitempty"`
+
+	// The hostname that the broker is listening on and which is configured in the 'advertised.listeners' broker config
+	// property.
+	Host *string `json:"host,omitempty"`
+
+	// The port that the broker is listening on and which is configured in the 'advertised.listeners' broker config
+	// property.
+	Port *int64 `json:"port,omitempty"`
+
+	// The rack of the broker used in rack aware replication assignment for fault tolerance. It is configure in the
+	// 'broker.rack' broker config property.
+	Rack *string `json:"rack,omitempty"`
+
+	Configs []BrokerDetailConfigsItem `json:"configs,omitempty"`
+}
+
+// UnmarshalBrokerDetail unmarshals an instance of BrokerDetail from the specified map of raw messages.
+func UnmarshalBrokerDetail(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(BrokerDetail)
+	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "host", &obj.Host)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "port", &obj.Port)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "rack", &obj.Rack)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalModel(m, "configs", &obj.Configs, UnmarshalBrokerDetailConfigsItem)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// BrokerSummary : BrokerSummary struct
+type BrokerSummary struct {
+	// The ID of the broker configured in the 'broker.id' broker config property.
+	ID *int64 `json:"id,omitempty"`
+
+	// The hostname that the broker is listening on and which is configured in the 'advertised.listeners' broker config
+	// property.
+	Host *string `json:"host,omitempty"`
+
+	// The port that the broker is listening on and which is configured in the 'advertised.listeners' broker config
+	// property.
+	Port *int64 `json:"port,omitempty"`
+
+	// The rack of the broker used in rack aware replication assignment for fault tolerance. It is configure in the
+	// 'broker.rack' broker config property.
+	Rack *string `json:"rack,omitempty"`
+}
+
+// UnmarshalBrokerSummary unmarshals an instance of BrokerSummary from the specified map of raw messages.
+func UnmarshalBrokerSummary(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(BrokerSummary)
+	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "host", &obj.Host)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "port", &obj.Port)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "rack", &obj.Rack)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// Cluster : Cluster struct
+type Cluster struct {
+	// The ID of the cluster.
+	ID *string `json:"id,omitempty"`
+
+	Controller *BrokerSummary `json:"controller,omitempty"`
+
+	// List of brokers in the cluster.
+	Brokers []BrokerSummary `json:"brokers,omitempty"`
+}
+
+// UnmarshalCluster unmarshals an instance of Cluster from the specified map of raw messages.
+func UnmarshalCluster(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(Cluster)
+	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalModel(m, "controller", &obj.Controller, UnmarshalBrokerSummary)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalModel(m, "brokers", &obj.Brokers, UnmarshalBrokerSummary)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
 // EntityQuotaDetail : EntityQuotaDetail struct
 type EntityQuotaDetail struct {
 	// The name of the entity.
@@ -1614,15 +2584,107 @@ func UnmarshalEntityQuotaDetail(m map[string]json.RawMessage, result interface{}
 	return
 }
 
-// EntityQuotasList : A list of 'entity_quota_detail' is returned.
-type EntityQuotasList struct {
-	Data []EntityQuotaDetail `json:"data,omitempty"`
+// GroupDetail : GroupDetail struct
+type GroupDetail struct {
+	// The ID of the consumer group.
+	GroupID *string `json:"group_id,omitempty"`
+
+	// THe state of the consumer group.
+	State *string `json:"state,omitempty"`
+
+	// Members in the consumer group.
+	Members []Member `json:"members,omitempty"`
+
+	// The offsets of the consumer group.
+	Offsets []TopicPartitionOffset `json:"offsets,omitempty"`
 }
 
-// UnmarshalEntityQuotasList unmarshals an instance of EntityQuotasList from the specified map of raw messages.
-func UnmarshalEntityQuotasList(m map[string]json.RawMessage, result interface{}) (err error) {
-	obj := new(EntityQuotasList)
-	err = core.UnmarshalModel(m, "data", &obj.Data, UnmarshalEntityQuotaDetail)
+// UnmarshalGroupDetail unmarshals an instance of GroupDetail from the specified map of raw messages.
+func UnmarshalGroupDetail(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(GroupDetail)
+	err = core.UnmarshalPrimitive(m, "group_id", &obj.GroupID)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "state", &obj.State)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalModel(m, "members", &obj.Members, UnmarshalMember)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalModel(m, "offsets", &obj.Offsets, UnmarshalTopicPartitionOffset)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// Member : Member struct
+type Member struct {
+	// The consumer ID of the consumer group member.
+	ConsumerID *string `json:"consumer_id,omitempty"`
+
+	// The client ID of the consumer group member.
+	ClientID *string `json:"client_id,omitempty"`
+
+	// The hostname of the machine where the consumer group member is running.
+	Host *string `json:"host,omitempty"`
+
+	// The assignments of the group member.
+	Assignments []MemberAssignmentsItem `json:"assignments,omitempty"`
+}
+
+// UnmarshalMember unmarshals an instance of Member from the specified map of raw messages.
+func UnmarshalMember(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(Member)
+	err = core.UnmarshalPrimitive(m, "consumer_id", &obj.ConsumerID)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "client_id", &obj.ClientID)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "host", &obj.Host)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalModel(m, "assignments", &obj.Assignments, UnmarshalMemberAssignmentsItem)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// MirroringActiveTopics : Topics that are being actively mirrored.
+type MirroringActiveTopics struct {
+	ActiveTopics []string `json:"active_topics,omitempty"`
+}
+
+// UnmarshalMirroringActiveTopics unmarshals an instance of MirroringActiveTopics from the specified map of raw messages.
+func UnmarshalMirroringActiveTopics(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(MirroringActiveTopics)
+	err = core.UnmarshalPrimitive(m, "active_topics", &obj.ActiveTopics)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// MirroringTopicSelection : Mirroring topic selection payload.
+type MirroringTopicSelection struct {
+	Includes []string `json:"includes,omitempty"`
+}
+
+// UnmarshalMirroringTopicSelection unmarshals an instance of MirroringTopicSelection from the specified map of raw messages.
+func UnmarshalMirroringTopicSelection(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(MirroringTopicSelection)
+	err = core.UnmarshalPrimitive(m, "includes", &obj.Includes)
 	if err != nil {
 		return
 	}
@@ -1647,6 +2709,156 @@ func UnmarshalQuotaDetail(m map[string]json.RawMessage, result interface{}) (err
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "consumer_byte_rate", &obj.ConsumerByteRate)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// QuotaList : A list of 'quota_detail' is returned.
+type QuotaList struct {
+	Data []EntityQuotaDetail `json:"data,omitempty"`
+}
+
+// UnmarshalQuotaList unmarshals an instance of QuotaList from the specified map of raw messages.
+func UnmarshalQuotaList(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(QuotaList)
+	err = core.UnmarshalModel(m, "data", &obj.Data, UnmarshalEntityQuotaDetail)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// TopicConfigs : TopicConfigs struct
+type TopicConfigs struct {
+	// The value of config property 'retention.bytes'.
+	RetentionBytes *string `json:"retention.bytes,omitempty"`
+
+	// The value of config property 'segment.bytes'.
+	SegmentBytes *string `json:"segment.bytes,omitempty"`
+
+	// The value of config property 'segment.index.bytes'.
+	SegmentIndexBytes *string `json:"segment.index.bytes,omitempty"`
+
+	// The value of config property 'segment.ms'.
+	SegmentMs *string `json:"segment.ms,omitempty"`
+}
+
+// UnmarshalTopicConfigs unmarshals an instance of TopicConfigs from the specified map of raw messages.
+func UnmarshalTopicConfigs(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(TopicConfigs)
+	err = core.UnmarshalPrimitive(m, "retention.bytes", &obj.RetentionBytes)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "segment.bytes", &obj.SegmentBytes)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "segment.index.bytes", &obj.SegmentIndexBytes)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "segment.ms", &obj.SegmentMs)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// TopicDetail : TopicDetail struct
+type TopicDetail struct {
+	// The name of the topic.
+	Name *string `json:"name,omitempty"`
+
+	// The number of partitions.
+	Partitions *int64 `json:"partitions,omitempty"`
+
+	// The number of replication factor.
+	ReplicationFactor *int64 `json:"replicationFactor,omitempty"`
+
+	// The value of config property 'retention.ms'.
+	RetentionMs *int64 `json:"retentionMs,omitempty"`
+
+	// The value of config property 'cleanup.policy'.
+	CleanupPolicy *string `json:"cleanupPolicy,omitempty"`
+
+	Configs *TopicConfigs `json:"configs,omitempty"`
+
+	// The replia assignment of the topic.
+	ReplicaAssignments []TopicDetailReplicaAssignmentsItem `json:"replicaAssignments,omitempty"`
+}
+
+// UnmarshalTopicDetail unmarshals an instance of TopicDetail from the specified map of raw messages.
+func UnmarshalTopicDetail(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(TopicDetail)
+	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "partitions", &obj.Partitions)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "replicationFactor", &obj.ReplicationFactor)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "retentionMs", &obj.RetentionMs)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "cleanupPolicy", &obj.CleanupPolicy)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalModel(m, "configs", &obj.Configs, UnmarshalTopicConfigs)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalModel(m, "replicaAssignments", &obj.ReplicaAssignments, UnmarshalTopicDetailReplicaAssignmentsItem)
+	if err != nil {
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// TopicPartitionOffset : The offsets of a topic partition.
+type TopicPartitionOffset struct {
+	// The name of the topic.
+	Topic *string `json:"topic,omitempty"`
+
+	// The ID of the partition.
+	Partition *int64 `json:"partition,omitempty"`
+
+	// Current offset of the partition.
+	CurrentOffset *int64 `json:"current_offset,omitempty"`
+
+	// End offset of the partition.
+	EndOffset *int64 `json:"end_offset,omitempty"`
+}
+
+// UnmarshalTopicPartitionOffset unmarshals an instance of TopicPartitionOffset from the specified map of raw messages.
+func UnmarshalTopicPartitionOffset(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(TopicPartitionOffset)
+	err = core.UnmarshalPrimitive(m, "topic", &obj.Topic)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "partition", &obj.Partition)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "current_offset", &obj.CurrentOffset)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "end_offset", &obj.EndOffset)
 	if err != nil {
 		return
 	}
