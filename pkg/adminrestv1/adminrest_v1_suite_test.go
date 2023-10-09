@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package adminrestv1
+package adminrestv1_test
 
 import (
 	"testing"
