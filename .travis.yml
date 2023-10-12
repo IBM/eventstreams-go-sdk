@@ -1,8 +1,8 @@
- language: go
+language: go
+dist: focal
 
-dist: xenial
-
-go: "1.14.x"
+go: 
+  - 1.19.x
 
 notifications:
   email: true
@@ -14,12 +14,11 @@ env:
 before_install:
   - sudo apt-get update
   - sudo apt-get install python
-  - nvm install 12
-  - npm install -g npm@6.x
+  - nvm install 14
+  - npm install -g npm@9.x
 
 install:
-  - curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b $(go env GOPATH)/bin v1.21.0
-  - curl -s https://codecov.io/bash > $HOME/codecov-bash.sh && chmod +x $HOME/codecov-bash.sh
+  - curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b $(go env GOPATH)/bin v1.53.3
 
 script:
   - make travis-ci

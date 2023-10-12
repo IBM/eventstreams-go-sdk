@@ -1,8 +1,8 @@
 # Makefile to build the project
 
 COVERAGE = -coverprofile=coverage.txt -covermode=atomic
-ADMINREST_EXAMPLE_DIR = examples/adminrest
-SCHEMA_EXAMPLE_DIR = examples/schema
+ADMINREST_EXAMPLE_DIR = examples/adminrestv1
+SCHEMA_EXAMPLE_DIR = examples/schemaregistryv1
 
 all: test lint tidy build
 
@@ -27,13 +27,13 @@ tidy:
 	go mod tidy
 
 clean:
-	rm -f examples/adminrest/example
-	rm -f examples/schema/example
+	rm -f ${ADMINREST_EXAMPLE_DIR}/example
+	rm -f ${SCHEMA_EXAMPLE_DIR}/example
 
-adminrest-build: ${ADMINREST_EXAMPLE_DIR}/main.go
-	cd ${ADMINREST_EXAMPLE_DIR} && go build -o example
+adminrest-build: ${ADMINREST_EXAMPLE_DIR}/example.go
+	cd ${ADMINREST_EXAMPLE_DIR} && go build -o example	
 
-schema-build: ${SCHEMA_EXAMPLE_DIR}/main.go
+schema-build: ${SCHEMA_EXAMPLE_DIR}/example.go
 	cd ${SCHEMA_EXAMPLE_DIR} && go build -o example
 
 build: adminrest-build schema-build

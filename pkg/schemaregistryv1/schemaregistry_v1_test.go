@@ -21,7 +21,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -67,7 +66,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 		Context(`Using external config, construct service client instances`, func() {
 			// Map containing environment variables used in testing.
 			var testEnvironment = map[string]string{
-				"SCHEMAREGISTRY_URL": "https://schemaregistryv1/api",
+				"SCHEMAREGISTRY_URL":       "https://schemaregistryv1/api",
 				"SCHEMAREGISTRY_AUTH_TYPE": "noauth",
 			}
 
@@ -120,7 +119,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 		Context(`Using external config, construct service client instances with error: Invalid Auth`, func() {
 			// Map containing environment variables used in testing.
 			var testEnvironment = map[string]string{
-				"SCHEMAREGISTRY_URL": "https://schemaregistryv1/api",
+				"SCHEMAREGISTRY_URL":       "https://schemaregistryv1/api",
 				"SCHEMAREGISTRY_AUTH_TYPE": "someOtherAuth",
 			}
 
@@ -136,7 +135,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 		Context(`Using external config, construct service client instances with error: Invalid URL`, func() {
 			// Map containing environment variables used in testing.
 			var testEnvironment = map[string]string{
-				"SCHEMAREGISTRY_AUTH_TYPE":   "NOAuth",
+				"SCHEMAREGISTRY_AUTH_TYPE": "NOAuth",
 			}
 
 			SetTestEnvironment(testEnvironment)
@@ -2500,7 +2499,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaOptions model
 				createSchemaOptionsModel := new(schemaregistryv1.CreateSchemaOptions)
 				createSchemaOptionsModel.Schema = map[string]interface{}{"anyKey": "anyValue"}
-				createSchemaOptionsModel.ID = core.StringPtr("testString")
+				createSchemaOptionsModel.XRegistryArtifactID = core.StringPtr("testString")
 				createSchemaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Expect response parsing to fail since we are receiving a text/plain response
 				result, response, operationErr := schemaregistryService.CreateSchema(createSchemaOptionsModel)
@@ -2570,7 +2569,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaOptions model
 				createSchemaOptionsModel := new(schemaregistryv1.CreateSchemaOptions)
 				createSchemaOptionsModel.Schema = map[string]interface{}{"anyKey": "anyValue"}
-				createSchemaOptionsModel.ID = core.StringPtr("testString")
+				createSchemaOptionsModel.XRegistryArtifactID = core.StringPtr("testString")
 				createSchemaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with a Context to test a timeout error
@@ -2648,7 +2647,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaOptions model
 				createSchemaOptionsModel := new(schemaregistryv1.CreateSchemaOptions)
 				createSchemaOptionsModel.Schema = map[string]interface{}{"anyKey": "anyValue"}
-				createSchemaOptionsModel.ID = core.StringPtr("testString")
+				createSchemaOptionsModel.XRegistryArtifactID = core.StringPtr("testString")
 				createSchemaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
@@ -2669,7 +2668,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaOptions model
 				createSchemaOptionsModel := new(schemaregistryv1.CreateSchemaOptions)
 				createSchemaOptionsModel.Schema = map[string]interface{}{"anyKey": "anyValue"}
-				createSchemaOptionsModel.ID = core.StringPtr("testString")
+				createSchemaOptionsModel.XRegistryArtifactID = core.StringPtr("testString")
 				createSchemaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := schemaregistryService.SetServiceURL("")
@@ -2704,7 +2703,7 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaOptions model
 				createSchemaOptionsModel := new(schemaregistryv1.CreateSchemaOptions)
 				createSchemaOptionsModel.Schema = map[string]interface{}{"anyKey": "anyValue"}
-				createSchemaOptionsModel.ID = core.StringPtr("testString")
+				createSchemaOptionsModel.XRegistryArtifactID = core.StringPtr("testString")
 				createSchemaOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation
@@ -3259,11 +3258,11 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the CreateSchemaOptions model
 				createSchemaOptionsModel := schemaregistryService.NewCreateSchemaOptions()
 				createSchemaOptionsModel.SetSchema(map[string]interface{}{"anyKey": "anyValue"})
-				createSchemaOptionsModel.SetID("testString")
+				createSchemaOptionsModel.SetXRegistryArtifactID("testString")
 				createSchemaOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(createSchemaOptionsModel).ToNot(BeNil())
 				Expect(createSchemaOptionsModel.Schema).To(Equal(map[string]interface{}{"anyKey": "anyValue"}))
-				Expect(createSchemaOptionsModel.ID).To(Equal(core.StringPtr("testString")))
+				Expect(createSchemaOptionsModel.XRegistryArtifactID).To(Equal(core.StringPtr("testString")))
 				Expect(createSchemaOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewCreateSchemaRuleOptions successfully`, func() {
@@ -3400,7 +3399,8 @@ var _ = Describe(`SchemaregistryV1`, func() {
 			It(`Invoke NewSetSchemaStateOptions successfully`, func() {
 				// Construct an instance of the SetSchemaStateOptions model
 				id := "testString"
-				setSchemaStateOptionsModel := schemaregistryService.NewSetSchemaStateOptions(id)
+				setSchemaStateOptionsState := "ENABLED"
+				setSchemaStateOptionsModel := schemaregistryService.NewSetSchemaStateOptions(id, setSchemaStateOptionsState)
 				setSchemaStateOptionsModel.SetID("testString")
 				setSchemaStateOptionsModel.SetState("ENABLED")
 				setSchemaStateOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
@@ -3413,7 +3413,8 @@ var _ = Describe(`SchemaregistryV1`, func() {
 				// Construct an instance of the SetSchemaVersionStateOptions model
 				id := "testString"
 				version := int64(38)
-				setSchemaVersionStateOptionsModel := schemaregistryService.NewSetSchemaVersionStateOptions(id, version)
+				setSchemaVersionStateOptionsState := "ENABLED"
+				setSchemaVersionStateOptionsModel := schemaregistryService.NewSetSchemaVersionStateOptions(id, version, setSchemaVersionStateOptionsState)
 				setSchemaVersionStateOptionsModel.SetID("testString")
 				setSchemaVersionStateOptionsModel.SetVersion(int64(38))
 				setSchemaVersionStateOptionsModel.SetState("ENABLED")
@@ -3520,7 +3521,7 @@ func CreateMockUUID(mockData string) *strfmt.UUID {
 }
 
 func CreateMockReader(mockData string) io.ReadCloser {
-	return ioutil.NopCloser(bytes.NewReader([]byte(mockData)))
+	return io.NopCloser(bytes.NewReader([]byte(mockData)))
 }
 
 func CreateMockDate(mockData string) *strfmt.Date {

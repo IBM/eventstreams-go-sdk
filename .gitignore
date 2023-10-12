@@ -21,5 +21,4 @@ vendor/
 coverage.txt
 
 # example binary
-examples/adminrest/example
-examples/schema/example
+example
