@@ -35,7 +35,7 @@ import (
 
 // SchemaregistryV1 : IBM Event Streams schema registry management
 //
-// API Version: 1.3.0
+// API Version: 1.4.1
 type SchemaregistryV1 struct {
 	Service *core.BaseService
 }

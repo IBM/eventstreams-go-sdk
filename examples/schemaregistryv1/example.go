@@ -222,6 +222,7 @@ func createSchema(esClient *schemaregistryv1.SchemaregistryV1) error {
 
 	// Construct an instance of the createSchemaOptions
 	createSchemaOptions := esClient.NewCreateSchemaOptions()
+	createSchemaOptions.SetXRegistryArtifactID("schema-id")
 	createSchemaOptions.SetSchema(schema)
 
 	// Create the schema
