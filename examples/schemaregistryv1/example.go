@@ -83,6 +83,9 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Set Schema state to DISABLED to be able to delete Schema
+	setSchemaState(esClient, "DISABLED")
+
 	// Try to delete Schema before creating
 	deleteSchema(esClient)
 
@@ -118,14 +121,14 @@ func main() {
 	// Create Version
 	err = createVersion(esClient)
 	if err != nil {
-		log.Printf("error occurred while creating version")
+		log.Printf("error occurred while creating version: %q", err)
 	}
 	log.Printf("creating version successful")
 
 	// Get Version
 	err = getVersion(esClient)
 	if err != nil {
-		log.Printf("error occurred while getting version 2")
+		log.Printf("error occurred while getting version 2: %q", err)
 	}
 	log.Printf("getting version successful")
 
@@ -136,6 +139,13 @@ func main() {
 		os.Exit(1)
 	}
 	log.Printf("listing versions successful")
+
+	// Set Schema Version state to DISABLED to be able to delete Schema Version
+	err = setSchemaVersionState(esClient, "DISABLED", 2)
+	if err != nil {
+		log.Printf("error occurred while updating the schema to DISABLED state: %q", err)
+		os.Exit(1)
+	}
 
 	// Delete Version
 	if err = deleteVersion(esClient); err != nil {
@@ -186,6 +196,13 @@ func main() {
 	}
 	log.Printf("deleting schema rule successful")
 
+	// Set Schema state to DISABLED to be able to delete Schema
+	err = setSchemaState(esClient, "DISABLED")
+	if err != nil {
+		log.Printf("error occurred while updating the schema to DISABLED state: %q", err)
+		os.Exit(1)
+	}
+
 	// Delete Schema
 	if err = deleteSchema(esClient); err != nil {
 		log.Printf("error occurred while deleting the schema: %q", err)
@@ -205,7 +222,6 @@ func createSchema(esClient *schemaregistryv1.SchemaregistryV1) error {
 
 	// Construct an instance of the createSchemaOptions
 	createSchemaOptions := esClient.NewCreateSchemaOptions()
-	createSchemaOptions.SetXRegistryArtifactID("schema-id")
 	createSchemaOptions.SetSchema(schema)
 
 	// Create the schema
@@ -230,6 +246,44 @@ func createSchema(esClient *schemaregistryv1.SchemaregistryV1) error {
 	fmt.Printf("\ttype: %s\n", *schemaMetadata.Type)
 	fmt.Printf("\tversion: %d\n", *schemaMetadata.Version)
 
+	return nil
+} // func.end
+
+func setSchemaState(esClient *schemaregistryv1.SchemaregistryV1, state string) error {
+	// Construct an instance of the setSchemaStateOptions
+	setSchemaStateOptions := esClient.NewSetSchemaStateOptions("schema-id", state)
+	setSchemaStateOptions.SetID("schema-id")
+	setSchemaStateOptions.SetState(state)
+
+	// Set the schema state
+	response, operationErr := esClient.SetSchemaState(setSchemaStateOptions)
+	if operationErr != nil {
+		return fmt.Errorf("error updating schema state to %s : %s", state, operationErr.Error())
+	}
+
+	// Check the result
+	if response.StatusCode != http.StatusNoContent {
+		operationErr = fmt.Errorf("updating schema state to %s failed with response: %v", state, response)
+		return operationErr
+	}
+	return nil
+} // func.end
+
+func setSchemaVersionState(esClient *schemaregistryv1.SchemaregistryV1, state string, version int64) error {
+	// Construct an instance of the setSchemaStateOptions
+	setSchemaVersionStateOptions := esClient.NewSetSchemaVersionStateOptions("schema-id", version, state)
+
+	// Set the schema state
+	response, operationErr := esClient.SetSchemaVersionState(setSchemaVersionStateOptions)
+	if operationErr != nil {
+		return fmt.Errorf("error updating schema state to %s : %s", state, operationErr.Error())
+	}
+
+	// Check the result
+	if response.StatusCode != http.StatusNoContent {
+		operationErr = fmt.Errorf("updating schema state to %s failed with response: %v", state, response)
+		return operationErr
+	}
 	return nil
 } // func.end
 
