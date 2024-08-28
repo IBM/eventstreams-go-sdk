@@ -1,5 +1,5 @@
 /**
- * (C) Copyright IBM Corp. 2023.
+ * (C) Copyright IBM Corp. 2024.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 /*
- * IBM OpenAPI SDK Code Generator Version: 3.76.0-ad3e6f96-20230724-172814
+ * IBM OpenAPI SDK Code Generator Version: 3.93.0-c40121e6-20240729-182103
  */
 
 // Package adminrestv1 : Operations and models for the AdminrestV1 service
@@ -35,7 +35,7 @@ import (
 
 // AdminrestV1 : The administration REST API for IBM Event Streams on Cloud.
 //
-// API Version: 1.3.0
+// API Version: 1.3.1
 type AdminrestV1 struct {
 	Service *core.BaseService
 }
@@ -59,22 +59,26 @@ func NewAdminrestV1UsingExternalConfig(options *AdminrestV1Options) (adminrest *
 	if options.Authenticator == nil {
 		options.Authenticator, err = core.GetAuthenticatorFromEnvironment(options.ServiceName)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "env-auth-error", common.GetComponentInfo())
 			return
 		}
 	}
 
 	adminrest, err = NewAdminrestV1(options)
+	err = core.RepurposeSDKProblem(err, "new-client-error")
 	if err != nil {
 		return
 	}
 
 	err = adminrest.Service.ConfigureService(options.ServiceName)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "client-config-error", common.GetComponentInfo())
 		return
 	}
 
 	if options.URL != "" {
 		err = adminrest.Service.SetServiceURL(options.URL)
+		err = core.RepurposeSDKProblem(err, "url-set-error")
 	}
 	return
 }
@@ -87,12 +91,14 @@ func NewAdminrestV1(options *AdminrestV1Options) (service *AdminrestV1, err erro
 
 	baseService, err := core.NewBaseService(serviceOptions)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "new-base-error", common.GetComponentInfo())
 		return
 	}
 
 	if options.URL != "" {
 		err = baseService.SetServiceURL(options.URL)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "set-url-error", common.GetComponentInfo())
 			return
 		}
 	}
@@ -106,7 +112,7 @@ func NewAdminrestV1(options *AdminrestV1Options) (service *AdminrestV1, err erro
 
 // GetServiceURLForRegion returns the service URL to be used for the specified region
 func GetServiceURLForRegion(region string) (string, error) {
-	return "", fmt.Errorf("service does not support regional URLs")
+	return "", core.SDKErrorf(nil, "service does not support regional URLs", "no-regional-support", common.GetComponentInfo())
 }
 
 // Clone makes a copy of "adminrest" suitable for processing requests.
@@ -121,7 +127,11 @@ func (adminrest *AdminrestV1) Clone() *AdminrestV1 {
 
 // SetServiceURL sets the service URL
 func (adminrest *AdminrestV1) SetServiceURL(url string) error {
-	return adminrest.Service.SetServiceURL(url)
+	err := adminrest.Service.SetServiceURL(url)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "url-set-error", common.GetComponentInfo())
+	}
+	return err
 }
 
 // GetServiceURL returns the service URL
@@ -158,17 +168,21 @@ func (adminrest *AdminrestV1) DisableRetries() {
 // CreateTopic : Create a new topic
 // Create a new topic.
 func (adminrest *AdminrestV1) CreateTopic(createTopicOptions *CreateTopicOptions) (response *core.DetailedResponse, err error) {
-	return adminrest.CreateTopicWithContext(context.Background(), createTopicOptions)
+	response, err = adminrest.CreateTopicWithContext(context.Background(), createTopicOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // CreateTopicWithContext is an alternate form of the CreateTopic method which supports a Context parameter
 func (adminrest *AdminrestV1) CreateTopicWithContext(ctx context.Context, createTopicOptions *CreateTopicOptions) (response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(createTopicOptions, "createTopicOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(createTopicOptions, "createTopicOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -177,6 +191,7 @@ func (adminrest *AdminrestV1) CreateTopicWithContext(ctx context.Context, create
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/topics`, nil)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -205,28 +220,38 @@ func (adminrest *AdminrestV1) CreateTopicWithContext(ctx context.Context, create
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = adminrest.Service.Request(request, nil)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "CreateTopic", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
 
 // Alive : Basic health check for Admin REST API
 func (adminrest *AdminrestV1) Alive(aliveOptions *AliveOptions) (response *core.DetailedResponse, err error) {
-	return adminrest.AliveWithContext(context.Background(), aliveOptions)
+	response, err = adminrest.AliveWithContext(context.Background(), aliveOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // AliveWithContext is an alternate form of the Alive method which supports a Context parameter
 func (adminrest *AdminrestV1) AliveWithContext(ctx context.Context, aliveOptions *AliveOptions) (response *core.DetailedResponse, err error) {
 	err = core.ValidateStruct(aliveOptions, "aliveOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -235,6 +260,7 @@ func (adminrest *AdminrestV1) AliveWithContext(ctx context.Context, aliveOptions
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/alive`, nil)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -249,10 +275,16 @@ func (adminrest *AdminrestV1) AliveWithContext(ctx context.Context, aliveOptions
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = adminrest.Service.Request(request, nil)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "alive", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -261,13 +293,16 @@ func (adminrest *AdminrestV1) AliveWithContext(ctx context.Context, aliveOptions
 // Returns a list containing information about all of the Kafka topics that are defined for an instance of the Event
 // Streams service. If there are currently no topics defined then an empty list is returned.
 func (adminrest *AdminrestV1) ListTopics(listTopicsOptions *ListTopicsOptions) (result []TopicDetail, response *core.DetailedResponse, err error) {
-	return adminrest.ListTopicsWithContext(context.Background(), listTopicsOptions)
+	result, response, err = adminrest.ListTopicsWithContext(context.Background(), listTopicsOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // ListTopicsWithContext is an alternate form of the ListTopics method which supports a Context parameter
 func (adminrest *AdminrestV1) ListTopicsWithContext(ctx context.Context, listTopicsOptions *ListTopicsOptions) (result []TopicDetail, response *core.DetailedResponse, err error) {
 	err = core.ValidateStruct(listTopicsOptions, "listTopicsOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -276,6 +311,7 @@ func (adminrest *AdminrestV1) ListTopicsWithContext(ctx context.Context, listTop
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/topics`, nil)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -301,17 +337,21 @@ func (adminrest *AdminrestV1) ListTopicsWithContext(ctx context.Context, listTop
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse []json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "ListTopics", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalTopicDetail)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -323,17 +363,21 @@ func (adminrest *AdminrestV1) ListTopicsWithContext(ctx context.Context, listTop
 // GetTopic : Get detailed information on a topic
 // Get detailed information on a topic.
 func (adminrest *AdminrestV1) GetTopic(getTopicOptions *GetTopicOptions) (result *TopicDetail, response *core.DetailedResponse, err error) {
-	return adminrest.GetTopicWithContext(context.Background(), getTopicOptions)
+	result, response, err = adminrest.GetTopicWithContext(context.Background(), getTopicOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // GetTopicWithContext is an alternate form of the GetTopic method which supports a Context parameter
 func (adminrest *AdminrestV1) GetTopicWithContext(ctx context.Context, getTopicOptions *GetTopicOptions) (result *TopicDetail, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(getTopicOptions, "getTopicOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(getTopicOptions, "getTopicOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -346,6 +390,7 @@ func (adminrest *AdminrestV1) GetTopicWithContext(ctx context.Context, getTopicO
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/topics/{topic_name}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -361,17 +406,21 @@ func (adminrest *AdminrestV1) GetTopicWithContext(ctx context.Context, getTopicO
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "GetTopic", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalTopicDetail)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -383,17 +432,21 @@ func (adminrest *AdminrestV1) GetTopicWithContext(ctx context.Context, getTopicO
 // DeleteTopic : Delete a topic
 // Delete a topic.
 func (adminrest *AdminrestV1) DeleteTopic(deleteTopicOptions *DeleteTopicOptions) (response *core.DetailedResponse, err error) {
-	return adminrest.DeleteTopicWithContext(context.Background(), deleteTopicOptions)
+	response, err = adminrest.DeleteTopicWithContext(context.Background(), deleteTopicOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // DeleteTopicWithContext is an alternate form of the DeleteTopic method which supports a Context parameter
 func (adminrest *AdminrestV1) DeleteTopicWithContext(ctx context.Context, deleteTopicOptions *DeleteTopicOptions) (response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(deleteTopicOptions, "deleteTopicOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(deleteTopicOptions, "deleteTopicOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -406,6 +459,7 @@ func (adminrest *AdminrestV1) DeleteTopicWithContext(ctx context.Context, delete
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/topics/{topic_name}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -420,10 +474,16 @@ func (adminrest *AdminrestV1) DeleteTopicWithContext(ctx context.Context, delete
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = adminrest.Service.Request(request, nil)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "DeleteTopic", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -431,17 +491,21 @@ func (adminrest *AdminrestV1) DeleteTopicWithContext(ctx context.Context, delete
 // UpdateTopic : Increase the number of partitions and/or update one or more topic configuration parameters
 // Increase the number of partitions and/or update one or more topic configuration parameters.
 func (adminrest *AdminrestV1) UpdateTopic(updateTopicOptions *UpdateTopicOptions) (response *core.DetailedResponse, err error) {
-	return adminrest.UpdateTopicWithContext(context.Background(), updateTopicOptions)
+	response, err = adminrest.UpdateTopicWithContext(context.Background(), updateTopicOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // UpdateTopicWithContext is an alternate form of the UpdateTopic method which supports a Context parameter
 func (adminrest *AdminrestV1) UpdateTopicWithContext(ctx context.Context, updateTopicOptions *UpdateTopicOptions) (response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(updateTopicOptions, "updateTopicOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(updateTopicOptions, "updateTopicOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -454,6 +518,7 @@ func (adminrest *AdminrestV1) UpdateTopicWithContext(ctx context.Context, update
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/topics/{topic_name}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -476,15 +541,22 @@ func (adminrest *AdminrestV1) UpdateTopicWithContext(ctx context.Context, update
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = adminrest.Service.Request(request, nil)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "UpdateTopic", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -492,17 +564,21 @@ func (adminrest *AdminrestV1) UpdateTopicWithContext(ctx context.Context, update
 // DeleteTopicRecords : Delete records before the given offset on a topic
 // Delete records before the given offset on a topic.
 func (adminrest *AdminrestV1) DeleteTopicRecords(deleteTopicRecordsOptions *DeleteTopicRecordsOptions) (response *core.DetailedResponse, err error) {
-	return adminrest.DeleteTopicRecordsWithContext(context.Background(), deleteTopicRecordsOptions)
+	response, err = adminrest.DeleteTopicRecordsWithContext(context.Background(), deleteTopicRecordsOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // DeleteTopicRecordsWithContext is an alternate form of the DeleteTopicRecords method which supports a Context parameter
 func (adminrest *AdminrestV1) DeleteTopicRecordsWithContext(ctx context.Context, deleteTopicRecordsOptions *DeleteTopicRecordsOptions) (response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(deleteTopicRecordsOptions, "deleteTopicRecordsOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(deleteTopicRecordsOptions, "deleteTopicRecordsOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -515,6 +591,7 @@ func (adminrest *AdminrestV1) DeleteTopicRecordsWithContext(ctx context.Context,
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/topics/{topic_name}/records`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -534,15 +611,22 @@ func (adminrest *AdminrestV1) DeleteTopicRecordsWithContext(ctx context.Context,
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = adminrest.Service.Request(request, nil)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "DeleteTopicRecords", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -550,17 +634,21 @@ func (adminrest *AdminrestV1) DeleteTopicRecordsWithContext(ctx context.Context,
 // CreateQuota : Create a new quota
 // Create a new quota.
 func (adminrest *AdminrestV1) CreateQuota(createQuotaOptions *CreateQuotaOptions) (response *core.DetailedResponse, err error) {
-	return adminrest.CreateQuotaWithContext(context.Background(), createQuotaOptions)
+	response, err = adminrest.CreateQuotaWithContext(context.Background(), createQuotaOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // CreateQuotaWithContext is an alternate form of the CreateQuota method which supports a Context parameter
 func (adminrest *AdminrestV1) CreateQuotaWithContext(ctx context.Context, createQuotaOptions *CreateQuotaOptions) (response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(createQuotaOptions, "createQuotaOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(createQuotaOptions, "createQuotaOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -573,6 +661,7 @@ func (adminrest *AdminrestV1) CreateQuotaWithContext(ctx context.Context, create
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/quotas/{entity_name}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -595,15 +684,22 @@ func (adminrest *AdminrestV1) CreateQuotaWithContext(ctx context.Context, create
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = adminrest.Service.Request(request, nil)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "create_quota", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -611,17 +707,21 @@ func (adminrest *AdminrestV1) CreateQuotaWithContext(ctx context.Context, create
 // UpdateQuota : Update a quota
 // Update an entity's quota.
 func (adminrest *AdminrestV1) UpdateQuota(updateQuotaOptions *UpdateQuotaOptions) (response *core.DetailedResponse, err error) {
-	return adminrest.UpdateQuotaWithContext(context.Background(), updateQuotaOptions)
+	response, err = adminrest.UpdateQuotaWithContext(context.Background(), updateQuotaOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // UpdateQuotaWithContext is an alternate form of the UpdateQuota method which supports a Context parameter
 func (adminrest *AdminrestV1) UpdateQuotaWithContext(ctx context.Context, updateQuotaOptions *UpdateQuotaOptions) (response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(updateQuotaOptions, "updateQuotaOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(updateQuotaOptions, "updateQuotaOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -634,6 +734,7 @@ func (adminrest *AdminrestV1) UpdateQuotaWithContext(ctx context.Context, update
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/quotas/{entity_name}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -656,15 +757,22 @@ func (adminrest *AdminrestV1) UpdateQuotaWithContext(ctx context.Context, update
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = adminrest.Service.Request(request, nil)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "update_quota", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -672,17 +780,21 @@ func (adminrest *AdminrestV1) UpdateQuotaWithContext(ctx context.Context, update
 // DeleteQuota : Delete a quota
 // Delete an entity's quota.
 func (adminrest *AdminrestV1) DeleteQuota(deleteQuotaOptions *DeleteQuotaOptions) (response *core.DetailedResponse, err error) {
-	return adminrest.DeleteQuotaWithContext(context.Background(), deleteQuotaOptions)
+	response, err = adminrest.DeleteQuotaWithContext(context.Background(), deleteQuotaOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // DeleteQuotaWithContext is an alternate form of the DeleteQuota method which supports a Context parameter
 func (adminrest *AdminrestV1) DeleteQuotaWithContext(ctx context.Context, deleteQuotaOptions *DeleteQuotaOptions) (response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(deleteQuotaOptions, "deleteQuotaOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(deleteQuotaOptions, "deleteQuotaOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -695,6 +807,7 @@ func (adminrest *AdminrestV1) DeleteQuotaWithContext(ctx context.Context, delete
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/quotas/{entity_name}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -709,10 +822,16 @@ func (adminrest *AdminrestV1) DeleteQuotaWithContext(ctx context.Context, delete
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = adminrest.Service.Request(request, nil)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "delete_quota", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -720,17 +839,21 @@ func (adminrest *AdminrestV1) DeleteQuotaWithContext(ctx context.Context, delete
 // GetQuota : Get quota information for an entity
 // Get quota information for an entity.
 func (adminrest *AdminrestV1) GetQuota(getQuotaOptions *GetQuotaOptions) (result *QuotaDetail, response *core.DetailedResponse, err error) {
-	return adminrest.GetQuotaWithContext(context.Background(), getQuotaOptions)
+	result, response, err = adminrest.GetQuotaWithContext(context.Background(), getQuotaOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // GetQuotaWithContext is an alternate form of the GetQuota method which supports a Context parameter
 func (adminrest *AdminrestV1) GetQuotaWithContext(ctx context.Context, getQuotaOptions *GetQuotaOptions) (result *QuotaDetail, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(getQuotaOptions, "getQuotaOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(getQuotaOptions, "getQuotaOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -743,6 +866,7 @@ func (adminrest *AdminrestV1) GetQuotaWithContext(ctx context.Context, getQuotaO
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/quotas/{entity_name}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -758,17 +882,21 @@ func (adminrest *AdminrestV1) GetQuotaWithContext(ctx context.Context, getQuotaO
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "get_quota", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalQuotaDetail)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -780,13 +908,16 @@ func (adminrest *AdminrestV1) GetQuotaWithContext(ctx context.Context, getQuotaO
 // ListQuotas : List each entity's quota information
 // List each entity's quota information.
 func (adminrest *AdminrestV1) ListQuotas(listQuotasOptions *ListQuotasOptions) (result *QuotaList, response *core.DetailedResponse, err error) {
-	return adminrest.ListQuotasWithContext(context.Background(), listQuotasOptions)
+	result, response, err = adminrest.ListQuotasWithContext(context.Background(), listQuotasOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // ListQuotasWithContext is an alternate form of the ListQuotas method which supports a Context parameter
 func (adminrest *AdminrestV1) ListQuotasWithContext(ctx context.Context, listQuotasOptions *ListQuotasOptions) (result *QuotaList, response *core.DetailedResponse, err error) {
 	err = core.ValidateStruct(listQuotasOptions, "listQuotasOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -795,6 +926,7 @@ func (adminrest *AdminrestV1) ListQuotasWithContext(ctx context.Context, listQuo
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/quotas`, nil)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -810,17 +942,21 @@ func (adminrest *AdminrestV1) ListQuotasWithContext(ctx context.Context, listQuo
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "list_quotas", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalQuotaList)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -832,13 +968,16 @@ func (adminrest *AdminrestV1) ListQuotasWithContext(ctx context.Context, listQuo
 // ListBrokers : Get a list of brokers in the cluster
 // Get a list of brokers in the cluster.
 func (adminrest *AdminrestV1) ListBrokers(listBrokersOptions *ListBrokersOptions) (result []BrokerSummary, response *core.DetailedResponse, err error) {
-	return adminrest.ListBrokersWithContext(context.Background(), listBrokersOptions)
+	result, response, err = adminrest.ListBrokersWithContext(context.Background(), listBrokersOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // ListBrokersWithContext is an alternate form of the ListBrokers method which supports a Context parameter
 func (adminrest *AdminrestV1) ListBrokersWithContext(ctx context.Context, listBrokersOptions *ListBrokersOptions) (result []BrokerSummary, response *core.DetailedResponse, err error) {
 	err = core.ValidateStruct(listBrokersOptions, "listBrokersOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -847,6 +986,7 @@ func (adminrest *AdminrestV1) ListBrokersWithContext(ctx context.Context, listBr
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/brokers`, nil)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -862,17 +1002,21 @@ func (adminrest *AdminrestV1) ListBrokersWithContext(ctx context.Context, listBr
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse []json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "ListBrokers", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalBrokerSummary)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -884,17 +1028,21 @@ func (adminrest *AdminrestV1) ListBrokersWithContext(ctx context.Context, listBr
 // GetBroker : Get detailed information for a single broker
 // Get detailed information for a single broker.
 func (adminrest *AdminrestV1) GetBroker(getBrokerOptions *GetBrokerOptions) (result *BrokerDetail, response *core.DetailedResponse, err error) {
-	return adminrest.GetBrokerWithContext(context.Background(), getBrokerOptions)
+	result, response, err = adminrest.GetBrokerWithContext(context.Background(), getBrokerOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // GetBrokerWithContext is an alternate form of the GetBroker method which supports a Context parameter
 func (adminrest *AdminrestV1) GetBrokerWithContext(ctx context.Context, getBrokerOptions *GetBrokerOptions) (result *BrokerDetail, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(getBrokerOptions, "getBrokerOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(getBrokerOptions, "getBrokerOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -907,6 +1055,7 @@ func (adminrest *AdminrestV1) GetBrokerWithContext(ctx context.Context, getBroke
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/brokers/{broker_id}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -922,17 +1071,21 @@ func (adminrest *AdminrestV1) GetBrokerWithContext(ctx context.Context, getBroke
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "GetBroker", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalBrokerDetail)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -944,17 +1097,21 @@ func (adminrest *AdminrestV1) GetBrokerWithContext(ctx context.Context, getBroke
 // GetBrokerConfig : Get all configuration parameters for a single broker
 // Get all configuration parameters for a single broker.
 func (adminrest *AdminrestV1) GetBrokerConfig(getBrokerConfigOptions *GetBrokerConfigOptions) (result *BrokerDetail, response *core.DetailedResponse, err error) {
-	return adminrest.GetBrokerConfigWithContext(context.Background(), getBrokerConfigOptions)
+	result, response, err = adminrest.GetBrokerConfigWithContext(context.Background(), getBrokerConfigOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // GetBrokerConfigWithContext is an alternate form of the GetBrokerConfig method which supports a Context parameter
 func (adminrest *AdminrestV1) GetBrokerConfigWithContext(ctx context.Context, getBrokerConfigOptions *GetBrokerConfigOptions) (result *BrokerDetail, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(getBrokerConfigOptions, "getBrokerConfigOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(getBrokerConfigOptions, "getBrokerConfigOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -967,6 +1124,7 @@ func (adminrest *AdminrestV1) GetBrokerConfigWithContext(ctx context.Context, ge
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/brokers/{broker_id}/configs`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -989,17 +1147,21 @@ func (adminrest *AdminrestV1) GetBrokerConfigWithContext(ctx context.Context, ge
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "GetBrokerConfig", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalBrokerDetail)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -1011,13 +1173,16 @@ func (adminrest *AdminrestV1) GetBrokerConfigWithContext(ctx context.Context, ge
 // GetCluster : Get information about the cluster
 // Get information about the cluster.
 func (adminrest *AdminrestV1) GetCluster(getClusterOptions *GetClusterOptions) (result *Cluster, response *core.DetailedResponse, err error) {
-	return adminrest.GetClusterWithContext(context.Background(), getClusterOptions)
+	result, response, err = adminrest.GetClusterWithContext(context.Background(), getClusterOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // GetClusterWithContext is an alternate form of the GetCluster method which supports a Context parameter
 func (adminrest *AdminrestV1) GetClusterWithContext(ctx context.Context, getClusterOptions *GetClusterOptions) (result *Cluster, response *core.DetailedResponse, err error) {
 	err = core.ValidateStruct(getClusterOptions, "getClusterOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1026,6 +1191,7 @@ func (adminrest *AdminrestV1) GetClusterWithContext(ctx context.Context, getClus
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/cluster`, nil)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1041,17 +1207,21 @@ func (adminrest *AdminrestV1) GetClusterWithContext(ctx context.Context, getClus
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "GetCluster", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalCluster)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -1063,13 +1233,16 @@ func (adminrest *AdminrestV1) GetClusterWithContext(ctx context.Context, getClus
 // ListConsumerGroups : Get a list of consumer group IDs
 // Get a list of consumer group IDs.
 func (adminrest *AdminrestV1) ListConsumerGroups(listConsumerGroupsOptions *ListConsumerGroupsOptions) (result []string, response *core.DetailedResponse, err error) {
-	return adminrest.ListConsumerGroupsWithContext(context.Background(), listConsumerGroupsOptions)
+	result, response, err = adminrest.ListConsumerGroupsWithContext(context.Background(), listConsumerGroupsOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // ListConsumerGroupsWithContext is an alternate form of the ListConsumerGroups method which supports a Context parameter
 func (adminrest *AdminrestV1) ListConsumerGroupsWithContext(ctx context.Context, listConsumerGroupsOptions *ListConsumerGroupsOptions) (result []string, response *core.DetailedResponse, err error) {
 	err = core.ValidateStruct(listConsumerGroupsOptions, "listConsumerGroupsOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1078,6 +1251,7 @@ func (adminrest *AdminrestV1) ListConsumerGroupsWithContext(ctx context.Context,
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/consumergroups`, nil)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1103,10 +1277,16 @@ func (adminrest *AdminrestV1) ListConsumerGroupsWithContext(ctx context.Context,
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = adminrest.Service.Request(request, &result)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "ListConsumerGroups", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -1114,17 +1294,21 @@ func (adminrest *AdminrestV1) ListConsumerGroupsWithContext(ctx context.Context,
 // GetConsumerGroup : Get detailed information on a consumer group
 // Get detailed information on a consumer group.
 func (adminrest *AdminrestV1) GetConsumerGroup(getConsumerGroupOptions *GetConsumerGroupOptions) (result *GroupDetail, response *core.DetailedResponse, err error) {
-	return adminrest.GetConsumerGroupWithContext(context.Background(), getConsumerGroupOptions)
+	result, response, err = adminrest.GetConsumerGroupWithContext(context.Background(), getConsumerGroupOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // GetConsumerGroupWithContext is an alternate form of the GetConsumerGroup method which supports a Context parameter
 func (adminrest *AdminrestV1) GetConsumerGroupWithContext(ctx context.Context, getConsumerGroupOptions *GetConsumerGroupOptions) (result *GroupDetail, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(getConsumerGroupOptions, "getConsumerGroupOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(getConsumerGroupOptions, "getConsumerGroupOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1137,6 +1321,7 @@ func (adminrest *AdminrestV1) GetConsumerGroupWithContext(ctx context.Context, g
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/consumergroups/{group_id}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1152,17 +1337,21 @@ func (adminrest *AdminrestV1) GetConsumerGroupWithContext(ctx context.Context, g
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "GetConsumerGroup", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalGroupDetail)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -1174,17 +1363,21 @@ func (adminrest *AdminrestV1) GetConsumerGroupWithContext(ctx context.Context, g
 // DeleteConsumerGroup : Delete a consumer group
 // Delete a consumer group.
 func (adminrest *AdminrestV1) DeleteConsumerGroup(deleteConsumerGroupOptions *DeleteConsumerGroupOptions) (response *core.DetailedResponse, err error) {
-	return adminrest.DeleteConsumerGroupWithContext(context.Background(), deleteConsumerGroupOptions)
+	response, err = adminrest.DeleteConsumerGroupWithContext(context.Background(), deleteConsumerGroupOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // DeleteConsumerGroupWithContext is an alternate form of the DeleteConsumerGroup method which supports a Context parameter
 func (adminrest *AdminrestV1) DeleteConsumerGroupWithContext(ctx context.Context, deleteConsumerGroupOptions *DeleteConsumerGroupOptions) (response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(deleteConsumerGroupOptions, "deleteConsumerGroupOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(deleteConsumerGroupOptions, "deleteConsumerGroupOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1197,6 +1390,7 @@ func (adminrest *AdminrestV1) DeleteConsumerGroupWithContext(ctx context.Context
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/consumergroups/{group_id}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1211,10 +1405,16 @@ func (adminrest *AdminrestV1) DeleteConsumerGroupWithContext(ctx context.Context
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = adminrest.Service.Request(request, nil)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "DeleteConsumerGroup", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -1222,17 +1422,21 @@ func (adminrest *AdminrestV1) DeleteConsumerGroupWithContext(ctx context.Context
 // UpdateConsumerGroup : Update the offsets of a consumer group
 // Update the offsets of a consumer group using various modes, eg. latest, earliest, datetime,etc.
 func (adminrest *AdminrestV1) UpdateConsumerGroup(updateConsumerGroupOptions *UpdateConsumerGroupOptions) (result []GroupResetResultsItem, response *core.DetailedResponse, err error) {
-	return adminrest.UpdateConsumerGroupWithContext(context.Background(), updateConsumerGroupOptions)
+	result, response, err = adminrest.UpdateConsumerGroupWithContext(context.Background(), updateConsumerGroupOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // UpdateConsumerGroupWithContext is an alternate form of the UpdateConsumerGroup method which supports a Context parameter
 func (adminrest *AdminrestV1) UpdateConsumerGroupWithContext(ctx context.Context, updateConsumerGroupOptions *UpdateConsumerGroupOptions) (result []GroupResetResultsItem, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(updateConsumerGroupOptions, "updateConsumerGroupOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(updateConsumerGroupOptions, "updateConsumerGroupOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1245,6 +1449,7 @@ func (adminrest *AdminrestV1) UpdateConsumerGroupWithContext(ctx context.Context
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/consumergroups/{group_id}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1274,22 +1479,27 @@ func (adminrest *AdminrestV1) UpdateConsumerGroupWithContext(ctx context.Context
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse []json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "UpdateConsumerGroup", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalGroupResetResultsItem)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -1301,13 +1511,16 @@ func (adminrest *AdminrestV1) UpdateConsumerGroupWithContext(ctx context.Context
 // GetMirroringTopicSelection : Get current topic selection for mirroring
 // Get current topic selection for mirroring.
 func (adminrest *AdminrestV1) GetMirroringTopicSelection(getMirroringTopicSelectionOptions *GetMirroringTopicSelectionOptions) (result *MirroringTopicSelection, response *core.DetailedResponse, err error) {
-	return adminrest.GetMirroringTopicSelectionWithContext(context.Background(), getMirroringTopicSelectionOptions)
+	result, response, err = adminrest.GetMirroringTopicSelectionWithContext(context.Background(), getMirroringTopicSelectionOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // GetMirroringTopicSelectionWithContext is an alternate form of the GetMirroringTopicSelection method which supports a Context parameter
 func (adminrest *AdminrestV1) GetMirroringTopicSelectionWithContext(ctx context.Context, getMirroringTopicSelectionOptions *GetMirroringTopicSelectionOptions) (result *MirroringTopicSelection, response *core.DetailedResponse, err error) {
 	err = core.ValidateStruct(getMirroringTopicSelectionOptions, "getMirroringTopicSelectionOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1316,6 +1529,7 @@ func (adminrest *AdminrestV1) GetMirroringTopicSelectionWithContext(ctx context.
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/mirroring/topic-selection`, nil)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1331,17 +1545,21 @@ func (adminrest *AdminrestV1) GetMirroringTopicSelectionWithContext(ctx context.
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "GetMirroringTopicSelection", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringTopicSelection)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -1353,17 +1571,21 @@ func (adminrest *AdminrestV1) GetMirroringTopicSelectionWithContext(ctx context.
 // ReplaceMirroringTopicSelection : Replace topic selection for mirroring
 // Replace topic selection for mirroring. This operation replaces the complete set of mirroring topic selections.
 func (adminrest *AdminrestV1) ReplaceMirroringTopicSelection(replaceMirroringTopicSelectionOptions *ReplaceMirroringTopicSelectionOptions) (result *MirroringTopicSelection, response *core.DetailedResponse, err error) {
-	return adminrest.ReplaceMirroringTopicSelectionWithContext(context.Background(), replaceMirroringTopicSelectionOptions)
+	result, response, err = adminrest.ReplaceMirroringTopicSelectionWithContext(context.Background(), replaceMirroringTopicSelectionOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // ReplaceMirroringTopicSelectionWithContext is an alternate form of the ReplaceMirroringTopicSelection method which supports a Context parameter
 func (adminrest *AdminrestV1) ReplaceMirroringTopicSelectionWithContext(ctx context.Context, replaceMirroringTopicSelectionOptions *ReplaceMirroringTopicSelectionOptions) (result *MirroringTopicSelection, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(replaceMirroringTopicSelectionOptions, "replaceMirroringTopicSelectionOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(replaceMirroringTopicSelectionOptions, "replaceMirroringTopicSelectionOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1372,6 +1594,7 @@ func (adminrest *AdminrestV1) ReplaceMirroringTopicSelectionWithContext(ctx cont
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/mirroring/topic-selection`, nil)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1392,22 +1615,27 @@ func (adminrest *AdminrestV1) ReplaceMirroringTopicSelectionWithContext(ctx cont
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "ReplaceMirroringTopicSelection", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringTopicSelection)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -1419,13 +1647,16 @@ func (adminrest *AdminrestV1) ReplaceMirroringTopicSelectionWithContext(ctx cont
 // GetMirroringActiveTopics : Get topics that are being actively mirrored
 // Get topics that are being actively mirrored.
 func (adminrest *AdminrestV1) GetMirroringActiveTopics(getMirroringActiveTopicsOptions *GetMirroringActiveTopicsOptions) (result *MirroringActiveTopics, response *core.DetailedResponse, err error) {
-	return adminrest.GetMirroringActiveTopicsWithContext(context.Background(), getMirroringActiveTopicsOptions)
+	result, response, err = adminrest.GetMirroringActiveTopicsWithContext(context.Background(), getMirroringActiveTopicsOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // GetMirroringActiveTopicsWithContext is an alternate form of the GetMirroringActiveTopics method which supports a Context parameter
 func (adminrest *AdminrestV1) GetMirroringActiveTopicsWithContext(ctx context.Context, getMirroringActiveTopicsOptions *GetMirroringActiveTopicsOptions) (result *MirroringActiveTopics, response *core.DetailedResponse, err error) {
 	err = core.ValidateStruct(getMirroringActiveTopicsOptions, "getMirroringActiveTopicsOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1434,6 +1665,7 @@ func (adminrest *AdminrestV1) GetMirroringActiveTopicsWithContext(ctx context.Co
 	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/mirroring/active-topics`, nil)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1449,17 +1681,21 @@ func (adminrest *AdminrestV1) GetMirroringActiveTopicsWithContext(ctx context.Co
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = adminrest.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "GetMirroringActiveTopics", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalMirroringActiveTopics)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -1468,10 +1704,73 @@ func (adminrest *AdminrestV1) GetMirroringActiveTopicsWithContext(ctx context.Co
 	return
 }
 
+// GetStatus : Get the status of the instance
+// Get the status of the instance.
+func (adminrest *AdminrestV1) GetStatus(getStatusOptions *GetStatusOptions) (result *InstanceStatus, response *core.DetailedResponse, err error) {
+	result, response, err = adminrest.GetStatusWithContext(context.Background(), getStatusOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
+}
+
+// GetStatusWithContext is an alternate form of the GetStatus method which supports a Context parameter
+func (adminrest *AdminrestV1) GetStatusWithContext(ctx context.Context, getStatusOptions *GetStatusOptions) (result *InstanceStatus, response *core.DetailedResponse, err error) {
+	err = core.ValidateStruct(getStatusOptions, "getStatusOptions")
+	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
+		return
+	}
+
+	builder := core.NewRequestBuilder(core.GET)
+	builder = builder.WithContext(ctx)
+	builder.EnableGzipCompression = adminrest.GetEnableGzipCompression()
+	_, err = builder.ResolveRequestURL(adminrest.Service.Options.URL, `/admin/status`, nil)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
+		return
+	}
+
+	for headerName, headerValue := range getStatusOptions.Headers {
+		builder.AddHeader(headerName, headerValue)
+	}
+
+	sdkHeaders := common.GetSdkHeaders("adminrest", "V1", "GetStatus")
+	for headerName, headerValue := range sdkHeaders {
+		builder.AddHeader(headerName, headerValue)
+	}
+	builder.AddHeader("Accept", "application/json")
+
+	request, err := builder.Build()
+	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
+		return
+	}
+
+	var rawResponse map[string]json.RawMessage
+	response, err = adminrest.Service.Request(request, &rawResponse)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "GetStatus", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalInstanceStatus)
+		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
+			return
+		}
+		response.Result = result
+	}
+
+	return
+}
+func getServiceComponentInfo() *core.ProblemComponent {
+	return core.NewProblemComponent(DefaultServiceName, "1.3.1")
+}
+
 // AliveOptions : The Alive options.
 type AliveOptions struct {
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1503,14 +1802,17 @@ func UnmarshalBrokerDetailConfigsItem(m map[string]json.RawMessage, result inter
 	obj := new(BrokerDetailConfigsItem)
 	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "name-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "value", &obj.Value)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "value-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "is_sensitive", &obj.IsSensitive)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "is_sensitive-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -1528,7 +1830,7 @@ type CreateQuotaOptions struct {
 	// The consumer byte rate quota value.
 	ConsumerByteRate *int64 `json:"consumer_byte_rate,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1577,7 +1879,7 @@ type CreateTopicOptions struct {
 	// The config properties to be set for the new topic.
 	Configs []TopicCreateRequestConfigsItem `json:"configs,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1621,7 +1923,7 @@ type DeleteConsumerGroupOptions struct {
 	// The group ID for the consumer group to be deleted.
 	GroupID *string `json:"group_id" validate:"required,ne="`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1649,7 +1951,7 @@ type DeleteQuotaOptions struct {
 	// The entity name of the quotas can be `default` or an IAM Service ID that starts with an `iam-ServiceId` prefix.
 	EntityName *string `json:"entity_name" validate:"required,ne="`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1677,7 +1979,7 @@ type DeleteTopicOptions struct {
 	// The topic name for the topic to be deleted.
 	TopicName *string `json:"topic_name" validate:"required,ne="`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1707,7 +2009,7 @@ type DeleteTopicRecordsOptions struct {
 
 	RecordsToDelete []RecordDeleteRequestRecordsToDeleteItem `json:"records_to_delete,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1751,7 +2053,7 @@ type GetBrokerConfigOptions struct {
 	// indicating its scope and whether it's dynamic.
 	Verbose *bool `json:"verbose,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1791,7 +2093,7 @@ type GetBrokerOptions struct {
 	// The broker ID of the broker to be described.
 	BrokerID *int64 `json:"broker_id" validate:"required"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1817,7 +2119,7 @@ func (options *GetBrokerOptions) SetHeaders(param map[string]string) *GetBrokerO
 // GetClusterOptions : The GetCluster options.
 type GetClusterOptions struct {
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1837,7 +2139,7 @@ type GetConsumerGroupOptions struct {
 	// The group ID for the consumer group to be described.
 	GroupID *string `json:"group_id" validate:"required,ne="`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1863,7 +2165,7 @@ func (options *GetConsumerGroupOptions) SetHeaders(param map[string]string) *Get
 // GetMirroringActiveTopicsOptions : The GetMirroringActiveTopics options.
 type GetMirroringActiveTopicsOptions struct {
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1881,7 +2183,7 @@ func (options *GetMirroringActiveTopicsOptions) SetHeaders(param map[string]stri
 // GetMirroringTopicSelectionOptions : The GetMirroringTopicSelection options.
 type GetMirroringTopicSelectionOptions struct {
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1901,7 +2203,7 @@ type GetQuotaOptions struct {
 	// The entity name of the quotas can be `default` or an IAM Service ID that starts with an `iam-ServiceId` prefix.
 	EntityName *string `json:"entity_name" validate:"required,ne="`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1924,12 +2226,30 @@ func (options *GetQuotaOptions) SetHeaders(param map[string]string) *GetQuotaOpt
 	return options
 }
 
+// GetStatusOptions : The GetStatus options.
+type GetStatusOptions struct {
+
+	// Allows users to set headers on API requests.
+	Headers map[string]string
+}
+
+// NewGetStatusOptions : Instantiate GetStatusOptions
+func (*AdminrestV1) NewGetStatusOptions() *GetStatusOptions {
+	return &GetStatusOptions{}
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *GetStatusOptions) SetHeaders(param map[string]string) *GetStatusOptions {
+	options.Headers = param
+	return options
+}
+
 // GetTopicOptions : The GetTopic options.
 type GetTopicOptions struct {
 	// The topic name for the topic to be described.
 	TopicName *string `json:"topic_name" validate:"required,ne="`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1966,14 +2286,17 @@ func UnmarshalGroupResetResultsItem(m map[string]json.RawMessage, result interfa
 	obj := new(GroupResetResultsItem)
 	err = core.UnmarshalPrimitive(m, "topic", &obj.Topic)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "topic-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "partition", &obj.Partition)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "partition-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "offset", &obj.Offset)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "offset-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -1983,7 +2306,7 @@ func UnmarshalGroupResetResultsItem(m map[string]json.RawMessage, result interfa
 // ListBrokersOptions : The ListBrokers options.
 type ListBrokersOptions struct {
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -2012,7 +2335,7 @@ type ListConsumerGroupsOptions struct {
 	// The page number to be returned. The number 1 represents the first page. The default value is 1.
 	Page *int64 `json:"page,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -2048,7 +2371,7 @@ func (options *ListConsumerGroupsOptions) SetHeaders(param map[string]string) *L
 // ListQuotasOptions : The ListQuotas options.
 type ListQuotasOptions struct {
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -2077,7 +2400,7 @@ type ListTopicsOptions struct {
 	// The page number to be returned. The number 1 represents the first page. The default value is 1.
 	Page *int64 `json:"page,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -2124,10 +2447,12 @@ func UnmarshalMemberAssignmentsItem(m map[string]json.RawMessage, result interfa
 	obj := new(MemberAssignmentsItem)
 	err = core.UnmarshalPrimitive(m, "topic", &obj.Topic)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "topic-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "partition", &obj.Partition)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "partition-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2148,10 +2473,12 @@ func UnmarshalRecordDeleteRequestRecordsToDeleteItem(m map[string]json.RawMessag
 	obj := new(RecordDeleteRequestRecordsToDeleteItem)
 	err = core.UnmarshalPrimitive(m, "partition", &obj.Partition)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "partition-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "before_offset", &obj.BeforeOffset)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "before_offset-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2162,7 +2489,7 @@ func UnmarshalRecordDeleteRequestRecordsToDeleteItem(m map[string]json.RawMessag
 type ReplaceMirroringTopicSelectionOptions struct {
 	Includes []string `json:"includes,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -2197,10 +2524,12 @@ func UnmarshalTopicCreateRequestConfigsItem(m map[string]json.RawMessage, result
 	obj := new(TopicCreateRequestConfigsItem)
 	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "name-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "value", &obj.Value)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "value-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2220,10 +2549,12 @@ func UnmarshalTopicDetailReplicaAssignmentsItem(m map[string]json.RawMessage, re
 	obj := new(TopicDetailReplicaAssignmentsItem)
 	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "id-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalModel(m, "brokers", &obj.Brokers, UnmarshalTopicDetailReplicaAssignmentsItemBrokers)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "brokers-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2240,6 +2571,7 @@ func UnmarshalTopicDetailReplicaAssignmentsItemBrokers(m map[string]json.RawMess
 	obj := new(TopicDetailReplicaAssignmentsItemBrokers)
 	err = core.UnmarshalPrimitive(m, "replicas", &obj.Replicas)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "replicas-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2263,14 +2595,17 @@ func UnmarshalTopicUpdateRequestConfigsItem(m map[string]json.RawMessage, result
 	obj := new(TopicUpdateRequestConfigsItem)
 	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "name-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "value", &obj.Value)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "value-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "reset_to_default", &obj.ResetToDefault)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "reset_to_default-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2282,11 +2617,11 @@ type UpdateConsumerGroupOptions struct {
 	// The group ID for the consumer group to be updated.
 	GroupID *string `json:"group_id" validate:"required,ne="`
 
-	// The name of the topic to be reset.  If missing or blank, the operation applies to all topics read by the consumer
+	// The name of the topic to be reset. If missing or blank, the operation applies to all topics read by the consumer
 	// group.
 	Topic *string `json:"topic,omitempty"`
 
-	// Mode of shift operation.  Valid values are 'earliest', 'latest', 'datetime'.
+	// Mode of shift operation. Valid values are 'earliest', 'latest', 'datetime'.
 	Mode *string `json:"mode,omitempty"`
 
 	// Value for resetting offsets, based on 'mode=datetime', omit for 'earliest' and 'latest'.
@@ -2295,7 +2630,7 @@ type UpdateConsumerGroupOptions struct {
 	// Whether to execute the operation of resetting the offsets.
 	Execute *bool `json:"execute,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -2353,7 +2688,7 @@ type UpdateQuotaOptions struct {
 	// The consumer byte rate quota value.
 	ConsumerByteRate *int64 `json:"consumer_byte_rate,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -2400,7 +2735,7 @@ type UpdateTopicOptions struct {
 	// 'retention.bytes', 'segment.bytes', 'segment.ms', 'segment.index.bytes'.
 	Configs []TopicUpdateRequestConfigsItem `json:"configs,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -2460,22 +2795,27 @@ func UnmarshalBrokerDetail(m map[string]json.RawMessage, result interface{}) (er
 	obj := new(BrokerDetail)
 	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "id-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "host", &obj.Host)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "host-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "port", &obj.Port)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "port-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "rack", &obj.Rack)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "rack-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalModel(m, "configs", &obj.Configs, UnmarshalBrokerDetailConfigsItem)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "configs-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2505,18 +2845,22 @@ func UnmarshalBrokerSummary(m map[string]json.RawMessage, result interface{}) (e
 	obj := new(BrokerSummary)
 	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "id-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "host", &obj.Host)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "host-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "port", &obj.Port)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "port-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "rack", &obj.Rack)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "rack-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2539,14 +2883,17 @@ func UnmarshalCluster(m map[string]json.RawMessage, result interface{}) (err err
 	obj := new(Cluster)
 	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "id-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalModel(m, "controller", &obj.Controller, UnmarshalBrokerSummary)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "controller-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalModel(m, "brokers", &obj.Brokers, UnmarshalBrokerSummary)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "brokers-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2570,14 +2917,17 @@ func UnmarshalEntityQuotaDetail(m map[string]json.RawMessage, result interface{}
 	obj := new(EntityQuotaDetail)
 	err = core.UnmarshalPrimitive(m, "entity_name", &obj.EntityName)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "entity_name-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "producer_byte_rate", &obj.ProducerByteRate)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "producer_byte_rate-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "consumer_byte_rate", &obj.ConsumerByteRate)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "consumer_byte_rate-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2604,18 +2954,54 @@ func UnmarshalGroupDetail(m map[string]json.RawMessage, result interface{}) (err
 	obj := new(GroupDetail)
 	err = core.UnmarshalPrimitive(m, "group_id", &obj.GroupID)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "group_id-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "state", &obj.State)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "state-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalModel(m, "members", &obj.Members, UnmarshalMember)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "members-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalModel(m, "offsets", &obj.Offsets, UnmarshalTopicPartitionOffset)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "offsets-error", common.GetComponentInfo())
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// InstanceStatus : Information about the status of the instance.
+type InstanceStatus struct {
+	// The status of the instance: * `available` - the instance is functioning as expected * `degraded` - the instance is
+	// in a degraded state, some operations may not complete successfully * `offline` - the instance is offline, all
+	// operations attempted against the instance will fail * `unknown` - the state of the instance is not known at this
+	// time.
+	Status *string `json:"status,omitempty"`
+}
+
+// Constants associated with the InstanceStatus.Status property.
+// The status of the instance: * `available` - the instance is functioning as expected * `degraded` - the instance is in
+// a degraded state, some operations may not complete successfully * `offline` - the instance is offline, all operations
+// attempted against the instance will fail * `unknown` - the state of the instance is not known at this time.
+const (
+	InstanceStatusStatusAvailableConst = "available"
+	InstanceStatusStatusDegradedConst  = "degraded"
+	InstanceStatusStatusOfflineConst   = "offline"
+	InstanceStatusStatusUnknownConst   = "unknown"
+)
+
+// UnmarshalInstanceStatus unmarshals an instance of InstanceStatus from the specified map of raw messages.
+func UnmarshalInstanceStatus(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(InstanceStatus)
+	err = core.UnmarshalPrimitive(m, "status", &obj.Status)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "status-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2642,18 +3028,22 @@ func UnmarshalMember(m map[string]json.RawMessage, result interface{}) (err erro
 	obj := new(Member)
 	err = core.UnmarshalPrimitive(m, "consumer_id", &obj.ConsumerID)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "consumer_id-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "client_id", &obj.ClientID)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "client_id-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "host", &obj.Host)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "host-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalModel(m, "assignments", &obj.Assignments, UnmarshalMemberAssignmentsItem)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "assignments-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2670,6 +3060,7 @@ func UnmarshalMirroringActiveTopics(m map[string]json.RawMessage, result interfa
 	obj := new(MirroringActiveTopics)
 	err = core.UnmarshalPrimitive(m, "active_topics", &obj.ActiveTopics)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "active_topics-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2686,6 +3077,7 @@ func UnmarshalMirroringTopicSelection(m map[string]json.RawMessage, result inter
 	obj := new(MirroringTopicSelection)
 	err = core.UnmarshalPrimitive(m, "includes", &obj.Includes)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "includes-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2706,10 +3098,12 @@ func UnmarshalQuotaDetail(m map[string]json.RawMessage, result interface{}) (err
 	obj := new(QuotaDetail)
 	err = core.UnmarshalPrimitive(m, "producer_byte_rate", &obj.ProducerByteRate)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "producer_byte_rate-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "consumer_byte_rate", &obj.ConsumerByteRate)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "consumer_byte_rate-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2726,6 +3120,7 @@ func UnmarshalQuotaList(m map[string]json.RawMessage, result interface{}) (err e
 	obj := new(QuotaList)
 	err = core.UnmarshalModel(m, "data", &obj.Data, UnmarshalEntityQuotaDetail)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "data-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2752,18 +3147,22 @@ func UnmarshalTopicConfigs(m map[string]json.RawMessage, result interface{}) (er
 	obj := new(TopicConfigs)
 	err = core.UnmarshalPrimitive(m, "retention.bytes", &obj.RetentionBytes)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "retention.bytes-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "segment.bytes", &obj.SegmentBytes)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "segment.bytes-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "segment.index.bytes", &obj.SegmentIndexBytes)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "segment.index.bytes-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "segment.ms", &obj.SegmentMs)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "segment.ms-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2798,30 +3197,37 @@ func UnmarshalTopicDetail(m map[string]json.RawMessage, result interface{}) (err
 	obj := new(TopicDetail)
 	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "name-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "partitions", &obj.Partitions)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "partitions-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "replicationFactor", &obj.ReplicationFactor)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "replicationFactor-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "retentionMs", &obj.RetentionMs)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "retentionMs-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "cleanupPolicy", &obj.CleanupPolicy)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "cleanupPolicy-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalModel(m, "configs", &obj.Configs, UnmarshalTopicConfigs)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "configs-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalModel(m, "replicaAssignments", &obj.ReplicaAssignments, UnmarshalTopicDetailReplicaAssignmentsItem)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "replicaAssignments-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2848,18 +3254,22 @@ func UnmarshalTopicPartitionOffset(m map[string]json.RawMessage, result interfac
 	obj := new(TopicPartitionOffset)
 	err = core.UnmarshalPrimitive(m, "topic", &obj.Topic)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "topic-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "partition", &obj.Partition)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "partition-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "current_offset", &obj.CurrentOffset)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "current_offset-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "end_offset", &obj.EndOffset)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "end_offset-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
