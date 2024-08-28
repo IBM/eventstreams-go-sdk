@@ -19,9 +19,12 @@ package common
 import (
 	"fmt"
 	"runtime"
+
+	"github.com/IBM/go-sdk-core/v5/core"
 )
 
 const (
+	sdkName             = "eventstreams-go-sdk"
 	headerNameUserAgent = "User-Agent"
 )
 
@@ -63,17 +66,24 @@ const (
 func GetSdkHeaders(serviceName string, serviceVersion string, operationId string) map[string]string {
 	sdkHeaders := make(map[string]string)
 
-	sdkHeaders[headerNameUserAgent] = GetUserAgentInfo(serviceName, serviceVersion)
+	sdkHeaders[headerNameUserAgent] = GetUserAgentInfo()
 
 	return sdkHeaders
 }
 
-func GetUserAgentInfo(serviceName string, serviceVersion string) string {
-	return fmt.Sprintf("%s/%s %s", serviceName, serviceVersion, GetSystemInfo())
+var userAgent string = fmt.Sprintf("%s/%s %s", sdkName, Version, GetSystemInfo())
+
+func GetUserAgentInfo() string {
+	return userAgent
 }
 
 var systemInfo = fmt.Sprintf("(lang=go; arch=%s; os=%s; go.version=%s)", runtime.GOARCH, runtime.GOOS, runtime.Version())
 
 func GetSystemInfo() string {
 	return systemInfo
+}
+
+func GetComponentInfo() *core.ProblemComponent {
+	// This should match the module name in go.mod.
+	return core.NewProblemComponent("github.com/IBM/eventstreams-go-sdk", Version)
 }

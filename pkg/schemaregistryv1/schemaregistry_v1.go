@@ -1,5 +1,5 @@
 /**
- * (C) Copyright IBM Corp. 2023.
+ * (C) Copyright IBM Corp. 2024.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 /*
- * IBM OpenAPI SDK Code Generator Version: 3.76.0-ad3e6f96-20230724-172814
+ * IBM OpenAPI SDK Code Generator Version: 3.93.0-c40121e6-20240729-182103
  */
 
 // Package schemaregistryv1 : Operations and models for the SchemaregistryV1 service
@@ -59,22 +59,26 @@ func NewSchemaregistryV1UsingExternalConfig(options *SchemaregistryV1Options) (s
 	if options.Authenticator == nil {
 		options.Authenticator, err = core.GetAuthenticatorFromEnvironment(options.ServiceName)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "env-auth-error", common.GetComponentInfo())
 			return
 		}
 	}
 
 	schemaregistry, err = NewSchemaregistryV1(options)
+	err = core.RepurposeSDKProblem(err, "new-client-error")
 	if err != nil {
 		return
 	}
 
 	err = schemaregistry.Service.ConfigureService(options.ServiceName)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "client-config-error", common.GetComponentInfo())
 		return
 	}
 
 	if options.URL != "" {
 		err = schemaregistry.Service.SetServiceURL(options.URL)
+		err = core.RepurposeSDKProblem(err, "url-set-error")
 	}
 	return
 }
@@ -87,12 +91,14 @@ func NewSchemaregistryV1(options *SchemaregistryV1Options) (service *Schemaregis
 
 	baseService, err := core.NewBaseService(serviceOptions)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "new-base-error", common.GetComponentInfo())
 		return
 	}
 
 	if options.URL != "" {
 		err = baseService.SetServiceURL(options.URL)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "set-url-error", common.GetComponentInfo())
 			return
 		}
 	}
@@ -106,7 +112,7 @@ func NewSchemaregistryV1(options *SchemaregistryV1Options) (service *Schemaregis
 
 // GetServiceURLForRegion returns the service URL to be used for the specified region
 func GetServiceURLForRegion(region string) (string, error) {
-	return "", fmt.Errorf("service does not support regional URLs")
+	return "", core.SDKErrorf(nil, "service does not support regional URLs", "no-regional-support", common.GetComponentInfo())
 }
 
 // Clone makes a copy of "schemaregistry" suitable for processing requests.
@@ -121,7 +127,11 @@ func (schemaregistry *SchemaregistryV1) Clone() *SchemaregistryV1 {
 
 // SetServiceURL sets the service URL
 func (schemaregistry *SchemaregistryV1) SetServiceURL(url string) error {
-	return schemaregistry.Service.SetServiceURL(url)
+	err := schemaregistry.Service.SetServiceURL(url)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "url-set-error", common.GetComponentInfo())
+	}
+	return err
 }
 
 // GetServiceURL returns the service URL
@@ -159,17 +169,21 @@ func (schemaregistry *SchemaregistryV1) DisableRetries() {
 // Retrieves the configuration for the specified global rule. The value of the global rule is used as the _default_ when
 // a schema does not have a corresponding schema compatibility rule defined.
 func (schemaregistry *SchemaregistryV1) GetGlobalRule(getGlobalRuleOptions *GetGlobalRuleOptions) (result *Rule, response *core.DetailedResponse, err error) {
-	return schemaregistry.GetGlobalRuleWithContext(context.Background(), getGlobalRuleOptions)
+	result, response, err = schemaregistry.GetGlobalRuleWithContext(context.Background(), getGlobalRuleOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // GetGlobalRuleWithContext is an alternate form of the GetGlobalRule method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) GetGlobalRuleWithContext(ctx context.Context, getGlobalRuleOptions *GetGlobalRuleOptions) (result *Rule, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(getGlobalRuleOptions, "getGlobalRuleOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(getGlobalRuleOptions, "getGlobalRuleOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -182,6 +196,7 @@ func (schemaregistry *SchemaregistryV1) GetGlobalRuleWithContext(ctx context.Con
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/rules/{rule}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -197,17 +212,21 @@ func (schemaregistry *SchemaregistryV1) GetGlobalRuleWithContext(ctx context.Con
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = schemaregistry.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "getGlobalRule", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalRule)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -220,17 +239,21 @@ func (schemaregistry *SchemaregistryV1) GetGlobalRuleWithContext(ctx context.Con
 // Update the configuration for the specified global rule. The value of the global rule is used as the _default_ when a
 // schema does not have a corresponding schema compatibility rule defined.
 func (schemaregistry *SchemaregistryV1) UpdateGlobalRule(updateGlobalRuleOptions *UpdateGlobalRuleOptions) (result *Rule, response *core.DetailedResponse, err error) {
-	return schemaregistry.UpdateGlobalRuleWithContext(context.Background(), updateGlobalRuleOptions)
+	result, response, err = schemaregistry.UpdateGlobalRuleWithContext(context.Background(), updateGlobalRuleOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // UpdateGlobalRuleWithContext is an alternate form of the UpdateGlobalRule method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) UpdateGlobalRuleWithContext(ctx context.Context, updateGlobalRuleOptions *UpdateGlobalRuleOptions) (result *Rule, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(updateGlobalRuleOptions, "updateGlobalRuleOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(updateGlobalRuleOptions, "updateGlobalRuleOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -243,6 +266,7 @@ func (schemaregistry *SchemaregistryV1) UpdateGlobalRuleWithContext(ctx context.
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/rules/{rule}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -266,22 +290,27 @@ func (schemaregistry *SchemaregistryV1) UpdateGlobalRuleWithContext(ctx context.
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = schemaregistry.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "updateGlobalRule", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalRule)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -294,17 +323,21 @@ func (schemaregistry *SchemaregistryV1) UpdateGlobalRuleWithContext(ctx context.
 // Create a new rule that controls compatibility checks for a particular schema. Schema rules override the registries
 // global compatibility rule setting.
 func (schemaregistry *SchemaregistryV1) CreateSchemaRule(createSchemaRuleOptions *CreateSchemaRuleOptions) (result *Rule, response *core.DetailedResponse, err error) {
-	return schemaregistry.CreateSchemaRuleWithContext(context.Background(), createSchemaRuleOptions)
+	result, response, err = schemaregistry.CreateSchemaRuleWithContext(context.Background(), createSchemaRuleOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // CreateSchemaRuleWithContext is an alternate form of the CreateSchemaRule method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) CreateSchemaRuleWithContext(ctx context.Context, createSchemaRuleOptions *CreateSchemaRuleOptions) (result *Rule, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(createSchemaRuleOptions, "createSchemaRuleOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(createSchemaRuleOptions, "createSchemaRuleOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -317,6 +350,7 @@ func (schemaregistry *SchemaregistryV1) CreateSchemaRuleWithContext(ctx context.
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts/{id}/rules`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -340,22 +374,27 @@ func (schemaregistry *SchemaregistryV1) CreateSchemaRuleWithContext(ctx context.
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = schemaregistry.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "createSchemaRule", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalRule)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -368,17 +407,21 @@ func (schemaregistry *SchemaregistryV1) CreateSchemaRuleWithContext(ctx context.
 // Retrieves the current configuration for a schema rule. If a schema rule exists then it overrides the corresponding
 // global rule that would otherwise be applied.
 func (schemaregistry *SchemaregistryV1) GetSchemaRule(getSchemaRuleOptions *GetSchemaRuleOptions) (result *Rule, response *core.DetailedResponse, err error) {
-	return schemaregistry.GetSchemaRuleWithContext(context.Background(), getSchemaRuleOptions)
+	result, response, err = schemaregistry.GetSchemaRuleWithContext(context.Background(), getSchemaRuleOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // GetSchemaRuleWithContext is an alternate form of the GetSchemaRule method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) GetSchemaRuleWithContext(ctx context.Context, getSchemaRuleOptions *GetSchemaRuleOptions) (result *Rule, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(getSchemaRuleOptions, "getSchemaRuleOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(getSchemaRuleOptions, "getSchemaRuleOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -392,6 +435,7 @@ func (schemaregistry *SchemaregistryV1) GetSchemaRuleWithContext(ctx context.Con
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts/{id}/rules/{rule}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -407,17 +451,21 @@ func (schemaregistry *SchemaregistryV1) GetSchemaRuleWithContext(ctx context.Con
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = schemaregistry.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "getSchemaRule", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalRule)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -430,17 +478,21 @@ func (schemaregistry *SchemaregistryV1) GetSchemaRuleWithContext(ctx context.Con
 // Updates the configuration of an existing schema rule. The updated rule will be applied to the specified schema,
 // overriding the value set for the corresponding global rule.
 func (schemaregistry *SchemaregistryV1) UpdateSchemaRule(updateSchemaRuleOptions *UpdateSchemaRuleOptions) (result *Rule, response *core.DetailedResponse, err error) {
-	return schemaregistry.UpdateSchemaRuleWithContext(context.Background(), updateSchemaRuleOptions)
+	result, response, err = schemaregistry.UpdateSchemaRuleWithContext(context.Background(), updateSchemaRuleOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // UpdateSchemaRuleWithContext is an alternate form of the UpdateSchemaRule method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) UpdateSchemaRuleWithContext(ctx context.Context, updateSchemaRuleOptions *UpdateSchemaRuleOptions) (result *Rule, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(updateSchemaRuleOptions, "updateSchemaRuleOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(updateSchemaRuleOptions, "updateSchemaRuleOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -454,6 +506,7 @@ func (schemaregistry *SchemaregistryV1) UpdateSchemaRuleWithContext(ctx context.
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts/{id}/rules/{rule}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -477,22 +530,27 @@ func (schemaregistry *SchemaregistryV1) UpdateSchemaRuleWithContext(ctx context.
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = schemaregistry.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "updateSchemaRule", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalRule)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -505,17 +563,21 @@ func (schemaregistry *SchemaregistryV1) UpdateSchemaRuleWithContext(ctx context.
 // Delete a rule that controls compatibility checks for a particular schema. After this operation completes the schema
 // will be subject to compatibility checking defined by the global compatibility rule setting for the registry.
 func (schemaregistry *SchemaregistryV1) DeleteSchemaRule(deleteSchemaRuleOptions *DeleteSchemaRuleOptions) (response *core.DetailedResponse, err error) {
-	return schemaregistry.DeleteSchemaRuleWithContext(context.Background(), deleteSchemaRuleOptions)
+	response, err = schemaregistry.DeleteSchemaRuleWithContext(context.Background(), deleteSchemaRuleOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // DeleteSchemaRuleWithContext is an alternate form of the DeleteSchemaRule method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) DeleteSchemaRuleWithContext(ctx context.Context, deleteSchemaRuleOptions *DeleteSchemaRuleOptions) (response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(deleteSchemaRuleOptions, "deleteSchemaRuleOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(deleteSchemaRuleOptions, "deleteSchemaRuleOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -529,6 +591,7 @@ func (schemaregistry *SchemaregistryV1) DeleteSchemaRuleWithContext(ctx context.
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts/{id}/rules/{rule}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -543,10 +606,16 @@ func (schemaregistry *SchemaregistryV1) DeleteSchemaRuleWithContext(ctx context.
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = schemaregistry.Service.Request(request, nil)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "deleteSchemaRule", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -554,17 +623,21 @@ func (schemaregistry *SchemaregistryV1) DeleteSchemaRuleWithContext(ctx context.
 // SetSchemaState : Set schema state
 // Sets schema state.
 func (schemaregistry *SchemaregistryV1) SetSchemaState(setSchemaStateOptions *SetSchemaStateOptions) (response *core.DetailedResponse, err error) {
-	return schemaregistry.SetSchemaStateWithContext(context.Background(), setSchemaStateOptions)
+	response, err = schemaregistry.SetSchemaStateWithContext(context.Background(), setSchemaStateOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // SetSchemaStateWithContext is an alternate form of the SetSchemaState method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) SetSchemaStateWithContext(ctx context.Context, setSchemaStateOptions *SetSchemaStateOptions) (response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(setSchemaStateOptions, "setSchemaStateOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(setSchemaStateOptions, "setSchemaStateOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -577,6 +650,7 @@ func (schemaregistry *SchemaregistryV1) SetSchemaStateWithContext(ctx context.Co
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts/{id}/state`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -596,15 +670,22 @@ func (schemaregistry *SchemaregistryV1) SetSchemaStateWithContext(ctx context.Co
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = schemaregistry.Service.Request(request, nil)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "setSchemaState", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -612,17 +693,21 @@ func (schemaregistry *SchemaregistryV1) SetSchemaStateWithContext(ctx context.Co
 // SetSchemaVersionState : Set schema version state
 // Sets schema version state.
 func (schemaregistry *SchemaregistryV1) SetSchemaVersionState(setSchemaVersionStateOptions *SetSchemaVersionStateOptions) (response *core.DetailedResponse, err error) {
-	return schemaregistry.SetSchemaVersionStateWithContext(context.Background(), setSchemaVersionStateOptions)
+	response, err = schemaregistry.SetSchemaVersionStateWithContext(context.Background(), setSchemaVersionStateOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // SetSchemaVersionStateWithContext is an alternate form of the SetSchemaVersionState method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) SetSchemaVersionStateWithContext(ctx context.Context, setSchemaVersionStateOptions *SetSchemaVersionStateOptions) (response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(setSchemaVersionStateOptions, "setSchemaVersionStateOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(setSchemaVersionStateOptions, "setSchemaVersionStateOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -636,6 +721,7 @@ func (schemaregistry *SchemaregistryV1) SetSchemaVersionStateWithContext(ctx con
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts/{id}/versions/{version}/state`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -655,15 +741,22 @@ func (schemaregistry *SchemaregistryV1) SetSchemaVersionStateWithContext(ctx con
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = schemaregistry.Service.Request(request, nil)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "setSchemaVersionState", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -671,17 +764,21 @@ func (schemaregistry *SchemaregistryV1) SetSchemaVersionStateWithContext(ctx con
 // ListVersions : List the versions of a schema
 // Returns an array containing the version numbers of all of the versions of the specified schema.
 func (schemaregistry *SchemaregistryV1) ListVersions(listVersionsOptions *ListVersionsOptions) (result []int64, response *core.DetailedResponse, err error) {
-	return schemaregistry.ListVersionsWithContext(context.Background(), listVersionsOptions)
+	result, response, err = schemaregistry.ListVersionsWithContext(context.Background(), listVersionsOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // ListVersionsWithContext is an alternate form of the ListVersions method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) ListVersionsWithContext(ctx context.Context, listVersionsOptions *ListVersionsOptions) (result []int64, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(listVersionsOptions, "listVersionsOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(listVersionsOptions, "listVersionsOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -694,6 +791,7 @@ func (schemaregistry *SchemaregistryV1) ListVersionsWithContext(ctx context.Cont
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts/{id}/versions`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -713,10 +811,16 @@ func (schemaregistry *SchemaregistryV1) ListVersionsWithContext(ctx context.Cont
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = schemaregistry.Service.Request(request, &result)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "listVersions", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -724,17 +828,21 @@ func (schemaregistry *SchemaregistryV1) ListVersionsWithContext(ctx context.Cont
 // CreateVersion : Create a new schema version
 // Creates a new version of a schema using the AVRO schema supplied in the request body.
 func (schemaregistry *SchemaregistryV1) CreateVersion(createVersionOptions *CreateVersionOptions) (result *SchemaMetadata, response *core.DetailedResponse, err error) {
-	return schemaregistry.CreateVersionWithContext(context.Background(), createVersionOptions)
+	result, response, err = schemaregistry.CreateVersionWithContext(context.Background(), createVersionOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // CreateVersionWithContext is an alternate form of the CreateVersion method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) CreateVersionWithContext(ctx context.Context, createVersionOptions *CreateVersionOptions) (result *SchemaMetadata, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(createVersionOptions, "createVersionOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(createVersionOptions, "createVersionOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -747,6 +855,7 @@ func (schemaregistry *SchemaregistryV1) CreateVersionWithContext(ctx context.Con
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts/{id}/versions`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -767,22 +876,27 @@ func (schemaregistry *SchemaregistryV1) CreateVersionWithContext(ctx context.Con
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = schemaregistry.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "createVersion", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalSchemaMetadata)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -794,17 +908,21 @@ func (schemaregistry *SchemaregistryV1) CreateVersionWithContext(ctx context.Con
 // GetVersion : Get a version of the schema
 // Retrieve a particular version of the schema.
 func (schemaregistry *SchemaregistryV1) GetVersion(getVersionOptions *GetVersionOptions) (result *AvroSchema, response *core.DetailedResponse, err error) {
-	return schemaregistry.GetVersionWithContext(context.Background(), getVersionOptions)
+	result, response, err = schemaregistry.GetVersionWithContext(context.Background(), getVersionOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // GetVersionWithContext is an alternate form of the GetVersion method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) GetVersionWithContext(ctx context.Context, getVersionOptions *GetVersionOptions) (result *AvroSchema, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(getVersionOptions, "getVersionOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(getVersionOptions, "getVersionOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -818,6 +936,7 @@ func (schemaregistry *SchemaregistryV1) GetVersionWithContext(ctx context.Contex
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts/{id}/versions/{version}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -833,17 +952,21 @@ func (schemaregistry *SchemaregistryV1) GetVersionWithContext(ctx context.Contex
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = schemaregistry.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "getVersion", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalAvroSchema)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -855,17 +978,21 @@ func (schemaregistry *SchemaregistryV1) GetVersionWithContext(ctx context.Contex
 // DeleteVersion : Delete a version of the schema
 // Delete a version of the schema. If this was the only version of the schema then the whole schema will be deleted.
 func (schemaregistry *SchemaregistryV1) DeleteVersion(deleteVersionOptions *DeleteVersionOptions) (response *core.DetailedResponse, err error) {
-	return schemaregistry.DeleteVersionWithContext(context.Background(), deleteVersionOptions)
+	response, err = schemaregistry.DeleteVersionWithContext(context.Background(), deleteVersionOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // DeleteVersionWithContext is an alternate form of the DeleteVersion method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) DeleteVersionWithContext(ctx context.Context, deleteVersionOptions *DeleteVersionOptions) (response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(deleteVersionOptions, "deleteVersionOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(deleteVersionOptions, "deleteVersionOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -879,6 +1006,7 @@ func (schemaregistry *SchemaregistryV1) DeleteVersionWithContext(ctx context.Con
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts/{id}/versions/{version}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -893,10 +1021,16 @@ func (schemaregistry *SchemaregistryV1) DeleteVersionWithContext(ctx context.Con
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = schemaregistry.Service.Request(request, nil)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "deleteVersion", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -904,13 +1038,16 @@ func (schemaregistry *SchemaregistryV1) DeleteVersionWithContext(ctx context.Con
 // ListSchemas : List schema IDs
 // Returns an array containing the schema IDs of all of the schemas that are stored in the registry.
 func (schemaregistry *SchemaregistryV1) ListSchemas(listSchemasOptions *ListSchemasOptions) (result []string, response *core.DetailedResponse, err error) {
-	return schemaregistry.ListSchemasWithContext(context.Background(), listSchemasOptions)
+	result, response, err = schemaregistry.ListSchemasWithContext(context.Background(), listSchemasOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // ListSchemasWithContext is an alternate form of the ListSchemas method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) ListSchemasWithContext(ctx context.Context, listSchemasOptions *ListSchemasOptions) (result []string, response *core.DetailedResponse, err error) {
 	err = core.ValidateStruct(listSchemasOptions, "listSchemasOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -919,6 +1056,7 @@ func (schemaregistry *SchemaregistryV1) ListSchemasWithContext(ctx context.Conte
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts`, nil)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -938,10 +1076,16 @@ func (schemaregistry *SchemaregistryV1) ListSchemasWithContext(ctx context.Conte
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = schemaregistry.Service.Request(request, &result)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "listSchemas", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -949,17 +1093,21 @@ func (schemaregistry *SchemaregistryV1) ListSchemasWithContext(ctx context.Conte
 // CreateSchema : Create a new schema
 // Create a new schema and populate it with an initial schema version containing the AVRO document in the request body.
 func (schemaregistry *SchemaregistryV1) CreateSchema(createSchemaOptions *CreateSchemaOptions) (result *SchemaMetadata, response *core.DetailedResponse, err error) {
-	return schemaregistry.CreateSchemaWithContext(context.Background(), createSchemaOptions)
+	result, response, err = schemaregistry.CreateSchemaWithContext(context.Background(), createSchemaOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // CreateSchemaWithContext is an alternate form of the CreateSchema method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) CreateSchemaWithContext(ctx context.Context, createSchemaOptions *CreateSchemaOptions) (result *SchemaMetadata, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(createSchemaOptions, "createSchemaOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(createSchemaOptions, "createSchemaOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -968,6 +1116,7 @@ func (schemaregistry *SchemaregistryV1) CreateSchemaWithContext(ctx context.Cont
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts`, nil)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -991,22 +1140,27 @@ func (schemaregistry *SchemaregistryV1) CreateSchemaWithContext(ctx context.Cont
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = schemaregistry.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "createSchema", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalSchemaMetadata)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -1018,17 +1172,21 @@ func (schemaregistry *SchemaregistryV1) CreateSchemaWithContext(ctx context.Cont
 // GetLatestSchema : Get the latest version of a schema
 // Retrieves the lastest version of the specified schema.
 func (schemaregistry *SchemaregistryV1) GetLatestSchema(getLatestSchemaOptions *GetLatestSchemaOptions) (result *AvroSchema, response *core.DetailedResponse, err error) {
-	return schemaregistry.GetLatestSchemaWithContext(context.Background(), getLatestSchemaOptions)
+	result, response, err = schemaregistry.GetLatestSchemaWithContext(context.Background(), getLatestSchemaOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // GetLatestSchemaWithContext is an alternate form of the GetLatestSchema method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) GetLatestSchemaWithContext(ctx context.Context, getLatestSchemaOptions *GetLatestSchemaOptions) (result *AvroSchema, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(getLatestSchemaOptions, "getLatestSchemaOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(getLatestSchemaOptions, "getLatestSchemaOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1041,6 +1199,7 @@ func (schemaregistry *SchemaregistryV1) GetLatestSchemaWithContext(ctx context.C
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts/{id}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1056,17 +1215,21 @@ func (schemaregistry *SchemaregistryV1) GetLatestSchemaWithContext(ctx context.C
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = schemaregistry.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "getLatestSchema", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalAvroSchema)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
@@ -1078,17 +1241,21 @@ func (schemaregistry *SchemaregistryV1) GetLatestSchemaWithContext(ctx context.C
 // DeleteSchema : Delete a schema
 // Deletes a schema and all of its versions from the schema registry.
 func (schemaregistry *SchemaregistryV1) DeleteSchema(deleteSchemaOptions *DeleteSchemaOptions) (response *core.DetailedResponse, err error) {
-	return schemaregistry.DeleteSchemaWithContext(context.Background(), deleteSchemaOptions)
+	response, err = schemaregistry.DeleteSchemaWithContext(context.Background(), deleteSchemaOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // DeleteSchemaWithContext is an alternate form of the DeleteSchema method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) DeleteSchemaWithContext(ctx context.Context, deleteSchemaOptions *DeleteSchemaOptions) (response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(deleteSchemaOptions, "deleteSchemaOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(deleteSchemaOptions, "deleteSchemaOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1101,6 +1268,7 @@ func (schemaregistry *SchemaregistryV1) DeleteSchemaWithContext(ctx context.Cont
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts/{id}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1115,10 +1283,16 @@ func (schemaregistry *SchemaregistryV1) DeleteSchemaWithContext(ctx context.Cont
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	response, err = schemaregistry.Service.Request(request, nil)
+	if err != nil {
+		core.EnrichHTTPProblem(err, "deleteSchema", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
+		return
+	}
 
 	return
 }
@@ -1126,17 +1300,21 @@ func (schemaregistry *SchemaregistryV1) DeleteSchemaWithContext(ctx context.Cont
 // UpdateSchema : Update a schema
 // Updates a schema.
 func (schemaregistry *SchemaregistryV1) UpdateSchema(updateSchemaOptions *UpdateSchemaOptions) (result *SchemaMetadata, response *core.DetailedResponse, err error) {
-	return schemaregistry.UpdateSchemaWithContext(context.Background(), updateSchemaOptions)
+	result, response, err = schemaregistry.UpdateSchemaWithContext(context.Background(), updateSchemaOptions)
+	err = core.RepurposeSDKProblem(err, "")
+	return
 }
 
 // UpdateSchemaWithContext is an alternate form of the UpdateSchema method which supports a Context parameter
 func (schemaregistry *SchemaregistryV1) UpdateSchemaWithContext(ctx context.Context, updateSchemaOptions *UpdateSchemaOptions) (result *SchemaMetadata, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(updateSchemaOptions, "updateSchemaOptions cannot be nil")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
 	err = core.ValidateStruct(updateSchemaOptions, "updateSchemaOptions")
 	if err != nil {
+		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1149,6 +1327,7 @@ func (schemaregistry *SchemaregistryV1) UpdateSchemaWithContext(ctx context.Cont
 	builder.EnableGzipCompression = schemaregistry.GetEnableGzipCompression()
 	_, err = builder.ResolveRequestURL(schemaregistry.Service.Options.URL, `/artifacts/{id}`, pathParamsMap)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
@@ -1169,28 +1348,36 @@ func (schemaregistry *SchemaregistryV1) UpdateSchemaWithContext(ctx context.Cont
 	}
 	_, err = builder.SetBodyContentJSON(body)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
 	}
 
 	request, err := builder.Build()
 	if err != nil {
+		err = core.SDKErrorf(err, "", "build-error", common.GetComponentInfo())
 		return
 	}
 
 	var rawResponse map[string]json.RawMessage
 	response, err = schemaregistry.Service.Request(request, &rawResponse)
 	if err != nil {
+		core.EnrichHTTPProblem(err, "updateSchema", getServiceComponentInfo())
+		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
 	if rawResponse != nil {
 		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalSchemaMetadata)
 		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
 			return
 		}
 		response.Result = result
 	}
 
 	return
+}
+func getServiceComponentInfo() *core.ProblemComponent {
+	return core.NewProblemComponent(DefaultServiceName, "1.4.1")
 }
 
 // CreateSchemaOptions : The CreateSchema options.
@@ -1201,7 +1388,7 @@ type CreateSchemaOptions struct {
 	// The name to assign to the new schema. This must be unique. If this value is not specified then a UUID is used.
 	XRegistryArtifactID *string `json:"X-Registry-ArtifactId,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1239,7 +1426,7 @@ type CreateSchemaRuleOptions struct {
 	// The configuration value for the rule. Which values are valid depends on the value of this object's `type` property.
 	Config *string `json:"config" validate:"required"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1302,7 +1489,7 @@ type CreateVersionOptions struct {
 	// The AVRO schema.
 	Schema map[string]interface{} `json:"schema,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1336,7 +1523,7 @@ type DeleteSchemaOptions struct {
 	// The ID of the schema to delete.
 	ID *string `json:"id" validate:"required,ne="`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1367,7 +1554,7 @@ type DeleteSchemaRuleOptions struct {
 	// The type of rule to delete. Currently only the value that can be specified is `COMPATIBILITY`.
 	Rule *string `json:"rule" validate:"required,ne="`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1411,7 +1598,7 @@ type DeleteVersionOptions struct {
 	// The schema version number to delete.
 	Version *int64 `json:"version" validate:"required"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1446,7 +1633,7 @@ type GetGlobalRuleOptions struct {
 	// The type of the global rule to retrieve. Currently only `COMPATIBILITY` is supported.
 	Rule *string `json:"rule" validate:"required,ne="`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1480,7 +1667,7 @@ type GetLatestSchemaOptions struct {
 	// The ID of a schema.
 	ID *string `json:"id" validate:"required,ne="`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1511,7 +1698,7 @@ type GetSchemaRuleOptions struct {
 	// The type of rule to retrieve. Currently only the value that can be specified is `COMPATIBILITY`.
 	Rule *string `json:"rule" validate:"required,ne="`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1555,7 +1742,7 @@ type GetVersionOptions struct {
 	// The version number that identifies the particular schema version to return.
 	Version *int64 `json:"version" validate:"required"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1590,7 +1777,7 @@ type ListSchemasOptions struct {
 	// format of the response to be returned, allowed values are 'string' and 'object'.
 	Jsonformat *string `json:"jsonformat,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1619,7 +1806,7 @@ type ListVersionsOptions struct {
 	// format of the response to be returned, allowed values are 'number' and 'object'.
 	Jsonformat *string `json:"jsonformat,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1656,7 +1843,7 @@ type SetSchemaStateOptions struct {
 	// The state of the schema or schema version.
 	State *string `json:"state" validate:"required"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1704,7 +1891,7 @@ type SetSchemaVersionStateOptions struct {
 	// The state of the schema or schema version.
 	State *string `json:"state" validate:"required"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1759,7 +1946,7 @@ type UpdateGlobalRuleOptions struct {
 	// The configuration value for the rule. Which values are valid depends on the value of this object's `type` property.
 	Config *string `json:"config" validate:"required"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1828,7 +2015,7 @@ type UpdateSchemaOptions struct {
 	// The AVRO schema.
 	Schema map[string]interface{} `json:"schema,omitempty"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1871,7 +2058,7 @@ type UpdateSchemaRuleOptions struct {
 	// The configuration value for the rule. Which values are valid depends on the value of this object's `type` property.
 	Config *string `json:"config" validate:"required"`
 
-	// Allows users to set headers on API requests
+	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
@@ -1950,6 +2137,7 @@ func UnmarshalAvroSchema(m map[string]json.RawMessage, result interface{}) (err 
 	obj := new(AvroSchema)
 	err = core.UnmarshalPrimitive(m, "schema", &obj.Schema)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "schema-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -1990,6 +2178,9 @@ func (*SchemaregistryV1) NewRule(typeVar string, config string) (_model *Rule, e
 		Config: core.StringPtr(config),
 	}
 	err = core.ValidateStruct(_model, "required parameters")
+	if err != nil {
+		err = core.SDKErrorf(err, "", "model-missing-required", common.GetComponentInfo())
+	}
 	return
 }
 
@@ -1998,10 +2189,12 @@ func UnmarshalRule(m map[string]json.RawMessage, result interface{}) (err error)
 	obj := new(Rule)
 	err = core.UnmarshalPrimitive(m, "type", &obj.Type)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "type-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "config", &obj.Config)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "config-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -2035,26 +2228,32 @@ func UnmarshalSchemaMetadata(m map[string]json.RawMessage, result interface{}) (
 	obj := new(SchemaMetadata)
 	err = core.UnmarshalPrimitive(m, "createdOn", &obj.CreatedOn)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "createdOn-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "globalId", &obj.GlobalID)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "globalId-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "id-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "modifiedOn", &obj.ModifiedOn)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "modifiedOn-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "type", &obj.Type)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "type-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalPrimitive(m, "version", &obj.Version)
 	if err != nil {
+		err = core.SDKErrorf(err, "", "version-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
