@@ -1,5 +1,5 @@
 /**
- * (C) Copyright IBM Corp. 2023.
+ * (C) Copyright IBM Corp. 2024.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package adminrestv1_test
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -3865,6 +3867,206 @@ var _ = Describe(`AdminrestV1`, func() {
 			})
 		})
 	})
+	Describe(`GetStatus(getStatusOptions *GetStatusOptions) - Operation response error`, func() {
+		getStatusPath := "/admin/status"
+		Context(`Using mock server endpoint with invalid JSON response`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(getStatusPath))
+					Expect(req.Method).To(Equal("GET"))
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(200)
+					fmt.Fprint(res, `} this is not valid json {`)
+				}))
+			})
+			It(`Invoke GetStatus with error: Operation response processing error`, func() {
+				adminrestService, serviceErr := adminrestv1.NewAdminrestV1(&adminrestv1.AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the GetStatusOptions model
+				getStatusOptionsModel := new(adminrestv1.GetStatusOptions)
+				getStatusOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Expect response parsing to fail since we are receiving a text/plain response
+				result, response, operationErr := adminrestService.GetStatus(getStatusOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).To(BeNil())
+
+				// Enable retries and test again
+				adminrestService.EnableRetries(0, 0)
+				result, response, operationErr = adminrestService.GetStatus(getStatusOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
+	Describe(`GetStatus(getStatusOptions *GetStatusOptions)`, func() {
+		getStatusPath := "/admin/status"
+		Context(`Using mock server endpoint with timeout`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(getStatusPath))
+					Expect(req.Method).To(Equal("GET"))
+
+					// Sleep a short time to support a timeout test
+					time.Sleep(100 * time.Millisecond)
+
+					// Set mock response
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(200)
+					fmt.Fprintf(res, "%s", `{"status": "available"}`)
+				}))
+			})
+			It(`Invoke GetStatus successfully with retries`, func() {
+				adminrestService, serviceErr := adminrestv1.NewAdminrestV1(&adminrestv1.AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+				adminrestService.EnableRetries(0, 0)
+
+				// Construct an instance of the GetStatusOptions model
+				getStatusOptionsModel := new(adminrestv1.GetStatusOptions)
+				getStatusOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with a Context to test a timeout error
+				ctx, cancelFunc := context.WithTimeout(context.Background(), 80*time.Millisecond)
+				defer cancelFunc()
+				_, _, operationErr := adminrestService.GetStatusWithContext(ctx, getStatusOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
+
+				// Disable retries and test again
+				adminrestService.DisableRetries()
+				result, response, operationErr := adminrestService.GetStatus(getStatusOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).ToNot(BeNil())
+
+				// Re-test the timeout error with retries disabled
+				ctx, cancelFunc2 := context.WithTimeout(context.Background(), 80*time.Millisecond)
+				defer cancelFunc2()
+				_, _, operationErr = adminrestService.GetStatusWithContext(ctx, getStatusOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+		Context(`Using mock server endpoint`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(getStatusPath))
+					Expect(req.Method).To(Equal("GET"))
+
+					// Set mock response
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(200)
+					fmt.Fprintf(res, "%s", `{"status": "available"}`)
+				}))
+			})
+			It(`Invoke GetStatus successfully`, func() {
+				adminrestService, serviceErr := adminrestv1.NewAdminrestV1(&adminrestv1.AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Invoke operation with nil options model (negative test)
+				result, response, operationErr := adminrestService.GetStatus(nil)
+				Expect(operationErr).NotTo(BeNil())
+				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
+
+				// Construct an instance of the GetStatusOptions model
+				getStatusOptionsModel := new(adminrestv1.GetStatusOptions)
+				getStatusOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with valid options model (positive test)
+				result, response, operationErr = adminrestService.GetStatus(getStatusOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).ToNot(BeNil())
+
+			})
+			It(`Invoke GetStatus with error: Operation request error`, func() {
+				adminrestService, serviceErr := adminrestv1.NewAdminrestV1(&adminrestv1.AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the GetStatusOptions model
+				getStatusOptionsModel := new(adminrestv1.GetStatusOptions)
+				getStatusOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Invoke operation with empty URL (negative test)
+				err := adminrestService.SetServiceURL("")
+				Expect(err).To(BeNil())
+				result, response, operationErr := adminrestService.GetStatus(getStatusOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
+				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+		Context(`Using mock server endpoint with missing response body`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Set success status code with no respoonse body
+					res.WriteHeader(200)
+				}))
+			})
+			It(`Invoke GetStatus successfully`, func() {
+				adminrestService, serviceErr := adminrestv1.NewAdminrestV1(&adminrestv1.AdminrestV1Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(adminrestService).ToNot(BeNil())
+
+				// Construct an instance of the GetStatusOptions model
+				getStatusOptionsModel := new(adminrestv1.GetStatusOptions)
+				getStatusOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation
+				result, response, operationErr := adminrestService.GetStatus(getStatusOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+
+				// Verify a nil result
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
 	Describe(`Model constructor tests`, func() {
 		Context(`Using a service client instance`, func() {
 			adminrestService, _ := adminrestv1.NewAdminrestV1(&adminrestv1.AdminrestV1Options{
@@ -4030,6 +4232,13 @@ var _ = Describe(`AdminrestV1`, func() {
 				Expect(getQuotaOptionsModel.EntityName).To(Equal(core.StringPtr("testString")))
 				Expect(getQuotaOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
+			It(`Invoke NewGetStatusOptions successfully`, func() {
+				// Construct an instance of the GetStatusOptions model
+				getStatusOptionsModel := adminrestService.NewGetStatusOptions()
+				getStatusOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
+				Expect(getStatusOptionsModel).ToNot(BeNil())
+				Expect(getStatusOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
+			})
 			It(`Invoke NewGetTopicOptions successfully`, func() {
 				// Construct an instance of the GetTopicOptions model
 				topicName := "testString"
@@ -4147,9 +4356,106 @@ var _ = Describe(`AdminrestV1`, func() {
 			})
 		})
 	})
+	Describe(`Model unmarshaling tests`, func() {
+		It(`Invoke UnmarshalRecordDeleteRequestRecordsToDeleteItem successfully`, func() {
+			// Construct an instance of the model.
+			model := new(adminrestv1.RecordDeleteRequestRecordsToDeleteItem)
+			model.Partition = core.Int64Ptr(int64(38))
+			model.BeforeOffset = core.Int64Ptr(int64(26))
+
+			b, err := json.Marshal(model)
+			Expect(err).To(BeNil())
+
+			var raw map[string]json.RawMessage
+			err = json.Unmarshal(b, &raw)
+			Expect(err).To(BeNil())
+
+			var result *adminrestv1.RecordDeleteRequestRecordsToDeleteItem
+			err = adminrestv1.UnmarshalRecordDeleteRequestRecordsToDeleteItem(raw, &result)
+			Expect(err).To(BeNil())
+			Expect(result).ToNot(BeNil())
+			Expect(result).To(Equal(model))
+		})
+		It(`Invoke UnmarshalTopicCreateRequestConfigsItem successfully`, func() {
+			// Construct an instance of the model.
+			model := new(adminrestv1.TopicCreateRequestConfigsItem)
+			model.Name = core.StringPtr("testString")
+			model.Value = core.StringPtr("testString")
+
+			b, err := json.Marshal(model)
+			Expect(err).To(BeNil())
+
+			var raw map[string]json.RawMessage
+			err = json.Unmarshal(b, &raw)
+			Expect(err).To(BeNil())
+
+			var result *adminrestv1.TopicCreateRequestConfigsItem
+			err = adminrestv1.UnmarshalTopicCreateRequestConfigsItem(raw, &result)
+			Expect(err).To(BeNil())
+			Expect(result).ToNot(BeNil())
+			Expect(result).To(Equal(model))
+		})
+		It(`Invoke UnmarshalTopicUpdateRequestConfigsItem successfully`, func() {
+			// Construct an instance of the model.
+			model := new(adminrestv1.TopicUpdateRequestConfigsItem)
+			model.Name = core.StringPtr("testString")
+			model.Value = core.StringPtr("testString")
+			model.ResetToDefault = core.BoolPtr(true)
+
+			b, err := json.Marshal(model)
+			Expect(err).To(BeNil())
+
+			var raw map[string]json.RawMessage
+			err = json.Unmarshal(b, &raw)
+			Expect(err).To(BeNil())
+
+			var result *adminrestv1.TopicUpdateRequestConfigsItem
+			err = adminrestv1.UnmarshalTopicUpdateRequestConfigsItem(raw, &result)
+			Expect(err).To(BeNil())
+			Expect(result).ToNot(BeNil())
+			Expect(result).To(Equal(model))
+		})
+		It(`Invoke UnmarshalMirroringTopicSelection successfully`, func() {
+			// Construct an instance of the model.
+			model := new(adminrestv1.MirroringTopicSelection)
+			model.Includes = []string{"testString"}
+
+			b, err := json.Marshal(model)
+			Expect(err).To(BeNil())
+
+			var raw map[string]json.RawMessage
+			err = json.Unmarshal(b, &raw)
+			Expect(err).To(BeNil())
+
+			var result *adminrestv1.MirroringTopicSelection
+			err = adminrestv1.UnmarshalMirroringTopicSelection(raw, &result)
+			Expect(err).To(BeNil())
+			Expect(result).ToNot(BeNil())
+			Expect(result).To(Equal(model))
+		})
+		It(`Invoke UnmarshalQuotaDetail successfully`, func() {
+			// Construct an instance of the model.
+			model := new(adminrestv1.QuotaDetail)
+			model.ProducerByteRate = core.Int64Ptr(int64(1024))
+			model.ConsumerByteRate = core.Int64Ptr(int64(1024))
+
+			b, err := json.Marshal(model)
+			Expect(err).To(BeNil())
+
+			var raw map[string]json.RawMessage
+			err = json.Unmarshal(b, &raw)
+			Expect(err).To(BeNil())
+
+			var result *adminrestv1.QuotaDetail
+			err = adminrestv1.UnmarshalQuotaDetail(raw, &result)
+			Expect(err).To(BeNil())
+			Expect(result).ToNot(BeNil())
+			Expect(result).To(Equal(model))
+		})
+	})
 	Describe(`Utility function tests`, func() {
 		It(`Invoke CreateMockByteArray() successfully`, func() {
-			mockByteArray := CreateMockByteArray("This is a test")
+			mockByteArray := CreateMockByteArray("VGhpcyBpcyBhIHRlc3Qgb2YgdGhlIGVtZXJnZW5jeSBicm9hZGNhc3Qgc3lzdGVt")
 			Expect(mockByteArray).ToNot(BeNil())
 		})
 		It(`Invoke CreateMockUUID() successfully`, func() {
@@ -4175,9 +4481,11 @@ var _ = Describe(`AdminrestV1`, func() {
 // Utility functions used by the generated test code
 //
 
-func CreateMockByteArray(mockData string) *[]byte {
-	ba := make([]byte, 0)
-	ba = append(ba, mockData...)
+func CreateMockByteArray(encodedString string) *[]byte {
+	ba, err := base64.StdEncoding.DecodeString(encodedString)
+	if err != nil {
+		panic(err)
+	}
 	return &ba
 }
 
